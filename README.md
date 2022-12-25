@@ -9,14 +9,11 @@ We’ve talked briefly before and in those conversations I’ve suggested you op
 I was a happy münchin user pre-EAC and I wanted nothing more than for it to stay around, but still even after numerous complete source code leaks you refused to move to an open source model. This among other good reasons, me and my close friend have put a lot of work into reviving your *discontinued* melonloader mod. I have no plans to stop maintaining and improving this source code, even beyond this repository, if taken down, I will keep this work open sourced and everything will be free for all who still use melonloader for vrc, until it is no longer possible.
 
 # A note about pipsqueak and c++ münch
-I do not know how pipsqueak infiltrated your orbiters, but I cannot stress enough that this was a horrible idea, not only for the (almost) spotless reputation of your work, but for the good name of your client. I do know though, where pipsqueak was before he got to know you, long before EAC pipsqueak was brought into (you probably haven’t heard about this one) Area51, he was basically shoved into our group by the co-owner at the time Fish (who’s reputation I made sure to personally ruin after he token logged my friend), regardless fish brought pipsqueak onto our project to replace me as the photon bot developer, this was short lived as eventually fish and pipsqueak decided they didn’t like their cut and wanted to steal all the source code (open source mind you, really smart guys I know), blow up our Client server at the time and claim to be the new owners of the source and tried renaming themselves as a group to I think beanbag or trinix? In a horrible attempt to steal our user base. it was stupid and short lived though because shortly after this unnecessary mutiny area51 was back to normal and Pipsqueak attempted to steal fishes girlfriend and then their project was dead on the spot. Let this be a warning to not only prospective münchin c++ users but killer himself, when pip is holding the bag, if you’re not paying attention he will turn around and sell it out from under you, I can guarantee you this.
+Me and pip talked, we cool now, don't do munch dirty tho, it deserves well.
 
 # Credits
 Killer_Bigpoint#9999
 The original developer, without you this would not exist.
-
-Pipsqueak#0002
-Inspiring me with your inability to follow through on anything, your excessively slow work towards recoding and releasing munch again was pivotal in the creation of this project. Without you being tied up in this, I probably would’ve spent my time doing something else.
 
 Kanna#2950 - Tester, Co-ReDeveloper
 One of the best people I’ve met on vrc, I never would’ve learned to code if it wasn’t for you, you’ve inspired me time and time again to push the envelope of what I thought I was capable of, without you I would not be the person I am now, nor would this project exist. Beyond all other credits the biggest shoutout goes to you.
