@@ -1,15 +1,19 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MunchenClient.Config.Modules
 {
 	public class LanguageConfig
 	{
-		[JsonIgnore]
+        
+
+
+        [JsonIgnore]
 		public static readonly string ConfigLocation = Configuration.GetConfigFolderPath() + "CustomLanguage.json";
 
 		public int ConfigVersion = 1;
 
-		public string ClientName = "MünchenClient";
+		public string ClientName = "MunchenClient"; //MünchenClient
 
 		public string ClientDescription = "A powerful VRChat Client with many features";
 
@@ -17,7 +21,11 @@ namespace MunchenClient.Config.Modules
 
 		public string VRText = "VR";
 
-		public string QuestText = "Quest";
+        public string ExceptionLogging = "Exception Logging";
+
+        public string ExceptionLoggingDescription = "Give's More Details On Things Erroring or causing an 'Exception' ";
+
+        public string QuestText = "Quest";
 
 		public string ConfirmText = "Confirm";
 
@@ -925,7 +933,7 @@ namespace MunchenClient.Config.Modules
 
 		public string WorldMenuDescription = "All features related to world stuff";
 
-		public string JoinByID = "Join By ID";
+		public string JoinByID = "Join By ID from clipboard";
 
 		public string JoinByIDDescription = "Join an instance you'd like by it's world id and instance id";
 

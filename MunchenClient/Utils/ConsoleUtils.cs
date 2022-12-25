@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using MelonLoader;
+using MunchenClient.Config;
 using MunchenClient.ModuleSystem.Modules;
 
 namespace MunchenClient.Utils
@@ -50,15 +51,17 @@ namespace MunchenClient.Utils
 		}
 
 		internal static void Exception(string identifier, string exceptionIdentifier, Exception e, [CallerMemberName] string callerName = "", [CallerLineNumber] int callerLine = -1)
-		{
-			QueueToConsole(identifier, "EXCEPTION: " + exceptionIdentifier + " - Report to our staff", ConsoleColor.Red, callerName, callerLine);
-			QueueToConsole(string.Empty, "============= STACK TRACE ====================", ConsoleColor.Red, string.Empty, -1);
-			QueueToConsole(string.Empty, e.StackTrace, ConsoleColor.Red, string.Empty, -1);
-			QueueToConsole(string.Empty, "===============================================", ConsoleColor.Red, string.Empty, -1);
-			QueueToConsole(string.Empty, "============== MESSAGE ========================", ConsoleColor.Red, string.Empty, -1);
-			QueueToConsole(string.Empty, e.Message, ConsoleColor.Red, string.Empty, -1);
-			QueueToConsole(string.Empty, "===============================================", ConsoleColor.Red, string.Empty, -1);
-		}
+        {
+            if (!Configuration.GetGeneralConfig().ExceptionLogging) { return; }
+            QueueToConsole(identifier, "EXCEPTION: " + exceptionIdentifier + " - Report to our staff", ConsoleColor.Red, callerName, callerLine);
+            QueueToConsole(string.Empty, "============= STACK TRACE ====================", ConsoleColor.Red, string.Empty, -1);
+            QueueToConsole(string.Empty, e.StackTrace, ConsoleColor.Red, string.Empty, -1);
+            QueueToConsole(string.Empty, "===============================================", ConsoleColor.Red, string.Empty, -1);
+            QueueToConsole(string.Empty, "============== MESSAGE ========================", ConsoleColor.Red, string.Empty, -1);
+            QueueToConsole(string.Empty, e.Message, ConsoleColor.Red, string.Empty, -1);
+            QueueToConsole(string.Empty, "===============================================", ConsoleColor.Red, string.Empty, -1);
+
+        }
 
 		internal static void QueueToConsole(string identifier, string text, ConsoleColor textColor, string callerName, int callerLine)
 		{

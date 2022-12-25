@@ -25,13 +25,15 @@ namespace UnchainedButtonAPI
 		internal QuickMenuIndicator(string parentRow, string headerText, string actualText, string tooltip)
 		{
 			buttonParentName = parentRow;
-			InitializeButton(QuickMenuUtils.GetQuickMenu().transform.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup"), headerText, actualText, tooltip, null);
+			//InitializeButton(QuickMenuUtils.GetQuickMenu().transform.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup"), headerText, actualText, tooltip, null);
+			InitializeButton(GameObject.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup").transform, headerText, actualText, tooltip, null);
 		}
 
 		internal QuickMenuIndicator(string parentRow, string headerText, string actualText, string tooltip, Sprite icon)
 		{
 			buttonParentName = parentRow;
-			InitializeButton(QuickMenuUtils.GetQuickMenu().transform.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup"), headerText, actualText, tooltip, icon);
+			//InitializeButton(QuickMenuUtils.GetQuickMenu().transform.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup"), headerText, actualText, tooltip, icon);
+			InitializeButton(GameObject.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup").transform, headerText, actualText, tooltip, icon);
 		}
 
 		private void InitializeButton(Transform parent, string headerText, string actualText, string tooltip, Sprite icon)
@@ -46,10 +48,10 @@ namespace UnchainedButtonAPI
 			buttonIcon.color = Color.white;
 			buttonText = buttonObject.transform.Find("Text_H4").GetComponent<TextMeshProUGUI>();
 			GameObject gameObject2 = buttonObject.transform.Find("Text_H1").gameObject;
-			Object.Destroy(gameObject2.GetComponent<ListCountBinding>());
+			//Object.Destroy(gameObject2.GetComponent<ListCountBinding>()); //Component ListCountBinding missing, operation unknown
 			buttonMainText = gameObject2.GetComponent<TextMeshProUGUI>();
 			buttonMainText.fontSize = 54f;
-			Object.DestroyImmediate(buttonObject.transform.Find("Text_H1").GetComponent<TextBinding>());
+			//Object.DestroyImmediate(buttonObject.transform.Find("Text_H1").GetComponent<TextBinding>()); //Component TextBinding missing, operation unknown
 			SetButtonText(headerText);
 			SetMainText(actualText);
 			SetToolTip(tooltip);

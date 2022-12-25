@@ -1,6 +1,7 @@
 using System;
 using Il2CppSystem;
 using Il2CppSystem.Collections.Generic;
+using MelonLoader;
 using MunchenClient.Wrappers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -65,7 +66,8 @@ namespace MunchenClient.Utils
 			string instanceId2 = ((num != -1) ? idSplit[1].Substring(0, num) : idSplit[1]);
 			IsWorldValid(idSplit[0], instanceId2, delegate
 			{
-				new PortalInternal().Method_Private_Void_String_String_PDM_0(idSplit[0], idSplit[1]);
+                Networking.GoToRoom(idSplit[0] + ":" + idSplit[1]);
+				//new PortalInternal().Method_Private_Void_String_PDM_0(idSplit[0], idSplit[1]); //Method_Private_Void_String_String_PDM_0 exists, tried to fix but cant find equal method that takes two strings
 				ConsoleUtils.Info("Player", "Joining world: " + idSplit[0] + ":" + idSplit[1], System.ConsoleColor.Gray, "GoToWorld", 73);
 			}, delegate(string reason)
 			{

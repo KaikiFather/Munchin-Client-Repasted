@@ -12,7 +12,7 @@ namespace MenuPanelAPI
 		{
 			if (menuPanelUserPanel == null)
 			{
-				menuPanelUserPanel = GameObject.Find("UserInterface/MenuContent/Screens/UserInfo");
+				menuPanelUserPanel = GameObject.Find("MenuContent/Screens/UserInfo");  //fixed for Guid change
 			}
 			return menuPanelUserPanel;
 		}

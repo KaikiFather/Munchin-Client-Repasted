@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using TMPro;
 using UnhollowerRuntimeLib;
 using UnityEngine;
@@ -8,7 +9,7 @@ using VRC.UI.Elements.Tooltips;
 
 namespace UnchainedButtonAPI
 {
-	internal class QuickMenuButtonBase
+	internal class QuickMenuButtonBase //the base that all QM buttons use, and thus all of them call to RegisterQuickMenuItem
 	{
 		protected string buttonParentName;
 
@@ -56,11 +57,12 @@ namespace UnchainedButtonAPI
 
 		internal void SetToolTip(string tooltip)
 		{
-			buttonTooltip.field_Public_String_0 = tooltip;
-			buttonTooltip.enabled = !string.IsNullOrEmpty(tooltip);
+            buttonObject.GetComponents<VRC.UI.Elements.Tooltips.UiTooltip>().ToList().ForEach(x => x.field_Public_String_0 = tooltip);
+            //buttonTooltip.field_Public_String_0 = tooltip;
+			//buttonTooltip.enabled = !string.IsNullOrEmpty(tooltip);
 		}
 
-		internal void SetAction(Action action)
+        internal void SetAction(Action action)
 		{
 			buttonHandler.onClick = new Button.ButtonClickedEvent();
 			buttonHandler.onClick.AddListener(DelegateSupport.ConvertDelegate<UnityAction>(action));
@@ -72,7 +74,7 @@ namespace UnchainedButtonAPI
 			UnityEngine.Object.Destroy(buttonObject);
 		}
 
-		internal virtual void OnQuickMenuInitialized()
+		internal virtual void OnQuickMenuInitialized() //does nothing???
 		{
 		}
 	}

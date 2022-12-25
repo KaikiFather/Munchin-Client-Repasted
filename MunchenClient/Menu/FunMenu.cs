@@ -24,7 +24,7 @@ namespace MunchenClient.Menu
 			QuickMenuButtonRow parentRow = new QuickMenuButtonRow(this);
 			new QuickMenuSpacers(this);
 			QuickMenuButtonRow parentRow2 = new QuickMenuButtonRow(this);
-			new ApplicationBotsMenu(parent2);
+			//new ApplicationBotsMenu(parent2); //appbots removed
 			new MurderAmongUsMenu(parent2);
 			new PortableMirrorMenu(parent2);
 			new UdonManipulatorMenu(parent2);

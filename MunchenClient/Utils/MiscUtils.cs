@@ -154,11 +154,7 @@ namespace MunchenClient.Utils
 
 		internal static Vector3 GetNameplateOffset(bool open)
 		{
-			if (CompatibilityLayer.IsNotoriousInstalled())
-			{
-				return open ? new Vector3(0f, -85f, 0f) : new Vector3(0f, -58f, 0f);
-			}
-			return open ? new Vector3(0f, 60f, 0f) : new Vector3(0f, 30f, 0f);
+            return open ? new Vector3(0f, 60f, 0f) : new Vector3(0f, 30f, 0f);
 		}
 
 		internal static int GetChildDepth(Transform child, Transform parent)

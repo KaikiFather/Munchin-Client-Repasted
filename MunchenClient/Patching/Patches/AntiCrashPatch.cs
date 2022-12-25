@@ -185,7 +185,7 @@ namespace MunchenClient.Patching.Patches
 				string text = Marshal.PtrToStringAnsi((IntPtr)(*(void**)(void*)data));
 				if (text != null && text.Contains("is corrupted"))
 				{
-					ConsoleUtils.FlushToConsole(LanguageManager.GetUsedLanguage().ProtectionsMenuName, "Corrupt text found - Report to Killer - (" + text + ")", ConsoleColor.Gray, "DebugAssertPatch", 216);
+					ConsoleUtils.FlushToConsole(LanguageManager.GetUsedLanguage().ProtectionsMenuName, "Corrupt text found - (" + text + ")", ConsoleColor.Gray, "DebugAssertPatch", 216);
 					void* intPtr = (void*)(data + 48);
 					*(byte*)intPtr = (byte)(*(byte*)intPtr & 0xEF);
 				}

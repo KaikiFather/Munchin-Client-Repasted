@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using MelonLoader;
 using MunchenClient.Config;
 using MunchenClient.Core;
 using MunchenClient.Core.Compatibility;
@@ -33,8 +34,9 @@ namespace MunchenClient.Patching.Patches
 			PatchMethod((from mb in typeof(NetworkManager).GetMethods()
 				where mb.Name.StartsWith("Method_Public_Void_Player_") && CheckMethod(mb, "OnPlayerLeft")
 				select mb).Last(), null, GetLocalPatch("OnPlayerLeavePatch"));
-			PatchMethod(typeof(NetworkManager).GetMethod("OnJoinedRoom"), null, GetLocalPatch("OnJoinedRoomPatch"));
-			PatchMethod(typeof(NetworkManager).GetMethod("OnLeftRoom"), null, GetLocalPatch("OnLeftRoomPatch"));
+			PatchMethod(typeof(NetworkManager).GetMethod("Method_Internal_Void_PDM_0"), null, GetLocalPatch("OnJoinedRoomPatch")); //fix for on joined world :)
+			//PatchMethod(typeof(NetworkManager).GetMethod("OnJoinedRoom"), null, GetLocalPatch("OnJoinedRoomPatch")); //broken and replaced
+			PatchMethod(typeof(NetworkManager).GetMethod("OnLeftRoom"), null, GetLocalPatch("OnLeftRoomPatch")); //works
 			PatchMethod(typeof(NetworkManager).GetMethod("OnMasterClientSwitched"), null, GetLocalPatch("OnMasterClientSwitchedPatch"));
 		}
 
@@ -71,13 +73,11 @@ namespace MunchenClient.Patching.Patches
 				}
 			}
 		}
-
+		public static GameObject basePlate { get; set; }
+		public static bool found { get; set; } //used to go through player plates
 		private static void OnPlayerJoinPatch(ref VRC.Player __0)
 		{
-			if (!isConnectedToInstance || __0 == null || PlayerWrappers.GetPlayerInformation(__0) != null)
-			{
-				return;
-			}
+			if (!isConnectedToInstance || __0 == null || PlayerWrappers.GetPlayerInformation(__0) != null) { return; }
 			bool flag = __0.prop_APIUser_0.id == APIUser.CurrentUser.id;
 			GameObject gameObject = null;
 			ImageThreeSlice nameplateBackground = null;
@@ -85,21 +85,35 @@ namespace MunchenClient.Patching.Patches
 			GameObject gameObject2 = null;
 			RectTransform rectTransform = null;
 			TextMeshProUGUI textMeshProUGUI = null;
-			try
+			try //total hours wasted debugging this code: 6
 			{
-				gameObject = __0.prop_VRCPlayer_0.transform.Find("Player Nameplate/Canvas").gameObject;
-				nameplateBackground = gameObject.transform.Find("Nameplate/Contents/Main/Background").GetComponent<ImageThreeSlice>();
-				nameplateIconBackground = gameObject.transform.Find("Nameplate/Contents/Icon/Background").GetComponent<Image>();
+                MonoBehaviourPublic95VoUnique[] PlateManager = UnityEngine.Object.FindObjectsOfType<MonoBehaviourPublic95VoUnique>();
+				foreach (MonoBehaviourPublic95VoUnique NameplateContainer in PlateManager)
+                {
+                    found = false;
+					for (int i = 0; i < PlateManager.Length; i++)
+					{
+						string PUID = PlateManager[i].field_Public_VRCPlayer_0._player.field_Private_APIUser_0.id;
+						if (PUID == __0.prop_APIUser_0.id) { basePlate = NameplateContainer.gameObject; found = true; break; }
+					} if (found) break;
+
+                }
+
+                gameObject = basePlate.transform.Find("PlayerNameplate/Canvas").gameObject;
+                //gameObject = __0.prop_VRCPlayer_0.transform.Find("NameplateManager/NameplateContainer/PlayerNameplate/Canvas").gameObject;
+				nameplateBackground = gameObject.transform.Find("NameplateGroup/Nameplate/Contents/Main/Background").GetComponent<ImageThreeSlice>();
+				nameplateIconBackground = gameObject.transform.Find("NameplateGroup/Nameplate/Contents/Icon/Background").GetComponent<Image>();
 				if (!flag)
 				{
-					Transform transform = gameObject.transform.Find("Nameplate/Contents");
-					GameObject gameObject3 = transform.transform.Find(CompatibilityLayer.IsKarmaInstalled() ? "Tags" : "Quick Stats").gameObject;
+                    Transform transform = gameObject.transform.Find("NameplateGroup/Nameplate/Contents");
+					GameObject gameObject3 = transform.transform.Find("Quick Stats").gameObject;
+
 					gameObject2 = UnityEngine.Object.Instantiate(gameObject3, transform);
 					rectTransform = gameObject2.GetComponent<RectTransform>();
 					rectTransform.localPosition = MiscUtils.GetNameplateOffset(GeneralUtils.isQuickMenuOpen);
-					foreach (RectTransform componentsInChild in gameObject2.GetComponentsInChildren<RectTransform>())
+                    foreach (RectTransform componentsInChild in gameObject2.GetComponentsInChildren<RectTransform>())
 					{
-						if (componentsInChild.name != "Trust Text")
+                        if (componentsInChild.name != "Trust Text")
 						{
 							componentsInChild.gameObject.SetActive(value: false);
 							continue;
@@ -116,7 +130,7 @@ namespace MunchenClient.Patching.Patches
 						gameObject2.SetActive(value: false);
 					}
 				}
-				if (Configuration.GetGeneralConfig().NameplateWallhack && CameraFeaturesHandler.GetCameraSetup() == 0)
+                if (Configuration.GetGeneralConfig().NameplateWallhack && CameraFeaturesHandler.GetCameraSetup() == 0)
 				{
 					gameObject.layer = 19;
 				}
@@ -130,7 +144,7 @@ namespace MunchenClient.Patching.Patches
 			{
 				playerInformation = new PlayerInformation
 				{
-					actorId = ((VRCNetworkBehaviour)__0.prop_VRCPlayer_0).prop_Int32_0,
+					actorId = ((VRCNetworkBehaviour)__0.prop_VRCPlayer_0).prop_Int32_1,
 					actorIdData = ((VRCNetworkBehaviour)__0.prop_VRCPlayer_0).prop_Int32_0 * PhotonNetwork.field_Public_Static_Int32_0 + 1,
 					actorIdDataOther = ((VRCNetworkBehaviour)__0.prop_VRCPlayer_0).prop_Int32_0 * PhotonNetwork.field_Public_Static_Int32_0 + 3,
 					id = __0.prop_APIUser_0.id,

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using HeathenEngineering.OSK.v2;
 using MunchenClient.Config;
+using MunchenClient.Core;
 using MunchenClient.Core.Compatibility;
 using MunchenClient.ModuleSystem.Modules;
 using MunchenClient.Patching.Patches;
@@ -10,6 +11,8 @@ using MunchenClient.Wrappers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UserEventCarousel = MonoBehaviourPublicObusQu1VaObQu12StUnique;
+using UserEventCell = MonoBehaviourPublicTMteCaSiImdiCoUnique;
 
 namespace MunchenClient.Misc
 {
@@ -43,20 +46,61 @@ namespace MunchenClient.Misc
 
 		internal static void SetupMenuButtons()
 		{
-			if (!CompatibilityLayer.IsEmmInstalled())
-			{
-				SetupSocialRefreshButton();
-			}
-			if (!Configuration.GetGeneralConfig().DisableKeyboardImprovements)
-			{
-				SetupScandinavianKeyboard();
-			}
-			SetupPasteFromClipboardButton();
-			SetupNotificationsHud();
-			SetupRegenerateHWIDButton();
-			SetupWorldRefreshButton();
+            //SetupSocialRefreshButton(); //depreciated, Big menu update & social active updating update
+            if (!Configuration.GetGeneralConfig().DisableKeyboardImprovements) { /*SetupScandinavianKeyboard();*/ /*err i dont care to fix*/ }
+			//SetupPasteFromClipboardButton(); //depreciated, big menu update
+			//SetupNotificationsHud(); //broken
+            SetupRegenerateHWIDButton(); //pretty sure this is broken, unsure
+			//SetupWorldRefreshButton(); // depreciated, big menu update
 		}
 
+		#region astroVRChud
+		private static UserEventCarousel _ActiveCarousel { get; set; } //thanks astro for new UI notifi code
+        internal static UserEventCarousel ActiveCarousel
+        {
+			get
+			{
+				if (_ActiveCarousel == null)
+				{
+					foreach (var carousel in Resources.FindObjectsOfTypeAll<UserEventCarousel>())
+					{
+						if (carousel != null)
+						{
+							if (carousel.field_Private_List_1_MonoBehaviourPublicTMteCaSiImdiCoUnique_1.Count != 0)
+							{
+								return _ActiveCarousel = carousel;
+							}
+						}
+					}
+
+				}
+				return _ActiveCarousel;
+			}
+        }
+		private static Transform _User_Event_Carousel { get; set; }
+
+        internal static Transform User_Event_Carousel
+        {
+            get
+            {
+                if (_User_Event_Carousel == null)
+                {
+                    return _User_Event_Carousel = ActiveCarousel.transform;
+                }
+                return _User_Event_Carousel;
+            }
+        }
+        internal static void WriteHudMessage(string Text)
+        {
+            if (ActiveCarousel != null)
+            {
+                ActiveCarousel.Method_Private_Void_String_Sprite_0(Text, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Notification.png") );
+            }
+        }
+		#endregion
+
+
+		#region old notification hud
 		internal static void OnUpdate()
 		{
 			bool flag = false;
@@ -111,7 +155,7 @@ namespace MunchenClient.Misc
 
 		internal static void AddNotificationToHud(string text)
 		{
-			if (!ApplicationBotHandler.IsBot())
+			if (true/*!ApplicationBotHandler.IsBot()*/)
 			{
 				GameObject gameObject = UnityEngine.Object.Instantiate(notificationHudTemplate, notificationHudParent.transform);
 				gameObject.name = "Munchen Notification";
@@ -136,15 +180,16 @@ namespace MunchenClient.Misc
 
 		internal static void SetupNotificationsHud()
 		{
-			notificationHudParent = GameObject.Find("UserInterface/UnscaledUI/HudContent_Old/Hud/AlertTextParent");
+			notificationHudParent = GameObject.Find("UnscaledUI/HudContent_Old/Hud/AlertTextParent");  //fixed for Guid change
 			notificationHudTemplate = UnityEngine.Object.Instantiate(notificationHudParent.transform.Find("Capsule").gameObject, notificationHudParent.transform);
 			notificationHudTemplate.transform.Find("Text").gameObject.SetActive(value: true);
 			notificationHudTemplate.name = "Munchen Alert";
 		}
+		#endregion 
 
 		private static void SetupRegenerateHWIDButton()
 		{
-			GameObject original = GameObject.Find("UserInterface/MenuContent/Screens/Authentication/StoreLoginPrompt/ButtonCreate");
+			GameObject original = GameObject.Find("MenuContent/Screens/Authentication/StoreLoginPrompt/ButtonCreate"); //fixed this string to be appropriate for guid change
 			GameObject gameObject = UnityEngine.Object.Instantiate(original);
 			gameObject.gameObject.name = "RegenerateHWID";
 			gameObject.GetComponentInChildren<Text>().text = "Regenerate HWID";
@@ -160,16 +205,17 @@ namespace MunchenClient.Misc
 					GeneralWrappers.ClosePopup();
 				});
 			});
-			GameObject gameObject2 = GameObject.Find("UserInterface/MenuContent/Screens/Authentication/StoreLoginPrompt");
+			GameObject gameObject2 = GameObject.Find("MenuContent/Screens/Authentication/StoreLoginPrompt"); //fixed this string to be appropriate for guid change
 			gameObject.transform.SetParent(gameObject2.transform, worldPositionStays: false);
 			gameObject.transform.localPosition = new Vector3(0f, -444f, 0f);
 		}
 
+		/* Unused
 		private static void SetupPasteFromClipboardButton()
 		{
-			GameObject gameObject = GameObject.Find("UserInterface/MenuContent/Popups/InputPopup/ButtonRight");
+			GameObject gameObject = GameObject.Find("MenuContent/Popups/InputPopup/ButtonRight");  //fixed for Guid change
 			confirmButton = gameObject.GetComponent<Button>();
-			textInputField = GameObject.Find("UserInterface/MenuContent/Popups/InputPopup/InputField").GetComponent<InputField>();
+			textInputField = GameObject.Find("MenuContent/Popups/InputPopup/InputField").GetComponent<InputField>();  //fixed for Guid change
 			if (!Configuration.GetGeneralConfig().DisableKeyboardImprovements)
 			{
 				GameObject gameObject2 = UnityEngine.Object.Instantiate(gameObject);
@@ -180,7 +226,7 @@ namespace MunchenClient.Misc
 				{
 					PasteStringIntoInputField(MainUtils.GetTextFromClipboard());
 				});
-				GameObject gameObject3 = GameObject.Find("UserInterface/MenuContent/Popups/InputPopup");
+				GameObject gameObject3 = GameObject.Find("MenuContent/Popups/InputPopup");  //fixed for Guid change
 				gameObject2.transform.SetParent(gameObject3.transform, worldPositionStays: false);
 				gameObject2.transform.localPosition = new Vector3(435f, -275.8f, 0f);
 			}
@@ -188,7 +234,7 @@ namespace MunchenClient.Misc
 
 		private static void SetupScandinavianKeyboard()
 		{
-			GameObject gameObject = GameObject.Find("UserInterface/MenuContent/Popups/InputPopup/Keyboard");
+			GameObject gameObject = GameObject.Find("MenuContent/Popups/InputPopup/Keyboard"); //fixed this string to be appropriate for guid change
 			GameObject gameObject2 = gameObject.transform.Find("Keys/Row 2/Row:1 Column:12").gameObject;
 			GameObject gameObject3 = UnityEngine.Object.Instantiate(gameObject2, gameObject2.transform.parent);
 			gameObject3.name = "Row:1 Column:13";
@@ -210,7 +256,7 @@ namespace MunchenClient.Misc
 
 		private static void SetupWorldRefreshButton()
 		{
-			GameObject gameObject = GameObject.Find("UserInterface/MenuContent/Screens/Worlds/Current Room/ThisWorldButton");
+			GameObject gameObject = GameObject.Find("MenuContent/Screens/Worlds/Current Room/ThisWorldButton"); //fixed this string to be appropriate for guid change
 			GameObject gameObject2 = UnityEngine.Object.Instantiate(gameObject.transform.GetComponentInChildren<Button>().gameObject);
 			gameObject2.gameObject.name = "RefreshWorlds";
 			gameObject2.GetComponentInChildren<Text>().text = "Refresh";
@@ -232,7 +278,7 @@ namespace MunchenClient.Misc
 					GeneralWrappers.AlertPopup("Refresh", $"You can refresh in {Math.Floor(nextRefreshWorlds - Time.realtimeSinceStartup)} seconds");
 				}
 			});
-			GameObject gameObject3 = GameObject.Find("UserInterface/MenuContent/Screens/Worlds/Current Room");
+			GameObject gameObject3 = GameObject.Find("MenuContent/Screens/Worlds/Current Room"); //fixed this string to be appropriate for guid change
 			gameObject2.transform.SetParent(gameObject3.transform, worldPositionStays: false);
 			gameObject2.transform.localPosition = new Vector3(550f, 4.5f, -0.1f);
 			if (Configuration.GetGeneralConfig().ColorChangerEnable)
@@ -243,7 +289,7 @@ namespace MunchenClient.Misc
 
 		private static void SetupSocialRefreshButton()
 		{
-			GameObject gameObject = GameObject.Find("UserInterface/MenuContent/Screens/Social/UserProfileAndStatusSection/Status/EditStatusButton");
+			GameObject gameObject = GameObject.Find("MenuContent/Screens/Social/UserProfileAndStatusSection/Status/EditStatusButton"); //fixed this string to be appropriate for guid change
 			GameObject gameObject2 = UnityEngine.Object.Instantiate(gameObject.transform.GetComponentInChildren<Button>().gameObject);
 			gameObject2.gameObject.name = "RefreshSocial";
 			gameObject2.GetComponentInChildren<Text>().text = "Refresh";
@@ -265,7 +311,7 @@ namespace MunchenClient.Misc
 					GeneralWrappers.AlertPopup("Refresh", $"You can refresh in {Math.Floor(nextRefreshSocial - Time.realtimeSinceStartup)} seconds");
 				}
 			});
-			GameObject gameObject3 = GameObject.Find("UserInterface/MenuContent/Screens/Social/UserProfileAndStatusSection/Status");
+			GameObject gameObject3 = GameObject.Find("MenuContent/Screens/Social/UserProfileAndStatusSection/Status"); //fixed this string to be appropriate for guid change
 			gameObject2.transform.SetParent(gameObject3.transform, worldPositionStays: false);
 			gameObject2.transform.localPosition = new Vector3(540f, 0f, 0f);
 		}
@@ -274,9 +320,9 @@ namespace MunchenClient.Misc
 		{
 			if (textInputField == null || confirmButton == null)
 			{
-				GameObject gameObject = GameObject.Find("UserInterface/MenuContent/Popups/InputPopup/ButtonRight");
+				GameObject gameObject = GameObject.Find("MenuContent/Popups/InputPopup/ButtonRight"); //fixed this string to be appropriate for guid change
 				confirmButton = gameObject.GetComponent<Button>();
-				textInputField = GameObject.Find("UserInterface/MenuContent/Popups/InputPopup/InputField").GetComponent<InputField>();
+				textInputField = GameObject.Find("MenuContent/Popups/InputPopup/InputField").GetComponent<InputField>(); //fixed this string to be appropriate for guid change
 			}
 			textInputField.text = text;
 			if (pressContinue)
@@ -284,5 +330,6 @@ namespace MunchenClient.Misc
 				confirmButton.Press();
 			}
 		}
+		*/
 	}
 }

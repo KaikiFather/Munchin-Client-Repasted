@@ -230,10 +230,12 @@ namespace MunchenClient.ModuleSystem.Modules
 
 		private static void AddColliderToBone(DynamicBone bone, DynamicBoneCollider collider, DynamicBonePermission permissions)
 		{
-			if (collider.m_Bound != DynamicBoneCollider.DynamicBoneColliderBound.Inside && !(collider.m_Radius > permissions.ColliderSizeLimit) && !(collider.m_Height > permissions.ColliderSizeLimit))
+			/*
+			if (collider.m_Bound != DynamicBoneCollider.DynamicBoneColliderBound.Inside && !(collider.m_Radius > permissions.ColliderSizeLimit) && !(collider.m_Height > permissions.ColliderSizeLimit)) //DynamicBoneColliderBound missing
 			{
 				AddColliderToDynamicBone(bone, collider);
 			}
+			*/
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

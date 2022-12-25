@@ -24,7 +24,7 @@ namespace MunchenClient.Wrappers
 					return ourShowUiInputPopupAction;
 				}
 				MethodInfo method = (from mb in typeof(VRCUiPopupManager).GetMethods()
-					where mb.Name.StartsWith("Method_Public_Void_String_String_InputType_Boolean_String_Action_3_String_List_1_KeyCode_Text_Action_String_Boolean_Action_1_VRCUiPopup_Boolean_Int32_") && PatchManager.CheckMethod(mb, "UserInterface/MenuContent/Popups/InputPopup")
+					where mb.Name.StartsWith("Method_Public_Void_String_String_InputType_Boolean_String_Action_3_String_List_1_KeyCode_Text_Action_String_Boolean_Action_1_VRCUiPopup_Boolean_Int32_") && PatchManager.CheckMethod(mb, "MenuContent/Popups/InputPopup") //adjusted for guid change
 					select mb).First();
 				ourShowUiInputPopupAction = (ShowUiInputPopupAction)System.Delegate.CreateDelegate(typeof(ShowUiInputPopupAction), VRCUiPopupManager.prop_VRCUiPopupManager_0, method);
 				return ourShowUiInputPopupAction;

@@ -51,7 +51,9 @@ namespace MunchenClient.Config.Modules
 
 		public bool PersistentQuickMenu = false;
 
-		public bool NetworkedEmotes = true;
+        public bool ExceptionLogging = false;
+
+        public bool NetworkedEmotes = true;
 
 		public bool AdvancedAvatarHider = false;
 

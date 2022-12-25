@@ -44,11 +44,12 @@ namespace ActionMenuAPI
 
 			internal void OpenMenu()
 			{
-				GetActionMenuOpener().field_Public_ActionMenu_0.Method_Public_Page_Action_Action_Texture2D_String_0((System.Action)delegate
+				GetActionMenuOpener().field_Public_ActionMenu_0.Method_Public_ObjectNPublicAcTeAcStGaUnique_Action_Action_Texture2D_String_0((System.Action)delegate //Method_Public_Page_Action_Action_Texture2D_String_0 does not exist, i think i found appropriate replacement? (Method_Public_ObjectNPublicAcTeAcStGaUnique_Action_Action_Texture2D_String_0)
 				{
 					foreach (ActionMenuButton button in buttons)
 					{
-						PedalOption pedalOption = GetActionMenuOpener().field_Public_ActionMenu_0.Method_Private_PedalOption_0();
+						/* Commented until Method_Private_PedalOption_0 replacement is found
+						PedalOption pedalOption = GetActionMenuOpener().field_Public_ActionMenu_0.Method_Private_PedalOption_0(); //Method_Private_PedalOption_0 does not exist, possible fix Method_Private_Void_PedalOption_0 requires parameter
 						pedalOption.prop_String_0 = button.buttonText;
 						pedalOption.field_Public_Func_1_Boolean_0 = DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(button.buttonAction);
 						if (button.buttonIcon != null)
@@ -56,6 +57,7 @@ namespace ActionMenuAPI
 							pedalOption.Method_Public_Virtual_Final_New_Void_Texture2D_0(button.buttonIcon);
 						}
 						button.currentPedalOption = pedalOption;
+						*/
 					}
 				});
 			}
@@ -148,7 +150,8 @@ namespace ActionMenuAPI
 			}
 			foreach (ActionMenuButton mainMenuButton in mainMenuButtons)
 			{
-				PedalOption pedalOption = activeActionMenu.Method_Private_PedalOption_0();
+				/* Commented until Method_Private_PedalOption_0 replacement is found
+				PedalOption pedalOption = activeActionMenu.Method_Private_PedalOption_0(); //Method_Private_PedalOption_0 does not exist, possible fix Method_Private_Void_PedalOption_0 requires parameter
 				pedalOption.prop_String_0 = mainMenuButton.buttonText;
 				pedalOption.field_Public_Func_1_Boolean_0 = DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(mainMenuButton.buttonAction);
 				if (mainMenuButton.buttonIcon != null)
@@ -156,6 +159,7 @@ namespace ActionMenuAPI
 					pedalOption.Method_Public_Virtual_Final_New_Void_Texture2D_0(mainMenuButton.buttonIcon);
 				}
 				mainMenuButton.currentPedalOption = pedalOption;
+				*/
 			}
 		}
 	}

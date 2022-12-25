@@ -87,7 +87,7 @@ namespace MunchenClient.ModuleSystem.Modules
 			camerasInitialized = true;
 		}
 
-		internal override void OnUpdate()
+		internal override void OnUpdate() //broken
 		{
 			if (!camerasInitialized)
 			{
@@ -278,6 +278,7 @@ namespace MunchenClient.ModuleSystem.Modules
 
 		internal static Camera GetActiveCamera()
 		{
+
 			if (cameraFront.enabled)
 			{
 				return cameraFront;

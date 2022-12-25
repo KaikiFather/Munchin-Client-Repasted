@@ -4,6 +4,7 @@ using Il2CppSystem.Collections.Generic;
 using MunchenClient.Config;
 using MunchenClient.Core;
 using MunchenClient.Menu.Settings;
+using MunchenClient.Misc;
 using MunchenClient.ModuleSystem.Modules;
 using MunchenClient.Utils;
 using MunchenClient.Wrappers;
@@ -26,7 +27,7 @@ namespace MunchenClient.Menu
 			new QuickMenuHeader(this, LanguageManager.GetUsedLanguage().MiscellaneousCategory);
 			QuickMenuButtonRow quickMenuButtonRow = new QuickMenuButtonRow(this);
 			new PerformanceMenu(quickMenuButtonRow);
-			new ColorChangerMenu(quickMenuButtonRow);
+			//new ColorChangerMenu(quickMenuButtonRow);
 			new DisableFeaturesMenu(quickMenuButtonRow);
 			new QuickMenuSingleButton(quickMenuButtonRow, LanguageManager.GetUsedLanguage().RestartGame, delegate
 			{
@@ -42,7 +43,7 @@ namespace MunchenClient.Menu
 			new QuickMenuSingleButton(parentRow, LanguageManager.GetUsedLanguage().ReloadAvatars, delegate
 			{
 				PlayerUtils.ReloadAllAvatars();
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().ReloadAvatarsReloaded);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().ReloadAvatarsReloaded);
 			}, LanguageManager.GetUsedLanguage().ReloadAvatarsDescription);
 			new QuickMenuSingleButton(parentRow, LanguageManager.GetUsedLanguage().CopyAvatarData, delegate
 			{
@@ -52,7 +53,7 @@ namespace MunchenClient.Menu
 					ApiAvatar apiAvatar = localPlayerInformation.vrcPlayer.prop_VRCAvatarManager_0.prop_ApiAvatar_2;
 					Clipboard.SetText("ID: " + apiAvatar.id + "\nName: " + apiAvatar.name + "\nStatus: " + apiAvatar.releaseStatus + "\nAsset Url: " + apiAvatar.assetUrl + "\nAuthor Name: " + apiAvatar.authorName + "\nAuthor ID: " + apiAvatar.authorId + "\nDescription: " + apiAvatar.description + "\nPreview: " + apiAvatar.imageUrl);
 					ConsoleUtils.Info(LanguageManager.GetUsedLanguage().NoticeText, LanguageManager.GetUsedLanguage().CopyAvatarDataCopied, ConsoleColor.Gray, ".ctor", 67);
-					QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().CopyAvatarDataCopied);
+                    UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().CopyAvatarDataCopied);
 				}
 			}, LanguageManager.GetUsedLanguage().CopyAvatarDataDescription);
 			new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().MinimumCameraClippingDistance, Configuration.GetGeneralConfig().MinimumCameraClippingDistance, delegate
@@ -105,16 +106,7 @@ namespace MunchenClient.Menu
 				Configuration.GetGeneralConfig().AutoClearCache = false;
 				Configuration.SaveGeneralConfig();
 			}, LanguageManager.GetUsedLanguage().AutoClearCacheDescription);
-			new QuickMenuSingleButton(parentRow2, LanguageManager.GetUsedLanguage().SetCustomCrasher, delegate
-			{
-				GeneralWrappers.AlertAction(LanguageManager.GetUsedLanguage().NoticeText, LanguageManager.GetUsedLanguage().SetCustomCrasherQuestion, LanguageManager.GetUsedLanguage().PCText, delegate
-				{
-					GeneralWrappers.ShowInputPopup(LanguageManager.GetUsedLanguage().SetCustomCrasherPC, string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, SetCrasherPC, null, LanguageManager.GetUsedLanguage().SetCustomCrasherPlaceholderText);
-				}, LanguageManager.GetUsedLanguage().QuestText, delegate
-				{
-					GeneralWrappers.ShowInputPopup(LanguageManager.GetUsedLanguage().SetCustomCrasherQuest, string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, SetCrasherQuest, null, LanguageManager.GetUsedLanguage().SetCustomCrasherPlaceholderText);
-				});
-			}, LanguageManager.GetUsedLanguage().SetCustomCrasherDescription);
+			//new QuickMenuSingleButton(parentRow2, LanguageManager.GetUsedLanguage().SetCustomCrasher, delegate { GeneralWrappers.AlertAction(LanguageManager.GetUsedLanguage().NoticeText, LanguageManager.GetUsedLanguage().SetCustomCrasherQuestion, LanguageManager.GetUsedLanguage().PCText, delegate { GeneralWrappers.ShowInputPopup(LanguageManager.GetUsedLanguage().SetCustomCrasherPC, string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, SetCrasherPC, null, LanguageManager.GetUsedLanguage().SetCustomCrasherPlaceholderText); }, LanguageManager.GetUsedLanguage().QuestText, delegate { GeneralWrappers.ShowInputPopup(LanguageManager.GetUsedLanguage().SetCustomCrasherQuest, string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, SetCrasherQuest, null, LanguageManager.GetUsedLanguage().SetCustomCrasherPlaceholderText); }); }, LanguageManager.GetUsedLanguage().SetCustomCrasherDescription);
 			new QuickMenuToggleButton(parentRow2, LanguageManager.GetUsedLanguage().AvatarDownloadLogging, Configuration.GetGeneralConfig().AvatarDownloadLogging, delegate
 			{
 				Configuration.GetGeneralConfig().AvatarDownloadLogging = true;
@@ -124,15 +116,7 @@ namespace MunchenClient.Menu
 				Configuration.GetGeneralConfig().AvatarDownloadLogging = false;
 				Configuration.SaveGeneralConfig();
 			}, LanguageManager.GetUsedLanguage().AvatarDownloadLoggingDescription);
-			new QuickMenuToggleButton(parentRow3, LanguageManager.GetUsedLanguage().ComfyVRMenu, Configuration.GetGeneralConfig().ComfyVRMenu, delegate
-			{
-				Configuration.GetGeneralConfig().ComfyVRMenu = true;
-				Configuration.SaveGeneralConfig();
-			}, LanguageManager.GetUsedLanguage().ComfyVRMenuDescription, delegate
-			{
-				Configuration.GetGeneralConfig().ComfyVRMenu = false;
-				Configuration.SaveGeneralConfig();
-			}, LanguageManager.GetUsedLanguage().ComfyVRMenuDescription);
+			//new QuickMenuToggleButton(parentRow3, LanguageManager.GetUsedLanguage().ComfyVRMenu, Configuration.GetGeneralConfig().ComfyVRMenu, delegate { Configuration.GetGeneralConfig().ComfyVRMenu = true; Configuration.SaveGeneralConfig(); }, LanguageManager.GetUsedLanguage().ComfyVRMenuDescription, delegate{ Configuration.GetGeneralConfig().ComfyVRMenu = false;Configuration.SaveGeneralConfig();}, LanguageManager.GetUsedLanguage().ComfyVRMenuDescription);
 			new QuickMenuToggleButton(parentRow3, LanguageManager.GetUsedLanguage().PersistentQuickMenu, Configuration.GetGeneralConfig().PersistentQuickMenu, delegate
 			{
 				Configuration.GetGeneralConfig().PersistentQuickMenu = true;
@@ -142,23 +126,33 @@ namespace MunchenClient.Menu
 				Configuration.GetGeneralConfig().PersistentQuickMenu = false;
 				Configuration.SaveGeneralConfig();
 			}, LanguageManager.GetUsedLanguage().PersistentQuickMenuDescription);
-			ServerAPICore instance = ServerAPICore.GetInstance();
+            new QuickMenuToggleButton(parentRow3, LanguageManager.GetUsedLanguage().ExceptionLogging, Configuration.GetGeneralConfig().ExceptionLogging, delegate
+            {
+                Configuration.GetGeneralConfig().ExceptionLogging = true;
+                Configuration.SaveGeneralConfig();
+            }, LanguageManager.GetUsedLanguage().ExceptionLoggingDescription, delegate
+            {
+                Configuration.GetGeneralConfig().ExceptionLogging = false;
+                Configuration.SaveGeneralConfig();
+            }, LanguageManager.GetUsedLanguage().ExceptionLoggingDescription);
+
+            ServerAPICore instance = ServerAPICore.GetInstance();
 			if (instance != null && !instance.IsDebugMode())
 			{
 				new QuickMenuSingleButton(parentRow3, LanguageManager.GetUsedLanguage().ForceServerSync, delegate
 				{
 					ServerAPICore.GetInstance().ForceUpdateFromServer();
 					ConsoleUtils.Info(LanguageManager.GetUsedLanguage().SuccessText, LanguageManager.GetUsedLanguage().ForceServerSyncClicked, ConsoleColor.Gray, ".ctor", 184);
-					QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().ForceServerSyncClicked);
+                    UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().ForceServerSyncClicked);
 				}, LanguageManager.GetUsedLanguage().ForceServerSyncDescription);
 			}
-			if (!GeneralWrappers.IsInVR())
+			if (false/*!GeneralWrappers.IsInVR()*/) //disabled while sliders bork
 			{
-				new QuickMenuSpacers(this);
+                new QuickMenuSpacers(this);
 				new QuickMenuHeader(this, LanguageManager.GetUsedLanguage().AspectRatioCategory);
 				aspectRatioSlider = new QuickMenuSliderButton(this, "Aspect Ratio", 0.5f, 1.5f, 1f, delegate(float value)
-				{
-					GeneralWrappers.GetPlayerCamera().ResetAspect();
+				{ 
+					GeneralWrappers.GetPlayerCamera().ResetAspect(); 
 					GeneralWrappers.GetUICamera().ResetAspect();
 					CameraFeaturesHandler.GetFrontCamera().ResetAspect();
 					CameraFeaturesHandler.GetBackCamera().ResetAspect();
@@ -174,7 +168,7 @@ namespace MunchenClient.Menu
 			}
 		}
 
-		private void SetCrasherPC(string crasherId, List<KeyCode> pressedKeys, Text text)
+        private void SetCrasherPC(string crasherId, List<KeyCode> pressedKeys, Text text)
 		{
 			string crasherIdTrimmed = crasherId.Trim();
 			if (string.IsNullOrEmpty(crasherIdTrimmed))

@@ -13,8 +13,7 @@ namespace MunchenClient.Menu.PlayerOptions
 	{
 		private string currentChangingPlayerCustomRankId;
 
-		internal AdminUserModerationMenu(QuickMenuButtonRow parent)
-			: base(parent, "Admin Moderation", "Several moderation features for targeted player")
+		internal AdminUserModerationMenu(QuickMenuButtonRow parent) : base(parent, "Admin Moderation", "Several moderation features for targeted player")
 		{
 			QuickMenuButtonRow parentRow = new QuickMenuButtonRow(this);
 			new QuickMenuSingleButton(parentRow, "Change Rank Name", delegate

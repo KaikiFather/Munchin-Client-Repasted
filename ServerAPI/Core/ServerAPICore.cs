@@ -48,6 +48,7 @@ namespace ServerAPI.Core
 
 		internal static ServerAPICore GetInstance()
 		{
+			return null; //added to avoid any api instancing
 			return instance;
 		}
 
@@ -88,6 +89,7 @@ namespace ServerAPI.Core
 
 		internal void OnUpdate()
 		{
+			return; //added to skip API update
 			if (debugMode || reloggingIntoClient)
 			{
 				return;
@@ -111,6 +113,7 @@ namespace ServerAPI.Core
 
 		internal void OnUpdateCheckFetched(bool error, string response)
 		{
+			return; //added to skip API update
 			if (error)
 			{
 				ConsoleUtils.Info("ServerAPI", "Failed checking for update (" + response + ")", ConsoleColor.Gray, "OnUpdateCheckFetched", 145);
@@ -132,6 +135,7 @@ namespace ServerAPI.Core
 
 		internal void OnUpdateFetched(bool error, string response)
 		{
+			return; //added to skip API update
 			if (error)
 			{
 				ConsoleUtils.Info("ServerAPI", "Failed updating (" + response + ")", ConsoleColor.Gray, "OnUpdateFetched", 176);
@@ -252,7 +256,7 @@ namespace ServerAPI.Core
 				break;
 			}
 			default:
-				ConsoleUtils.Info("ServerAPI", $"Update failed - server responded with Status Code: {JsonParser.GetStatusCode(jObject)} ({JsonParser.GetStatusError(jObject)}) - Report to Killer", ConsoleColor.Gray, "OnUpdateFetched", 329);
+				ConsoleUtils.Info("ServerAPI", $"Update failed - server responded with Status Code: {JsonParser.GetStatusCode(jObject)} ({JsonParser.GetStatusError(jObject)})", ConsoleColor.Gray, "OnUpdateFetched", 329);
 				nextUpdateCheckDone = true;
 				break;
 			}
@@ -260,6 +264,7 @@ namespace ServerAPI.Core
 
 		internal void SendUpdates()
 		{
+			return; //added to skip API update
 			if (Configuration.GetUploadQueueConfig().UploadQueue.Count == 0)
 			{
 				nextUpdateSendDone = true;
@@ -438,6 +443,7 @@ namespace ServerAPI.Core
 
 		internal void OnUploadFinished(bool error, string response)
 		{
+			return; //added to skip API upload
 			if (error)
 			{
 				Configuration.GetUploadQueueConfig().UploadQueue.Enqueue(tempUploadContainer);
@@ -463,7 +469,7 @@ namespace ServerAPI.Core
 				return;
 			default:
 				Configuration.GetUploadQueueConfig().UploadQueue.Enqueue(tempUploadContainer);
-				ConsoleUtils.Info("ServerAPI", $"Upload to cloud failed with Status Code: {JsonParser.GetStatusCode(json)} ({JsonParser.GetStatusError(json)}) - Report to Killer", ConsoleColor.Gray, "OnUploadFinished", 490);
+				ConsoleUtils.Info("ServerAPI", $"Upload to cloud failed with Status Code: {JsonParser.GetStatusCode(json)} ({JsonParser.GetStatusError(json)}) ", ConsoleColor.Gray, "OnUploadFinished", 490);
 				break;
 			case 200:
 				break;
@@ -473,6 +479,7 @@ namespace ServerAPI.Core
 
 		internal void UploadAvatarToDatabase(FavoriteAvatar avatar)
 		{
+			return; //added to skip API upload
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 1;
 			tempUploadContainer.saved_avatar = avatar;
@@ -483,6 +490,7 @@ namespace ServerAPI.Core
 
 		internal void DeleteAvatarFromDatabase(FavoriteAvatar avatar)
 		{
+			return; //added to skip API delete
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 2;
 			tempUploadContainer.saved_avatar = avatar;
@@ -493,6 +501,7 @@ namespace ServerAPI.Core
 
 		internal void ChangePlayerCustomRankName(string playerId, string newCustomRankName)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 3;
 			tempUploadContainer.player_id = playerId;
@@ -504,6 +513,7 @@ namespace ServerAPI.Core
 
 		internal void ChangePlayerCustomRankColor(string playerId, string newCustomRankColor)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 4;
 			tempUploadContainer.player_id = playerId;
@@ -515,6 +525,7 @@ namespace ServerAPI.Core
 
 		internal void RemovePlayerCustomRankName(string playerId)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 5;
 			tempUploadContainer.player_id = playerId;
@@ -525,6 +536,7 @@ namespace ServerAPI.Core
 
 		internal void RemovePlayerCustomRankColor(string playerId)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 6;
 			tempUploadContainer.player_id = playerId;
@@ -535,6 +547,7 @@ namespace ServerAPI.Core
 
 		internal void UploadAvatarToGlobalDatabase(FavoriteAvatar avatar)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 7;
 			tempUploadContainer.saved_avatar = avatar;
@@ -545,6 +558,7 @@ namespace ServerAPI.Core
 
 		internal void UploadAvatarCrasher(string avatar, bool quest)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 8;
 			tempUploadContainer.avatar_id = avatar;
@@ -556,6 +570,7 @@ namespace ServerAPI.Core
 
 		internal void UploadDiscordLink(string link)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 9;
 			tempUploadContainer.discordLink = link;
@@ -566,6 +581,7 @@ namespace ServerAPI.Core
 
 		internal void UploadAvatarToBlacklistDatabase(string avatarId)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 10;
 			tempUploadContainer.avatar_id = avatarId;
@@ -576,6 +592,7 @@ namespace ServerAPI.Core
 
 		internal void RemoveAvatarToBlacklistDatabase(string avatarId)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 11;
 			tempUploadContainer.avatar_id = avatarId;
@@ -586,6 +603,7 @@ namespace ServerAPI.Core
 
 		internal void LinkVRChatAccountToAuthKey(string player_id, string player_name)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 12;
 			tempUploadContainer.player_id = player_id;
@@ -597,6 +615,7 @@ namespace ServerAPI.Core
 
 		internal void UploadAuthorToBlacklistDatabase(string authorId)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 13;
 			tempUploadContainer.player_id = authorId;
@@ -607,6 +626,7 @@ namespace ServerAPI.Core
 
 		internal void RemoveAuthorToBlacklistDatabase(string authorId)
 		{
+			return; //added to skip API update
 			TempUploadContainer tempUploadContainer = default(TempUploadContainer);
 			tempUploadContainer.uploadType = 14;
 			tempUploadContainer.player_id = authorId;
@@ -617,6 +637,7 @@ namespace ServerAPI.Core
 
 		internal void DoAvatarDatabaseRequest(string query, Action<FavoriteAvatar[]> onFinished)
 		{
+			return; //added to skip API update
 			onDatabaseSearchFinished = onFinished;
 			HttpClientWrapper.SendPostRequest(baseUrl + "fetch.php", new Dictionary<string, string>
 			{
@@ -627,6 +648,7 @@ namespace ServerAPI.Core
 
 		private void OnDatabaseSearchFinished(bool error, string response)
 		{
+			return; //added to skip API update
 			if (error)
 			{
 				ConsoleUtils.Info("ServerAPI", "Failed searching avatar database (" + response + ")", ConsoleColor.Gray, "OnDatabaseSearchFinished", 685);
@@ -648,7 +670,7 @@ namespace ServerAPI.Core
 				onDatabaseSearchFinished(null);
 				break;
 			default:
-				ConsoleUtils.Info("ServerAPI", $"Database request to cloud failed with Status Code: {JsonParser.GetStatusCode(jObject)} ({JsonParser.GetStatusError(jObject)}) - Report to Killer", ConsoleColor.Gray, "OnDatabaseSearchFinished", 717);
+				ConsoleUtils.Info("ServerAPI", $"Database request to cloud failed with Status Code: {JsonParser.GetStatusCode(jObject)} ({JsonParser.GetStatusError(jObject)})", ConsoleColor.Gray, "OnDatabaseSearchFinished", 717);
 				onDatabaseSearchFinished(null);
 				break;
 			case 200:
@@ -683,6 +705,7 @@ namespace ServerAPI.Core
 
 		internal void ForceUpdateFromServer()
 		{
+			return; //added to skip API update
 			currentServerUpdateForce = true;
 			nextUpdateCheck = 0f;
 		}
@@ -694,6 +717,7 @@ namespace ServerAPI.Core
 
 		internal void ReloginToClient()
 		{
+			return; //added to skip API update
 			reloggingIntoClient = true;
 			string text = File.ReadAllText(AuthKeyConfig.ConfigLocation).Trim();
 			AuthKeyConfig authKeyConfig = null;
@@ -728,6 +752,7 @@ namespace ServerAPI.Core
 
 		internal void OnReloginFinished(bool error, string response)
 		{
+			return; //added to skip API update
 			if (error)
 			{
 				ConsoleUtils.Info("ServerAPI", "Failed relogging into client (" + response + ")", ConsoleColor.Gray, "OnReloginFinished", 794);
@@ -744,7 +769,7 @@ namespace ServerAPI.Core
 			JObject json = JObject.Parse(text);
 			if (JsonParser.GetStatusCode(json) != 200)
 			{
-				ConsoleUtils.Info("ServerAPI", $"Relogging into client failed with Status Code: {JsonParser.GetStatusCode(json)} ({JsonParser.GetStatusError(json)}) - Report to Killer", ConsoleColor.Gray, "OnReloginFinished", 816);
+				ConsoleUtils.Info("ServerAPI", $"Relogging into client failed with Status Code: {JsonParser.GetStatusCode(json)} ({JsonParser.GetStatusError(json)})", ConsoleColor.Gray, "OnReloginFinished", 816);
 				reloggingIntoClient = false;
 				return;
 			}
@@ -758,11 +783,13 @@ namespace ServerAPI.Core
 
 		internal void RequestUserData(float delay)
 		{
+			return; //added to skip API update
 			HttpClientWrapper.SendGetRequest(baseUrl + "../../core/account.php", decryptOnReceive: true, delay, OnRequestUserDataFinished);
 		}
 
 		internal void OnRequestUserDataFinished(bool error, string response)
 		{
+			return; //added to skip API update
 			if (error)
 			{
 				ConsoleUtils.Info("ServerAPI", "Failed requesting user data (" + response + ")", ConsoleColor.Gray, "OnRequestUserDataFinished", 842);
@@ -779,7 +806,7 @@ namespace ServerAPI.Core
 			JObject jObject = JObject.Parse(text);
 			if (JsonParser.GetStatusCode(jObject) != 200)
 			{
-				ConsoleUtils.Info("ServerAPI", $"Requesting user data failed with Status Code: {JsonParser.GetStatusCode(jObject)} ({JsonParser.GetStatusError(jObject)}) - Report to Killer", ConsoleColor.Gray, "OnRequestUserDataFinished", 864);
+				ConsoleUtils.Info("ServerAPI", $"Requesting user data failed with Status Code: {JsonParser.GetStatusCode(jObject)} ({JsonParser.GetStatusError(jObject)})", ConsoleColor.Gray, "OnRequestUserDataFinished", 864);
 				RequestUserData(5f);
 				return;
 			}

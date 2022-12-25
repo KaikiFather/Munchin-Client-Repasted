@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows.Forms;
 using Il2CppSystem.Collections.Generic;
 using MunchenClient.Config;
 using MunchenClient.Core;
@@ -46,7 +47,8 @@ namespace MunchenClient.Menu
 			}
 			new QuickMenuSingleButton(quickMenuButtonRow, LanguageManager.GetUsedLanguage().ChangeAvatarByID, delegate
 			{
-				GeneralWrappers.ShowInputPopup(LanguageManager.GetUsedLanguage().ChangeAvatarByID, string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, ChangeAvatarByID);
+				PlayerUtils.ChangePlayerAvatar(Clipboard.GetText(), true); //added because text alert no worky
+				//GeneralWrappers.ShowInputPopup(LanguageManager.GetUsedLanguage().ChangeAvatarByID, string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, ChangeAvatarByID);
 			}, LanguageManager.GetUsedLanguage().ChangeAvatarByIDDescription);
 			new QuickMenuSpacers(this);
 			new QuickMenuHeader(this, LanguageManager.GetUsedLanguage().FeaturesCategory);
@@ -131,7 +133,7 @@ namespace MunchenClient.Menu
 			}
 			Object.DestroyImmediate(localAvatarClone.GetComponent<VRC_AvatarDescriptor>());
 			Object.DestroyImmediate(localAvatarClone.GetComponent<PipelineManager>());
-			Object.DestroyImmediate(localAvatarClone.GetComponent<MonoBehaviourPrivateObUnique>());
+			//Object.DestroyImmediate(localAvatarClone.GetComponent<MonoBehaviourPrivateObUnique>()); // Component MonoBehaviourPrivateObUnique missing from map, idk any replacement for this
 			Object.DestroyImmediate(localAvatarClone.GetComponent<DynamicBoneController>());
 			Object.DestroyImmediate(localAvatarClone.GetComponent<VRIK>());
 			Object.DestroyImmediate(localAvatarClone.GetComponent<FullBodyBipedIK>());

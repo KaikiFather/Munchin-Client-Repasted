@@ -17,7 +17,7 @@ namespace UnchainedButtonAPI
 		{
 			try
 			{
-				harmonyInstance = new HarmonyLib.Harmony("QuickMenuPatches" + clientName);
+				harmonyInstance = new HarmonyLib.Harmony("QuickMenuPatches" + clientName); //creates harmony instance
 				harmonyInstance.Patch(typeof(VRC.UI.Elements.QuickMenu).GetMethod("OnEnable"), null, new HarmonyMethod(typeof(QuickMenuPatches).GetMethod("QuickMenuOnEnablePatch", BindingFlags.Static | BindingFlags.NonPublic)));
 				ClassInjector.RegisterTypeInIl2Cpp<QuickMenuMunchenPage>();
 			}
@@ -27,12 +27,12 @@ namespace UnchainedButtonAPI
 			}
 		}
 
-		private static void QuickMenuOnEnablePatch()
+		private static void QuickMenuOnEnablePatch() //runs from the harmony patch, i believe this works
 		{
 			if (!initializedQuickMenuChanges)
 			{
 				initializedQuickMenuChanges = true;
-				QuickMenuUtils.OnMenuInitialized();
+				QuickMenuUtils.OnMenuInitialized(); //runs menu init
 			}
 		}
 

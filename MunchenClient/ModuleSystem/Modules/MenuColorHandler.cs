@@ -144,8 +144,8 @@ namespace MunchenClient.ModuleSystem.Modules
 		{
 			menuFindingItems = true;
 			userInterfaceFound = false;
-			Transform userInterface = GameObject.Find("UserInterface").transform;
-			Transform menuContent = userInterface.Find("MenuContent").transform;
+			//Transform userInterface = GameObject.Find("UserInterface").transform; //adjusted for guid change
+			Transform menuContent = GameObject.Find("MenuContent").transform;
 			Transform menuSafetyScreen = menuContent.transform.Find("Screens/Settings_Safety/");
 			menuItems.Add(menuSafetyScreen.Find("_Description_SafetyLevel").GetComponent<Image>());
 			menuItems.Add(menuSafetyScreen.Find("_Buttons_SafetyLevel/Button_Custom/ON").GetComponent<Image>());

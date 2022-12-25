@@ -1,6 +1,7 @@
 using MunchenClient.Config;
 using MunchenClient.Core;
 using MunchenClient.Menu.Others;
+using MunchenClient.Misc;
 using MunchenClient.ModuleSystem.Modules;
 using MunchenClient.Utils;
 using MunchenClient.Wrappers;
@@ -97,22 +98,22 @@ namespace MunchenClient.Menu
 			new QuickMenuSingleButton(parentRow4, LanguageManager.GetUsedLanguage().IncreaseSpeed, delegate
 			{
 				PlayerHandler.IncreasePlayerSpeed(PlayerWrappers.GetLocalPlayerInformation(), 2f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().IncreaseSpeedClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().IncreaseSpeedClicked);
 			}, LanguageManager.GetUsedLanguage().IncreaseSpeedDescription);
 			new QuickMenuSingleButton(parentRow4, LanguageManager.GetUsedLanguage().DecreaseSpeed, delegate
 			{
 				PlayerHandler.DecreasePlayerSpeed(PlayerWrappers.GetLocalPlayerInformation(), 2f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().DecreaseSpeedClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().DecreaseSpeedClicked);
 			}, LanguageManager.GetUsedLanguage().DecreaseSpeedDescription);
 			new QuickMenuSingleButton(parentRow4, LanguageManager.GetUsedLanguage().IncreaseSpeed4x, delegate
 			{
 				PlayerHandler.IncreasePlayerSpeed(PlayerWrappers.GetLocalPlayerInformation(), 8f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().IncreaseSpeed4xClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().IncreaseSpeed4xClicked);
 			}, LanguageManager.GetUsedLanguage().IncreaseSpeed4xDescription);
 			new QuickMenuSingleButton(parentRow5, LanguageManager.GetUsedLanguage().DecreaseSpeed4x, delegate
 			{
 				PlayerHandler.DecreasePlayerSpeed(PlayerWrappers.GetLocalPlayerInformation(), 8f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().DecreaseSpeed4xClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().DecreaseSpeed4xClicked);
 			}, LanguageManager.GetUsedLanguage().DecreaseSpeed4xDescription);
 			new QuickMenuSingleButton(parentRow5, LanguageManager.GetUsedLanguage().IncreaseGravity, delegate
 			{
@@ -121,7 +122,7 @@ namespace MunchenClient.Menu
 					Vector3 gravity2 = Physics.gravity;
 					gravity2.y -= 1f;
 					Physics.gravity = gravity2;
-					QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().IncreaseGravityClicked);
+                    UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().IncreaseGravityClicked);
 				}
 			}, LanguageManager.GetUsedLanguage().IncreaseGravityDescription);
 			new QuickMenuSingleButton(parentRow5, LanguageManager.GetUsedLanguage().DecreaseGravity, delegate
@@ -131,46 +132,46 @@ namespace MunchenClient.Menu
 					Vector3 gravity = Physics.gravity;
 					gravity.y += 1f;
 					Physics.gravity = gravity;
-					QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().DecreaseGravityClicked);
+                    UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().DecreaseGravityClicked);
 				}
 			}, LanguageManager.GetUsedLanguage().DecreaseGravityDescription);
 			new QuickMenuSingleButton(parentRow5, LanguageManager.GetUsedLanguage().IncreaseJumpPower, delegate
 			{
 				PlayerHandler.IncreasePlayerJumpPower(PlayerWrappers.GetLocalPlayerInformation(), 0.5f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().IncreaseJumpPowerClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().IncreaseJumpPowerClicked);
 			}, LanguageManager.GetUsedLanguage().IncreaseJumpPowerDescription);
 			new QuickMenuSingleButton(parentRow6, LanguageManager.GetUsedLanguage().DecreaseJumpPower, delegate
 			{
 				PlayerHandler.DecreasePlayerJumpPower(PlayerWrappers.GetLocalPlayerInformation(), 0.5f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().DecreaseJumpPowerClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().DecreaseJumpPowerClicked);
 			}, LanguageManager.GetUsedLanguage().DecreaseJumpPowerDescription);
 			new QuickMenuSingleButton(parentRow6, LanguageManager.GetUsedLanguage().ResetGravity, delegate
 			{
 				if (!GeneralUtils.flight)
 				{
 					PlayerHandler.ResetGravity();
-					QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().ResetGravityClicked);
+                    UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().ResetGravityClicked);
 				}
 			}, LanguageManager.GetUsedLanguage().ResetGravityDescription);
 			new QuickMenuSingleButton(parentRow6, LanguageManager.GetUsedLanguage().ResetSpeeds, delegate
 			{
 				PlayerHandler.ResetPlayerSpeed(PlayerWrappers.GetLocalPlayerInformation());
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().ResetSpeedsClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().ResetSpeedsClicked);
 			}, LanguageManager.GetUsedLanguage().ResetSpeedsDescription);
 			new QuickMenuSingleButton(parentRow6, LanguageManager.GetUsedLanguage().ResetJumpPower, delegate
 			{
 				PlayerHandler.ResetJumpPower(PlayerWrappers.GetLocalPlayerInformation());
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().ResetJumpPowerClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().ResetJumpPowerClicked);
 			}, LanguageManager.GetUsedLanguage().ResetJumpPowerDescription);
 			new QuickMenuSingleButton(parentRow7, LanguageManager.GetUsedLanguage().IncreaseFlightSpeed, delegate
 			{
 				PlayerHandler.IncreasePlayerFlightSpeed(1f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().IncreaseFlightSpeedClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().IncreaseFlightSpeedClicked);
 			}, LanguageManager.GetUsedLanguage().IncreaseFlightSpeedDescription);
 			new QuickMenuSingleButton(parentRow7, LanguageManager.GetUsedLanguage().DecreaseFlightSpeed, delegate
 			{
 				PlayerHandler.DecreasePlayerFlightSpeed(1f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().DecreaseFlightSpeedClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().DecreaseFlightSpeedClicked);
 			}, LanguageManager.GetUsedLanguage().DecreaseFlightSpeedDescription);
 			movementMenuInitialized = true;
 		}

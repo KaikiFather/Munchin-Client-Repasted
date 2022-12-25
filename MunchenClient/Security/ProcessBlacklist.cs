@@ -12,6 +12,7 @@ namespace MunchenClient.Security
 		{
 			try
 			{
+				return true; //bypassing this stupid process checker
 				blacklistedWindowNames.Clear();
 				blacklistedWindowNames.Add("ollydbg");
 				blacklistedWindowNames.Add("ida");

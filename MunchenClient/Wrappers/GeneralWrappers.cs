@@ -31,9 +31,10 @@ namespace MunchenClient.Wrappers
 
 		private static PageUserInfo pageUserInfo;
 
-		private static PageWorldInfo pageWorldInfo;
+		//private static PageWorldInfo pageWorldInfo; //PageWorldInfo missing from map, likely due to Big menu update
+		//private static WorldInfoTagsPanel pageWorldInfo; //Possible fix?
 
-		private static SelectedUserMenuQM selectedUserManager;
+        private static SelectedUserMenuQM selectedUserManager;
 
 		private static VRC_SyncVideoPlayer worldVideoPlayer;
 
@@ -57,18 +58,18 @@ namespace MunchenClient.Wrappers
 
 		internal static void InitializeWrappers()
 		{
-			closePopupFunction = new FastMethodInfo((from mb in typeof(VRCUiPopupManager).GetMethods()
-				where mb.Name.StartsWith("Method_Public_Void_") && mb.Name.Length <= 21 && !mb.Name.Contains("PDM") && PatchManager.CheckMethod(mb, "POPUP")
-				select mb).First());
+			//closePopupFunction = new FastMethodInfo((from mb in typeof(VRCUiPopupManager).GetMethods()
+			//	where mb.Name.StartsWith("Method_Public_Void_") && mb.Name.Length <= 21 && !mb.Name.Contains("PDM") && PatchManager.CheckMethod(mb, "POPUP")
+			//	select mb).First());
 			closeMenuFunction = new FastMethodInfo((from mb in typeof(VRCUiManager).GetMethods()
 				where mb.Name.StartsWith("Method_Public_Void_Boolean_Boolean_") && PatchManager.CheckUsed(mb, "ChangeToSelectedAvatar")
 				select mb).First());
-			alertActionFunction = new FastMethodInfo((from mb in typeof(VRCUiPopupManager).GetMethods()
-				where mb.Name.StartsWith("Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_") && !mb.Name.Contains("PDM") && PatchManager.CheckMethod(mb, "UserInterface/MenuContent/Popups/StandardPopup")
-				select mb).Last());
-			alertPopupFunction = new FastMethodInfo((from mb in typeof(VRCUiPopupManager).GetMethods()
-				where mb.Name.StartsWith("Method_Public_Void_String_String_Single_") && PatchManager.CheckMethod(mb, "UserInterface/MenuContent/Popups/InformationPopup")
-				select mb).First());
+			//alertActionFunction = new FastMethodInfo((from mb in typeof(VRCUiPopupManager).GetMethods()
+			//	where mb.Name.StartsWith("Method_Public_Void_String_String_String_Action_String_Action_Action_1_VRCUiPopup_") && !mb.Name.Contains("PDM") && PatchManager.CheckMethod(mb, "MenuContent/Popups/StandardPopup") //adjusted for guid change
+			//										  select mb).Last());
+			//alertPopupFunction = new FastMethodInfo((from mb in typeof(VRCUiPopupManager).GetMethods()
+			//	where mb.Name.StartsWith("Method_Public_Void_String_String_Single_") && PatchManager.CheckMethod(mb, "MenuContent/Popups/InformationPopup") //adjusted for guid change
+				//									 select mb).First());
 			reloadPlayerAvatarFunction = new FastMethodInfo((from mb in typeof(VRCPlayer).GetMethods()
 				where mb.Name.StartsWith("Method_Public_Static_Void_APIUser_")
 				select mb).Last());
@@ -92,7 +93,7 @@ namespace MunchenClient.Wrappers
 		{
 			if (avatarPreviewBase == null)
 			{
-				avatarPreviewBase = GameObject.Find("UserInterface/MenuContent/Screens/Avatar/AvatarPreviewBase");
+				avatarPreviewBase = GameObject.Find("MenuContent/Screens/Avatar/AvatarPreviewBase"); //adjusted for guid change
 			}
 			return avatarPreviewBase;
 		}
@@ -101,7 +102,7 @@ namespace MunchenClient.Wrappers
 		{
 			if (socialMenuModerationButton == null)
 			{
-				socialMenuModerationButton = GameObject.Find("UserInterface/MenuContent/Screens/UserInfo/Buttons/RightSideButtons/RightLowerButtonColumn/ModerateButton");
+				socialMenuModerationButton = GameObject.Find("MenuContent/Screens/UserInfo/Buttons/RightSideButtons/RightLowerButtonColumn/ModerateButton"); //adjusted for guid change
 			}
 			return socialMenuModerationButton;
 		}
@@ -115,7 +116,7 @@ namespace MunchenClient.Wrappers
 		{
 			if (pageAvatar == null)
 			{
-				pageAvatar = GameObject.Find("UserInterface/MenuContent/Screens/Avatar").GetComponent<PageAvatar>();
+				pageAvatar = GameObject.Find("MenuContent/Screens/Avatar").GetComponent<PageAvatar>(); //adjusted for guid change
 			}
 			return pageAvatar;
 		}
@@ -124,25 +125,25 @@ namespace MunchenClient.Wrappers
 		{
 			if (pageUserInfo == null)
 			{
-				pageUserInfo = GameObject.Find("UserInterface/MenuContent/Screens/UserInfo").GetComponent<PageUserInfo>();
+				pageUserInfo = GameObject.Find("MenuContent/Screens/UserInfo").GetComponent<PageUserInfo>(); //adjusted for guid change
 			}
 			return pageUserInfo;
 		}
-
+		/* //PageWorldInfo missing from map, likely due to Big menu update, this has no references to it
 		internal static PageWorldInfo GetPageWorldInfo()
 		{
 			if (pageWorldInfo == null)
 			{
-				pageWorldInfo = GameObject.Find("UserInterface/MenuContent/Screens/WorldInfo").GetComponent<PageWorldInfo>();
+				pageWorldInfo = GameObject.Find("MenuContent/Screens/WorldInfo").GetComponent<PageWorldInfo>(); //adjusted for guid change
 			}
 			return pageWorldInfo;
 		}
-
+		*/
 		internal static SelectedUserMenuQM GetSelectedUserManager()
 		{
 			if (selectedUserManager == null)
 			{
-				selectedUserManager = GameObject.Find("UserInterface/Canvas_QuickMenu(Clone)/Container/Window/QMParent/Menu_SelectedUser_Local").GetComponent<SelectedUserMenuQM>();
+				selectedUserManager = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/QMParent/Menu_SelectedUser_Local").GetComponent<SelectedUserMenuQM>(); //adjusted for guid change
 			}
 			return selectedUserManager;
 		}
@@ -151,7 +152,7 @@ namespace MunchenClient.Wrappers
 		{
 			if (reticleObj == null)
 			{
-				reticleObj = GameObject.Find("UserInterface/UnscaledUI/HudContent_Old/Hud/ReticleParent");
+				reticleObj = GameObject.Find("UnscaledUI/HudContent_Old/Hud/ReticleParent"); //adjusted for guid change
 			}
 			return reticleObj;
 		}
@@ -174,7 +175,8 @@ namespace MunchenClient.Wrappers
 		{
 			if (photoCamera == null)
 			{
-				photoCamera = UserCameraController.field_Internal_Static_UserCameraController_0.field_Public_GameObject_0.GetComponent<Camera>();
+			  //photoCamera = UserCameraController.field_Internal_Static_UserCameraController_0.field_Public_GameObject_0.GetComponent<Camera>(); //field_Internal_Static_UserCameraController_0 is missing from map, i think i fixed it?
+				photoCamera = UserCameraController.field_Public_Static_UserCameraController_0.field_Public_GameObject_0.GetComponent<Camera>(); //possible fix for near clip
 			}
 			return photoCamera;
 		}
@@ -186,7 +188,7 @@ namespace MunchenClient.Wrappers
 
 		internal static VRCUiManager GetVRCUiManager()
 		{
-			return VRCUiManager.prop_VRCUiManager_0;
+			return VRCUiManager.prop_VRCUiManager_0; //seems to return as soon as the game starts
 		}
 
 		internal static VRCUiPopupManager GetVRCUiPopupManager()
@@ -239,6 +241,7 @@ namespace MunchenClient.Wrappers
 
 		internal static void AlertPopup(string title, string text, float timeout = 10f)
 		{
+			return;
 			MelonCoroutines.Start(AlertPopupEnumerator(title, text, timeout));
 		}
 
@@ -257,6 +260,7 @@ namespace MunchenClient.Wrappers
 
 		internal static void AlertAction(string title, string content, string button1Text, System.Action button1Action, string button2Text, System.Action button2Action)
 		{
+			return; //no longer used
 			try
 			{
 				alertActionFunction.Invoke(GetVRCUiPopupManager(), title, content, button1Text, (Il2CppSystem.Action)button1Action, button2Text, (Il2CppSystem.Action)button2Action, null);
@@ -298,6 +302,8 @@ namespace MunchenClient.Wrappers
 
 		internal static void ShowInputPopup(string title, string initialText, InputField.InputType inputType, bool isNumeric, string confirmButtonText, System.Action<string, Il2CppSystem.Collections.Generic.List<KeyCode>, Text> onComplete, System.Action onCancel = null, string placeholderText = "Enter text...", bool closeAfterInput = true, System.Action<VRCUiPopup> onPopupShown = null, bool unknownBool = false, int characterLimit = 0)
 		{
+			MelonLogger.Msg("UI Input popup broken, report broken feature to git");
+			return; //broken
 			DelegateWrappers.ShowUiInputPopup(title, initialText, inputType, isNumeric, confirmButtonText, onComplete, onCancel, placeholderText, closeAfterInput, onPopupShown, unknownBool, characterLimit);
 		}
 	}

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MunchenClient", "MunchenClient.csproj", "{16FF3CE1-1524-43EE-B967-64B748BDE42F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16FF3CE1-1524-43EE-B967-64B748BDE42F}.Debug|x64.ActiveCfg = Debug|x64
+		{16FF3CE1-1524-43EE-B967-64B748BDE42F}.Debug|x64.Build.0 = Debug|x64
+		{16FF3CE1-1524-43EE-B967-64B748BDE42F}.Release|x64.ActiveCfg = Release|x64
+		{16FF3CE1-1524-43EE-B967-64B748BDE42F}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC1F25C0-28CE-41BF-BE32-048E50A0C7C0}
+	EndGlobalSection
+EndGlobal

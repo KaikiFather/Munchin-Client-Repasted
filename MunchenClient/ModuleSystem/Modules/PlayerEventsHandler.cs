@@ -25,18 +25,21 @@ namespace MunchenClient.ModuleSystem.Modules
 				enableModerationAfterCountdown = false;
 				MelonCoroutines.Start(DelayModerationEventsEnumerator());
 			}
-			if (player.isInstanceMaster)
+            if (player.isInstanceMaster)
 			{
-				if ((player.isLocalPlayer || player.IsFriends()) && Configuration.GetModerationsConfig().LogModerationsInstanceMasterChangeFriends)
+				try //this errors in homeworld for some reason so try
 				{
-					GeneralUtils.InformHudText(LanguageManager.GetUsedLanguage().ModerationMenuName, LanguageManager.GetUsedLanguage().ModerationPlayerMasterJoined.Replace("{username}", player.displayName), Configuration.GetModerationsConfig().LogModerationsInstanceMasterChangeHUD);
-				}
-				else if (Configuration.GetModerationsConfig().LogModerationsInstanceMasterChangeOthers)
-				{
-					GeneralUtils.InformHudText(LanguageManager.GetUsedLanguage().ModerationMenuName, LanguageManager.GetUsedLanguage().ModerationPlayerMasterJoined.Replace("{username}", player.displayName), Configuration.GetModerationsConfig().LogModerationsInstanceMasterChangeHUD);
-				}
+                    if ((player.isLocalPlayer || player.IsFriends()) && Configuration.GetModerationsConfig().LogModerationsInstanceMasterChangeFriends) 
+                    {
+                        GeneralUtils.InformHudText(LanguageManager.GetUsedLanguage().ModerationMenuName, LanguageManager.GetUsedLanguage().ModerationPlayerMasterJoined.Replace("{username}", player.displayName), Configuration.GetModerationsConfig().LogModerationsInstanceMasterChangeHUD);
+                    }
+                    else if (Configuration.GetModerationsConfig().LogModerationsInstanceMasterChangeOthers)
+                    {
+                        GeneralUtils.InformHudText(LanguageManager.GetUsedLanguage().ModerationMenuName, LanguageManager.GetUsedLanguage().ModerationPlayerMasterJoined.Replace("{username}", player.displayName), Configuration.GetModerationsConfig().LogModerationsInstanceMasterChangeHUD);
+                    }
+                } catch { }
 			}
-			if (Configuration.GetGeneralConfig().PlayerWallhack)
+            if (Configuration.GetGeneralConfig().PlayerWallhack)
 			{
 				GeneralWrappers.ApplyPlayerWallhack(Configuration.GetGeneralConfig().PlayerWallhack, player);
 			}
@@ -44,7 +47,7 @@ namespace MunchenClient.ModuleSystem.Modules
 			{
 				return;
 			}
-			if (player.IsFriends())
+            if (player.IsFriends())
 			{
 				if (Configuration.GetModerationsConfig().LogModerationsJoinFriends)
 				{
@@ -55,9 +58,9 @@ namespace MunchenClient.ModuleSystem.Modules
 					}
 				}
 			}
-			else if (Configuration.GetModerationsConfig().LogModerationsJoinOthers)
+            else if (Configuration.GetModerationsConfig().LogModerationsJoinOthers)
 			{
-				GeneralUtils.InformHudText(LanguageManager.GetUsedLanguage().ModerationMenuName, LanguageManager.GetUsedLanguage().ModerationPlayerJoined.Replace("{username}", player.displayName), Configuration.GetModerationsConfig().LogModerationsJoinHUD);
+                GeneralUtils.InformHudText(LanguageManager.GetUsedLanguage().ModerationMenuName, LanguageManager.GetUsedLanguage().ModerationPlayerJoined.Replace("{username}", player.displayName), Configuration.GetModerationsConfig().LogModerationsJoinHUD);
 				if (Configuration.GetModerationsConfig().ModerationSounds)
 				{
 					AudioUtils.PlayAudioClip(AssetLoader.LoadAudio("UserConnect"));

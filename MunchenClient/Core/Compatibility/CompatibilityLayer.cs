@@ -11,20 +11,14 @@ namespace MunchenClient.Core.Compatibility
 		internal delegate void FindAndLoadUnityPlugin(IntPtr name, out IntPtr loadedModule);
 
 		internal const int targetGameVersion = 1194;
-
-		internal const int targetGameVersionAlt = 1194;
+        internal const int targetGameVersionAlt = 1194;
 
 		private static bool isRunningOculus = true;
-
-		private static bool emmVRCDetected = false;
-
-		private static bool iktweaksDetected = false;
-
-		private static bool fbtSaverDetected = false;
-
-		private static bool notoriousDetected = false;
-
-		private static bool karmaDetected = false;
+        private static bool emmVRCDetected = false;
+        private static bool iktweaksDetected = false;
+        private static bool fbtSaverDetected = false;
+        private static bool notoriousDetected = false;
+        private static bool karmaDetected = false;
 
 		internal static void CheckCompatiblity()
 		{
@@ -70,34 +64,41 @@ namespace MunchenClient.Core.Compatibility
 			for (int i = 0; i < MelonHandler.Mods.Count; i++)
 			{
 				string text = MelonHandler.Mods[i].Info.Name.ToLower().Trim();
-				if (text.StartsWith("emm"))
-				{
-					emmVRCDetected = true;
-					ConsoleUtils.Info("CompatibilityLayer", "emmVRC detected", ConsoleColor.Gray, "CheckModsCompatibility", 83);
-				}
-				else if (text.StartsWith("iktweaks"))
-				{
-					iktweaksDetected = true;
-					ConsoleUtils.Info("CompatibilityLayer", "IKTweaks detected", ConsoleColor.Gray, "CheckModsCompatibility", 89);
-				}
-				else if (text.StartsWith("fbt") && text.Contains("saver"))
-				{
-					fbtSaverDetected = true;
-					ConsoleUtils.Info("CompatibilityLayer", "FBTSaver detected", ConsoleColor.Gray, "CheckModsCompatibility", 95);
-				}
-				else if (text.StartsWith("karma"))
-				{
-					karmaDetected = true;
-					ConsoleUtils.Info("CompatibilityLayer", "Karma detected", ConsoleColor.Gray, "CheckModsCompatibility", 101);
-				}
-				else if (string.IsNullOrEmpty(text) || text.StartsWith("notorious"))
-				{
-					notoriousDetected = true;
-					ConsoleUtils.Info("CompatibilityLayer", "Notorious detected", ConsoleColor.Gray, "CheckModsCompatibility", 107);
-				}
+
+
+				#region Depreciated 
+				/* 
+                if (text.StartsWith("emm"))
+                {
+                    emmVRCDetected = true;
+                    ConsoleUtils.Info("CompatibilityLayer", "emmVRC detected", ConsoleColor.Gray, "CheckModsCompatibility", 83);
+                }
+                else if (text.StartsWith("iktweaks"))
+                {
+                    iktweaksDetected = true;
+                    ConsoleUtils.Info("CompatibilityLayer", "IKTweaks detected", ConsoleColor.Gray, "CheckModsCompatibility", 89);
+                }
+                else if (text.StartsWith("fbt") && text.Contains("saver"))
+                {
+                    fbtSaverDetected = true;
+                    ConsoleUtils.Info("CompatibilityLayer", "FBTSaver detected", ConsoleColor.Gray, "CheckModsCompatibility", 95);
+                }
+                else if (text.StartsWith("karma"))
+                {
+                    karmaDetected = true;
+                    ConsoleUtils.Info("CompatibilityLayer", "Karma detected", ConsoleColor.Gray, "CheckModsCompatibility", 101);
+                }
+                else if (string.IsNullOrEmpty(text) || text.StartsWith("notorious"))
+                {
+                    notoriousDetected = true;
+                    ConsoleUtils.Info("CompatibilityLayer", "Notorious detected", ConsoleColor.Gray, "CheckModsCompatibility", 107);
+                }
+                */
+				#endregion
 			}
 		}
 
+		#region Old checks to be removed
 		internal static bool IsEmmInstalled()
 		{
 			return emmVRCDetected;
@@ -127,10 +128,12 @@ namespace MunchenClient.Core.Compatibility
 		{
 			return isRunningOculus;
 		}
+		#endregion
 
 		internal static int GetCurrentGameVersion()
 		{
-			return MonoBehaviourPublicStInStBoSiGaStSiBoInUnique.prop_MonoBehaviourPublicStInStBoSiGaStSiBoInUnique_0.field_Public_Int32_0;
+			///return MonoBehaviourPublicStInStBoSiGaStSiBoInUnique.prop_MonoBehaviourPublicStInStBoSiGaStSiBoInUnique_0.field_Public_Int32_0; //MonoBehaviourPublicStInStBoSiGaStSiBoInUnique missing from map
+			return 1; //temporary return until game version is found in map
 		}
 
 		internal static IntPtr GetUnityPlayerBaseAddress()

@@ -11,7 +11,7 @@ namespace MunchenClient.Patching.Patches
 	{
 		protected override string patchName => "VRCNetworkingClientPatch";
 
-		internal override void OnInitializeOnStart()
+		internal override void OnInitializeOnStart() //broken
 		{
 			InitializeLocalPatchHandler(typeof(VRCNetworkingClientPatch));
 			PatchMethod(typeof(VRCNetworkingClient).GetMethod("OnEvent"), GetLocalPatch("VRCNetworkingClientReceiveEventPatch"), null);

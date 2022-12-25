@@ -352,10 +352,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveAllConfigurations()
 		{
+			/* Appbots removed
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			try
 			{
 				if (!Directory.Exists(configDirectory))
@@ -381,10 +383,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveGeneralConfig(bool forceSave = false)
 		{
+			/* Appbots removed
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (generalConfigSaving && !forceSave)
 			{
 				generalConfigSavePending = true;
@@ -416,10 +420,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveInstanceHistoryConfig(bool forceSave = false)
 		{
+			/* appbots removed
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (instanceHistoryConfigSaving && !forceSave)
 			{
 				instanceHistoryConfigSavePending = true;
@@ -451,10 +457,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveAvatarHistoryConfig(bool forceSave = false)
 		{
+			/* appbots removed
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (avatarHistoryConfigSaving && !forceSave)
 			{
 				avatarHistoryConfigSavePending = true;
@@ -486,10 +494,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveAvatarCalibrationsConfig(bool forceSave = false)
 		{
+			/*
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (avatarCalibrationsConfigSaving && !forceSave)
 			{
 				avatarCalibrationsConfigSavePending = true;
@@ -521,10 +531,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveGlobalDynamicBonesConfig(bool forceSave = false)
 		{
+			/* appbots removed
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (globalDynamicBonesConfigSaving && !forceSave)
 			{
 				globalDynamicBonesConfigSavePending = true;
@@ -557,10 +569,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveAntiCrashConfig(bool forceSave = false)
 		{
+			/*
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (antiCrashConfigSaving && !forceSave)
 			{
 				antiCrashConfigSavePending = true;
@@ -592,10 +606,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveModerationsConfig(bool forceSave = false)
 		{
+			/* appbots removed
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (moderationsConfigSaving && !forceSave)
 			{
 				moderationsConfigSavePending = true;
@@ -627,10 +643,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveUploadQueueConfig(bool forceSave = false)
 		{
+			/*
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (uploadQueueConfigSaving && !forceSave)
 			{
 				uploadQueueConfigSavePending = true;
@@ -662,10 +680,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveLovenseConfig(bool forceSave = false)
 		{
+			/* appbots removed
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (lovenseConfigSaving && !forceSave)
 			{
 				lovenseConfigSavePending = true;
@@ -697,10 +717,12 @@ namespace MunchenClient.Config
 
 		internal static void SaveTestedAssetBundlesConfig(bool forceSave = false)
 		{
+			/*
 			if (ApplicationBotHandler.IsBot())
 			{
 				return;
 			}
+			*/
 			if (testedAssetBundlesConfigSaving && !forceSave)
 			{
 				testedAssetBundlesConfigSavePending = true;

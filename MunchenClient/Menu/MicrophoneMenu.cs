@@ -1,5 +1,6 @@
 using MunchenClient.Core;
 using MunchenClient.Menu.Others;
+using MunchenClient.Misc;
 using MunchenClient.ModuleSystem.Modules;
 using UnchainedButtonAPI;
 
@@ -25,34 +26,34 @@ namespace MunchenClient.Menu
 			new QuickMenuSingleButton(parentRow2, LanguageManager.GetUsedLanguage().MicrophoneIncreaseVolume, delegate
 			{
 				PlayerHandler.IncrementPlayerVolume(0.1f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().MicrophoneIncreaseVolumeClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().MicrophoneIncreaseVolumeClicked);
 			}, LanguageManager.GetUsedLanguage().MicrophoneIncreaseVolumeDescription);
 			new QuickMenuSingleButton(parentRow2, LanguageManager.GetUsedLanguage().MicrophoneDecreaseVolume, delegate
 			{
 				PlayerHandler.DecrementPlayerVolume(0.1f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().MicrophoneDecreaseVolumeClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().MicrophoneDecreaseVolumeClicked);
 			}, LanguageManager.GetUsedLanguage().MicrophoneDecreaseVolumeDescription);
 			new QuickMenuSingleButton(parentRow3, LanguageManager.GetUsedLanguage().MicrophoneIncreaseVolume10x, delegate
 			{
 				PlayerHandler.IncrementPlayerVolume(1f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().MicrophoneIncreaseVolume10xClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().MicrophoneIncreaseVolume10xClicked);
 			}, LanguageManager.GetUsedLanguage().MicrophoneIncreaseVolume10xDescription);
 			new QuickMenuSingleButton(parentRow3, LanguageManager.GetUsedLanguage().MicrophoneDecreaseVolume10x, delegate
 			{
 				PlayerHandler.DecrementPlayerVolume(1f);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().MicrophoneDecreaseVolume10xClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().MicrophoneDecreaseVolume10xClicked);
 			}, LanguageManager.GetUsedLanguage().MicrophoneDecreaseVolume10xDescription);
 			new QuickMenuSingleButton(parentRow3, LanguageManager.GetUsedLanguage().MicrophoneEarrapeVolume, delegate
 			{
 				PlayerHandler.SetPlayerVolume(float.MaxValue);
 				ActionWheelMenu.earrapeButton.SetButtonText("Earrape Mic: On");
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().MicrophoneEarrapeVolumeClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().MicrophoneEarrapeVolumeClicked);
 			}, LanguageManager.GetUsedLanguage().MicrophoneEarrapeVolumeDescription);
 			new QuickMenuSingleButton(parentRow3, LanguageManager.GetUsedLanguage().MicrophoneResetVolume, delegate
 			{
 				PlayerHandler.SetPlayerVolume(1f);
 				ActionWheelMenu.earrapeButton.SetButtonText("Earrape Mic: Off");
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().MicrophoneResetVolumeClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().MicrophoneResetVolumeClicked);
 			}, LanguageManager.GetUsedLanguage().MicrophoneResetVolumeDescription);
 			microphoneMenuInitialized = true;
 		}

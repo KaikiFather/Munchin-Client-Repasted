@@ -1,9 +1,14 @@
+using System;
 using Il2CppSystem.Collections.Generic;
+using MelonLoader;
+using MunchenClient.Misc;
+using MunchenClient.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.UI.Elements;
 using VRC.UI.Elements.Menus;
+using Object = UnityEngine.Object;
 
 namespace UnchainedButtonAPI
 {
@@ -19,36 +24,36 @@ namespace UnchainedButtonAPI
 
 		internal QuickMenuNestedMenu(QuickMenuButtonRow parentRow, string text, string tooltip, bool createButtonOnParent = true)
 		{
-			QuickMenuNestedMenu quickMenuNestedMenu = this;
-			buttonParentName = parentRow.GetParentMenuName();
+            QuickMenuNestedMenu quickMenuNestedMenu = this;
+            buttonParentName = parentRow.GetParentMenuName();
 			InitializeNestedMenu(text);
 			buttonHandler = buttonObject.transform.Find("Header_H1/LeftItemContainer/Button_Back").GetComponent<Button>();
 			buttonHandler.gameObject.SetActive(value: true);
 			SetAction(delegate
 			{
-				parentRow.parentCustomMenu?.ShowMenu();
-				QuickMenuUtils.OpenMenu(parentRow.GetParentMenuName(), clearStackPage: true);
+                parentRow.parentCustomMenu?.ShowMenu(); //shows the menu
+				QuickMenuUtils.OpenMenu(parentRow.GetParentMenuName(), clearStackPage: true); //opens the menu??
 			});
 			if (createButtonOnParent)
 			{
-				new QuickMenuSingleButton(parentRow, text, delegate
-				{
-					quickMenuNestedMenu.ShowMenu();
-				}, tooltip);
+                new QuickMenuSingleButton(parentRow, text, delegate { quickMenuNestedMenu.ShowMenu(); }, tooltip);
 			}
 		}
 
-		internal QuickMenuNestedMenu(string text)
+		internal QuickMenuNestedMenu(string text) //called by the main menu class to create the main menu 
 		{
 			InitializeNestedMenu(text);
 			buttonParentName = nestedMenuName;
 		}
 
-		private void InitializeNestedMenu(string text)
+		private void InitializeNestedMenu(string text) 
 		{
-			int quickMenuUniqueIdentifier = QuickMenuUtils.GetQuickMenuUniqueIdentifier();
-			buttonObject = Object.Instantiate(QuickMenuTemplates.GetNestedMenuTemplate(), QuickMenuUtils.GetQuickMenu().transform.Find("Container/Window/QMParent"));
-			buttonObject.name = $"Menu_{QuickMenuUtils.GetQuickMenuIdentifier()}{text}{quickMenuUniqueIdentifier}";
+            int quickMenuUniqueIdentifier = QuickMenuUtils.GetQuickMenuUniqueIdentifier();
+            buttonObject = Object.Instantiate(QuickMenuTemplates.GetNestedMenuTemplate(), GameObject.Find("Container/Window/QMParent").transform);
+            buttonObject.GetComponentInChildren<Canvas>(includeInactive: true).enabled = true;
+            buttonObject.GetComponentInChildren<CanvasGroup>(includeInactive: true).enabled = true;
+            buttonObject.GetComponentInChildren<GraphicRaycaster>(includeInactive: true).enabled = true;
+            buttonObject.name = $"Menu_{QuickMenuUtils.GetQuickMenuIdentifier()}{text}{quickMenuUniqueIdentifier}";
 			buttonObject.transform.SetSiblingIndex(QuickMenuUtils.GetFirstModalIndex());
 			buttonText = buttonObject.transform.Find("Header_H1/LeftItemContainer/Text_Title").GetComponent<TextMeshProUGUI>();
 			nestedMenuName = $"QuickMenu{QuickMenuUtils.GetQuickMenuIdentifier()}{text}{quickMenuUniqueIdentifier}";
@@ -87,32 +92,38 @@ namespace UnchainedButtonAPI
 			return nestedMenuName;
 		}
 
-		internal void ShowMenu()
+		internal void NewShowMenu()
+        {
+
+        }
+
+		internal void ShowMenu() //here be error
 		{
-			if (!menuAccessible)
-			{
-				QuickMenuUtils.ShowAlert(menuAccessibleError);
-				return;
-			}
+			if (!menuAccessible) { UserInterface.WriteHudMessage(menuAccessibleError); return; } //returns is menu is inaccessable
+
+            List<UIPage> PageList = uiPage.field_Private_List_1_UIPage_0;
+
 			if (!QuickMenuUtils.GetQuickMenu().prop_MenuStateController_0.field_Private_UIPage_0.field_Public_String_0.Contains("Player Options"))
 			{
-				for (int i = 1; i < uiPage.field_Private_List_1_UIPage_0.Count; i++)
-				{
-					if (uiPage.field_Private_List_1_UIPage_0[i].field_Public_String_0 == "QuickMenuHoveredUser")
+                for (int i = 1; i < PageList.Count; i++) //loops through page list
+				{ string PageName = PageList[i].field_Public_String_0;
+
+                    if (PageName == "QuickMenuHoveredUser") //if page menu is hovered user
 					{
-						uiPage.field_Private_List_1_UIPage_0[i].gameObject.SetActive(value: false);
-						uiPage.field_Private_List_1_UIPage_0.RemoveAt(i);
+                        PageList[i].gameObject.SetActive(value: false);
+                        PageList.RemoveAt(i);
 					}
-					else if (uiPage.field_Private_List_1_UIPage_0[i].field_Public_String_0 == "QuickMenuSelectedUserLocal")
+					else if (PageName == "QuickMenuSelectedUserLocal") //else if page menu is selected user
 					{
-						uiPage.field_Private_List_1_UIPage_0[i].gameObject.SetActive(value: false);
-						uiPage.field_Private_List_1_UIPage_0.RemoveAt(i);
+                        PageList[i].gameObject.SetActive(value: false);
+                        PageList.RemoveAt(i);
 						uiPage.gameObject.SetActive(value: true);
 					}
 				}
 			}
-			QuickMenuUtils.OpenMenu(this, clearStackPage: true);
-			OnMenuShownCallback();
+            buttonObject.active = true;
+            QuickMenuUtils.OpenMenu(this, clearStackPage: true);
+            OnMenuShownCallback(); //pointless
 		}
 
 		internal void OnMenuUnshown()

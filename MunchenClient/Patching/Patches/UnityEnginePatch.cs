@@ -50,14 +50,14 @@ namespace MunchenClient.Patching.Patches
 		internal override void OnInitializeOnStart()
 		{
 			InitializeLocalPatchHandler(typeof(UnityEnginePatch));
-			FastRandom fastRandom = (ApplicationBotHandler.IsBot() ? ApplicationBotHandler.botFastRandom : GeneralUtils.fastRandom);
+			FastRandom fastRandom = (/*ApplicationBotHandler.IsBot() ? ApplicationBotHandler.botFastRandom :*/ GeneralUtils.fastRandom);
 			PatchMethod(typeof(Time).GetProperty("smoothDeltaTime").GetGetMethod(), GetLocalPatch("GetSmoothDeltaTimePatch"), null);
 			PatchHWIDFunction(fastRandom);
 			PatchDeviceModelFunction(fastRandom);
 			PatchDeviceNameFunction(fastRandom);
 			PatchProcessorTypeFunction(fastRandom);
 			PatchOperatingSystemFunction(fastRandom);
-			if (!ApplicationBotHandler.IsBot())
+			if (true/*!ApplicationBotHandler.IsBot()*/)
 			{
 				PatchGraphicsDeviceNameFunction(fastRandom);
 				PatchGraphicsDeviceVersionFunction(fastRandom);

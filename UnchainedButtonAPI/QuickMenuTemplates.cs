@@ -1,5 +1,9 @@
+using System;
+using MunchenClient.Utils;
 using UnityEngine;
 using UnityEngine.UI;
+using VRC.UI.Elements.Controls;
+using VRC.UI.Elements.Menus;
 
 namespace UnchainedButtonAPI
 {
@@ -29,13 +33,13 @@ namespace UnchainedButtonAPI
 		{
 			if (pageButtonReference == null)
 			{
-				Transform[] array = QuickMenuUtils.GetQuickMenu().GetComponentsInChildren<Transform>(includeInactive: true);
-				Transform[] array2 = array;
-				foreach (Transform transform in array2)
+				Button[] array = QuickMenuUtils.GetQuickMenu().GetComponentsInChildren<Button>(includeInactive: true);
+                Button[] array2 = array;
+				foreach (Button transform in array2)
 				{
-					if (transform.name == "Page_Settings")
+                    if (transform.name == "Page_Settings")
 					{
-						pageButtonReference = transform.gameObject;
+                        pageButtonReference = transform.gameObject;
 						break;
 					}
 				}
@@ -141,7 +145,7 @@ namespace UnchainedButtonAPI
 				Toggle[] array2 = array;
 				foreach (Toggle toggle in array2)
 				{
-					if (toggle.name == "Button_ToggleTooltips")
+					if (toggle.name == "Button_ToggleQMInfo")// Button_ToggleTooltips is gone from the menu, replacing it with Button_ToggleQMInfo
 					{
 						toggleButtonReference = toggle.gameObject;
 						break;
@@ -155,13 +159,13 @@ namespace UnchainedButtonAPI
 		{
 			if (nestedMenuReference == null)
 			{
-				Transform[] array = QuickMenuUtils.GetQuickMenu().GetComponentsInChildren<Transform>(includeInactive: true);
-				Transform[] array2 = array;
-				foreach (Transform transform in array2)
+				LaunchPadQMMenu[] array = QuickMenuUtils.GetQuickMenu().GetComponentsInChildren<LaunchPadQMMenu>(includeInactive: true);
+                LaunchPadQMMenu[] array2 = array;
+				foreach (LaunchPadQMMenu transform in array2)
 				{
 					if (transform.name == "Menu_Dashboard")
 					{
-						nestedMenuReference = transform.gameObject;
+                        nestedMenuReference = transform.gameObject;
 						break;
 					}
 				}
@@ -191,11 +195,11 @@ namespace UnchainedButtonAPI
 		{
 			if (sliderReference == null)
 			{
-				Transform[] array = QuickMenuUtils.GetQuickMenu().GetComponentsInChildren<Transform>(includeInactive: true);
-				Transform[] array2 = array;
-				foreach (Transform transform in array2)
+				VerticalLayoutGroup[] array = QuickMenuUtils.GetQuickMenu().GetComponentsInChildren<VerticalLayoutGroup>(includeInactive: true);
+                VerticalLayoutGroup[] array2 = array;
+				foreach (VerticalLayoutGroup transform in array2)
 				{
-					if (transform.name == "Mic")
+					if (transform.name == "MicrophoneSettings")
 					{
 						sliderReference = transform.gameObject;
 						break;

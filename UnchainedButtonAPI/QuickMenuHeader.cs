@@ -20,7 +20,8 @@ namespace UnchainedButtonAPI
 		internal QuickMenuHeader(string parentMenu, string text)
 		{
 			buttonParentName = parentMenu;
-			InitializeHeader(QuickMenuUtils.GetQuickMenu().transform.Find(parentMenu + "/ScrollRect/Viewport/VerticalLayoutGroup"), text);
+			//InitializeHeader(QuickMenuUtils.GetQuickMenu().transform.Find(parentMenu + "/ScrollRect/Viewport/VerticalLayoutGroup"), text);
+			InitializeHeader(GameObject.Find(parentMenu + "/ScrollRect/Viewport/VerticalLayoutGroup").transform, text);
 		}
 
 		private void InitializeHeader(Transform parent, string text)

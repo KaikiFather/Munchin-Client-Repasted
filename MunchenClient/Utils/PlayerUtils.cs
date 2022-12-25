@@ -353,7 +353,7 @@ namespace MunchenClient.Utils
 			UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<Animator>());
 			UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<VRCSDK2.VRC_AvatarDescriptor>());
 			UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<PipelineManager>());
-			UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<MonoBehaviourPrivateObUnique>());
+			//UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<MonoBehaviourPrivateObUnique>()); MonoBehaviourPrivateObUnique is Missing from map, no known replacement
 			UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<DynamicBoneController>());
 			UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<VRIK>());
 			UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<FullBodyBipedIK>());

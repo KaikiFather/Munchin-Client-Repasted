@@ -18,7 +18,7 @@ namespace MunchenClient.Patching.Patches
 
 		protected override string patchName => "PortalsPatch";
 
-		internal unsafe override void OnInitializeOnStart()
+		internal unsafe override void OnInitializeOnStart() //This is broken
 		{
 			InitializeLocalPatchHandler(typeof(PortalsPatch));
 			PatchMethod(typeof(PortalInternal).GetMethod("OnDestroy"), null, GetLocalPatch("OnPortalDestroyed"));

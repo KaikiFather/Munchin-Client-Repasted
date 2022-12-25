@@ -67,8 +67,9 @@ namespace MunchenClient.ModuleSystem.Modules
 			RefreshStrangersWallhackColors();
 		}
 
-		internal static void RefreshFriendsWallhackColors()
-		{
+		internal static void RefreshFriendsWallhackColors() //broken
+        {
+			return;
 			if (Configuration.GetGeneralConfig().PlayerWallhackRGBFriends)
 			{
 				Color.RGBToHSV(playerFriendsESP.highlightColor, out var H, out var S, out var V);
@@ -115,9 +116,9 @@ namespace MunchenClient.ModuleSystem.Modules
 			playerStrangersESP.field_Protected_HashSet_1_Renderer_0.Remove(renderer);
 		}
 
-		internal override void OnUpdate()
+		internal override void OnUpdate() //error here
 		{
-			if (GeneralUtils.isConnectedToInstance)
+            if (GeneralUtils.isConnectedToInstance)
 			{
 				if (Configuration.GetGeneralConfig().InvisibleDetection)
 				{
@@ -422,9 +423,9 @@ namespace MunchenClient.ModuleSystem.Modules
 			return false;
 		}
 
-		private static void UpdatePlayerNameplate(PlayerInformation playerInfo, bool isOffscreen)
+		private static void UpdatePlayerNameplate(PlayerInformation playerInfo, bool isOffscreen) //broken
 		{
-			if (Configuration.GetGeneralConfig().SerializationDetection && PlayerEventsHandler.IsModerationEventsEnabled())
+            if (Configuration.GetGeneralConfig().SerializationDetection && PlayerEventsHandler.IsModerationEventsEnabled())
 			{
 				float num = 3f * (1f + Time.deltaTime * 55f);
 				if (playerInfo.lastNetworkedVoicePacket > playerInfo.lastNetworkedUpdateTime + num && !GeneralUtils.CheckNotification(playerInfo.displayName, "serializing"))
@@ -448,10 +449,11 @@ namespace MunchenClient.ModuleSystem.Modules
 			{
 				return;
 			}
-			int field_Private_Int32_ = playerInfo.vrcPlayer.prop_PlayerNet_0.field_Private_Int32_0;
+
+			int field_Private_Int32_ = playerInfo.vrcPlayer.prop_PlayerNet_0.field_Private_Int16_0;
 			float num2 = Time.realtimeSinceStartup - playerInfo.lastNetworkedUpdateTime;
 			int ping = playerInfo.GetPing();
-			float num3 = 0.5f + 0.011f * (float)PlayerUtils.playerCachingList.Count + Mathf.Min(MathUtils.Clamp(ping, 0, 1000), 500f) / 1000f;
+            float num3 = 0.5f + 0.011f * (float)PlayerUtils.playerCachingList.Count + Mathf.Min(MathUtils.Clamp(ping, 0, 1000), 500f) / 1000f;
 			if (num2 > num3 && playerInfo.lagBarrier < 5)
 			{
 				playerInfo.lagBarrier++;
@@ -462,6 +464,7 @@ namespace MunchenClient.ModuleSystem.Modules
 				playerInfo.lastNetworkedUpdateTime = Time.realtimeSinceStartup;
 				playerInfo.lagBarrier--;
 			}
+
 			if (isOffscreen || !Configuration.GetGeneralConfig().NameplateMoreInfo)
 			{
 				return;
@@ -519,7 +522,7 @@ namespace MunchenClient.ModuleSystem.Modules
 				{
 					stringBuilder.Append("<color=white>[<color=red>Crashed<color=white>] | ");
 				}
-				else if (playerInfo.lagBarrier > 0)
+				else if (playerInfo.lagBarrier > 6)
 				{
 					stringBuilder.Append("<color=white>[<color=yellow>Lagging<color=white>] | ");
 				}
@@ -533,7 +536,7 @@ namespace MunchenClient.ModuleSystem.Modules
 			{
 				stringBuilder.Append($"Ping: <color=red>{ping}<color=white> | ");
 			}
-			else if (ping > 100)
+			else if (ping > 130)
 			{
 				stringBuilder.Append($"Ping: <color=yellow>{ping}<color=white> | ");
 			}
@@ -541,6 +544,7 @@ namespace MunchenClient.ModuleSystem.Modules
 			{
 				stringBuilder.Append($"Ping: <color=green>{ping}<color=white> | ");
 			}
+
 			int fPS = playerInfo.GetFPS();
 			if (fPS < 25)
 			{

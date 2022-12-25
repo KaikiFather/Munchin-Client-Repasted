@@ -238,23 +238,8 @@ namespace MunchenClient.Menu.PlayerOptions
 					GeneralWrappers.AlertPopup("Warning", "Player not found");
 				}
 			}, LanguageManager.GetUsedLanguage().ReloadAvatarDescription);
-			new QuickMenuSingleButton(parentRow2, "Download Avatar File", delegate
-			{
-				PlayerInformation selectedPlayer8 = PlayerWrappers.GetSelectedPlayer();
-				if (selectedPlayer8 != null)
-				{
-					ApiAvatar apiAvatar = selectedPlayer8.vrcPlayer.prop_VRCAvatarManager_0.prop_ApiAvatar_2;
-					GeneralUtils.DownloadFileToPath(apiAvatar.assetUrl, "Avatars", apiAvatar.name + "-" + apiAvatar.id, "vrca", OnAvatarDownloadFinished);
-					QuickMenuUtils.ShowAlert("Started downloading avatar");
-				}
-				else
-				{
-					ConsoleUtils.Info("Player", "Player not found", ConsoleColor.Gray, ".ctor", 521);
-					GeneralWrappers.AlertPopup("Warning", "Player not found");
-				}
-			}, "Downloads the avatar file onto your disk");
-			lovensePermissionsMenu = new LovensePermissionsMenu(quickMenuButtonRow);
-			lovensePermissionsMenu.SetMenuAccessibility(state: false, "Can't access menu - Under construction (coming soon)");
+			//new QuickMenuSingleButton(parentRow2, "Download Avatar File", delegate { PlayerInformation selectedPlayer8 = PlayerWrappers.GetSelectedPlayer(); if (selectedPlayer8 != null) { ApiAvatar apiAvatar = selectedPlayer8.vrcPlayer.prop_VRCAvatarManager_0.prop_ApiAvatar_2; GeneralUtils.DownloadFileToPath(apiAvatar.assetUrl, "Avatars", apiAvatar.name + "-" + apiAvatar.id, "vrca", OnAvatarDownloadFinished); QuickMenuUtils.ShowAlert("Started downloading avatar"); }else { ConsoleUtils.Info("Player", "Player not found", ConsoleColor.Gray, ".ctor", 521); GeneralWrappers.AlertPopup("Warning", "Player not found"); } }, "Downloads the avatar file onto your disk");
+            //lovensePermissionsMenu = new LovensePermissionsMenu(quickMenuButtonRow); lovensePermissionsMenu.SetMenuAccessibility(state: false, "Can't access menu - Under construction (coming soon)");
 			new GlobalDynamicBonesPlayerPermissionsMenu(quickMenuButtonRow);
 			new QuickMenuSingleButton(quickMenuButtonRow, LanguageManager.GetUsedLanguage().CopyUserID, delegate
 			{
@@ -352,63 +337,8 @@ namespace MunchenClient.Menu.PlayerOptions
 				GeneralUtils.inverseKinematicMimic = false;
 				GeneralUtils.inverseKinematicMimicPlayerKey = -1;
 			}, LanguageManager.GetUsedLanguage().InverseKinematicMimicUserDescription);
-			new QuickMenuSingleButton(parentRow3, LanguageManager.GetUsedLanguage().SaveIconToDisk, delegate
-			{
-				PlayerInformation selectedPlayer2 = PlayerWrappers.GetSelectedPlayer();
-				if (selectedPlayer2 != null)
-				{
-					if (selectedPlayer2.vrcPlayer.field_Public_PlayerNameplate_0.field_Public_GameObject_3.active)
-					{
-						if (GeneralUtils.SaveTextureToDisk(selectedPlayer2.vrcPlayer.field_Public_PlayerNameplate_0.field_Public_RawImage_0.texture, iconDirectory, selectedPlayer2.displayName, includeCRC32InFileName: true))
-						{
-							ConsoleUtils.Info("Player", selectedPlayer2.displayName + "'s icon saved to " + iconDirectory + "/" + selectedPlayer2.displayName + ".png", ConsoleColor.Gray, ".ctor", 667);
-							GeneralWrappers.AlertPopup("Success", selectedPlayer2.displayName + "'s icon saved to " + iconDirectory + "/" + selectedPlayer2.displayName + ".png");
-						}
-						else
-						{
-							ConsoleUtils.Info("Player", "Failed to save " + selectedPlayer2.displayName + "'s icon", ConsoleColor.Gray, ".ctor", 672);
-							GeneralWrappers.AlertPopup("Warning", "Failed to save " + selectedPlayer2.displayName + "'s icon");
-						}
-					}
-					else
-					{
-						ConsoleUtils.Info("Player", selectedPlayer2.displayName + " doesn't have an icon", ConsoleColor.Gray, ".ctor", 678);
-						GeneralWrappers.AlertPopup("Warning", selectedPlayer2.displayName + " doesn't have an icon");
-					}
-				}
-				else
-				{
-					ConsoleUtils.Info("Player", "Player not found", ConsoleColor.Gray, ".ctor", 684);
-					GeneralWrappers.AlertPopup("Warning", "Player not found");
-				}
-			}, LanguageManager.GetUsedLanguage().SaveIconToDiskDescription);
-			new QuickMenuSingleButton(quickMenuButtonRow2, LanguageManager.GetUsedLanguage().CrashUser, delegate
-			{
-				PlayerInformation playerInfo = PlayerWrappers.GetSelectedPlayer();
-				if (playerInfo != null)
-				{
-					GeneralWrappers.AlertAction("Notice", "Are you sure you want to crash this user?", "Crash", delegate
-					{
-						if (!playerInfo.isLocalPlayer)
-						{
-							GeneralUtils.RunGameCloseExploit(playerInfo.isQuestUser, playerInfo.apiUser);
-							GeneralWrappers.ClosePopup();
-						}
-						else
-						{
-							GeneralWrappers.AlertPopup("Warning", "You can't crash yourself");
-						}
-					}, "Cancel", delegate
-					{
-						GeneralWrappers.ClosePopup();
-					});
-				}
-				else
-				{
-					ConsoleUtils.Info("Crasher", "Player not found", ConsoleColor.Gray, ".ctor", 717);
-					GeneralWrappers.AlertPopup("Warning", "Player not found");
-				}
-			}, LanguageManager.GetUsedLanguage().CrashUserDescription);
+			//new QuickMenuSingleButton(parentRow3, LanguageManager.GetUsedLanguage().SaveIconToDisk, delegate { PlayerInformation selectedPlayer2 = PlayerWrappers.GetSelectedPlayer(); if (selectedPlayer2 != null) { if (selectedPlayer2.vrcPlayer.field_Public_PlayerNameplate_0.field_Public_GameObject_3.active) { if (GeneralUtils.SaveTextureToDisk(selectedPlayer2.vrcPlayer.field_Public_PlayerNameplate_0.field_Public_RawImage_0.texture, iconDirectory, selectedPlayer2.displayName, includeCRC32InFileName: true)) { ConsoleUtils.Info("Player", selectedPlayer2.displayName + "'s icon saved to " + iconDirectory + "/" + selectedPlayer2.displayName + ".png", ConsoleColor.Gray, ".ctor", 667); GeneralWrappers.AlertPopup("Success", selectedPlayer2.displayName + "'s icon saved to " + iconDirectory + "/" + selectedPlayer2.displayName + ".png"); }else { ConsoleUtils.Info("Player", "Failed to save " + selectedPlayer2.displayName + "'s icon", ConsoleColor.Gray, ".ctor", 672); GeneralWrappers.AlertPopup("Warning", "Failed to save " + selectedPlayer2.displayName + "'s icon"); } }else { ConsoleUtils.Info("Player", selectedPlayer2.displayName + " doesn't have an icon", ConsoleColor.Gray, ".ctor", 678); GeneralWrappers.AlertPopup("Warning", selectedPlayer2.displayName + " doesn't have an icon"); } }else { ConsoleUtils.Info("Player", "Player not found", ConsoleColor.Gray, ".ctor", 684); GeneralWrappers.AlertPopup("Warning", "Player not found"); } }, LanguageManager.GetUsedLanguage().SaveIconToDiskDescription);
+			//new QuickMenuSingleButton(quickMenuButtonRow2, LanguageManager.GetUsedLanguage().CrashUser, delegate { PlayerInformation playerInfo = PlayerWrappers.GetSelectedPlayer(); if (playerInfo != null) { GeneralWrappers.AlertAction("Notice", "Are you sure you want to crash this user?", "Crash", delegate { if (!playerInfo.isLocalPlayer) { GeneralUtils.RunGameCloseExploit(playerInfo.isQuestUser, playerInfo.apiUser); GeneralWrappers.ClosePopup(); }else { GeneralWrappers.AlertPopup("Warning", "You can't crash yourself"); } }, "Cancel", delegate { GeneralWrappers.ClosePopup(); }); }else { ConsoleUtils.Info("Crasher", "Player not found", ConsoleColor.Gray, ".ctor", 717); GeneralWrappers.AlertPopup("Warning", "Player not found"); } }, LanguageManager.GetUsedLanguage().CrashUserDescription);
 			new PlayerAttachMenu(quickMenuButtonRow2);
 			new QuickMenuSingleButton(quickMenuButtonRow2, "Force Lewd", delegate
 			{
@@ -430,10 +360,7 @@ namespace MunchenClient.Menu.PlayerOptions
 				ConsoleUtils.Info("Lewd", "Player not found", ConsoleColor.Gray, ".ctor", 740);
 				GeneralWrappers.AlertPopup("Warning", "Player not found");
 			}, "ERP?");
-			if (GeneralUtils.HasSpecialBenefits())
-			{
-				new AdminUserModerationMenu(quickMenuButtonRow2);
-			}
+			//if (GeneralUtils.HasSpecialBenefits()) { new AdminUserModerationMenu(quickMenuButtonRow2); }
 		}
 
 		private static void OnAvatarDownloadFinished(bool success)

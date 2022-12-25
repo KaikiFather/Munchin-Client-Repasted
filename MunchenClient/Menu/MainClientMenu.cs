@@ -1,4 +1,5 @@
 using System;
+using MelonLoader;
 using MunchenClient.Core;
 using MunchenClient.Misc;
 using MunchenClient.Utils;
@@ -20,38 +21,36 @@ namespace MunchenClient.Menu
 
 		private void OpenDiscordLink()
 		{
-			QuickMenuUtils.ShowLinkAlert(MiscUtils.GetClientDiscordLink());
-		}
+			//QuickMenuUtils.ShowLinkAlert(MiscUtils.GetClientDiscordLink());
+			QuickMenuUtils.OpenDickcord(); //fuck it
+        }
 
-		internal MainClientMenu()
-			: base(LanguageManager.GetUsedLanguage().ClientName)
+		internal MainClientMenu() : base(LanguageManager.GetUsedLanguage().ClientName) //creates the main menu nest, which all these buttons get put into
 		{
-			QuickMenuUtils.ChangeScrollState(this, state: true);
-			new QuickMenuPageButton(this, LanguageManager.GetUsedLanguage().ClientName, LanguageManager.GetUsedLanguage().ClientDescription, MainUtils.CreateSprite(AssetLoader.LoadTexture("MunchenClientLogo")));
-			userProfileHeader = new QuickMenuHeader(this, LanguageManager.GetUsedLanguage().UserAccountCategory);
-			QuickMenuButtonRow parentRow = new QuickMenuButtonRow(this);
-			userProfilePicture = new QuickMenuIndicator(parentRow, string.Empty, string.Empty, "This is your current profile picture on the forums");
-			userProfileRank = new QuickMenuIndicator(parentRow, string.Empty, "Rank", string.Empty);
-			userProfileSubExpiry = new QuickMenuIndicator(parentRow, string.Empty, "Expiry", string.Empty);
-			userProfileAvatarsSaved = new QuickMenuIndicator(parentRow, string.Empty, "Avatars Saved", string.Empty);
-			new QuickMenuHeader(this, LanguageManager.GetUsedLanguage().MiscellaneousCategory);
+			//QuickMenuUtils.ChangeScrollState(this, state: true); //sets scroll state to true, so main menu can scroll
+            new QuickMenuPageButton(this, LanguageManager.GetUsedLanguage().ClientName, LanguageManager.GetUsedLanguage().ClientDescription, MainUtils.CreateSprite(AssetLoader.LoadTexture("MunchenClientLogo"))); //creates the tab, which opens to *this* main menu nest
+			
+			
+			//userProfileHeader = new QuickMenuHeader(this, LanguageManager.GetUsedLanguage().UserAccountCategory);
+			//QuickMenuButtonRow parentRow = new QuickMenuButtonRow(this);
+			//userProfilePicture = new QuickMenuIndicator(parentRow, string.Empty, string.Empty, "This is your current profile picture on the forums");
+			//userProfileRank = new QuickMenuIndicator(parentRow, string.Empty, "Rank", string.Empty);
+			//userProfileSubExpiry = new QuickMenuIndicator(parentRow, string.Empty, "Expiry", string.Empty);
+			//userProfileAvatarsSaved = new QuickMenuIndicator(parentRow, string.Empty, "Avatars Saved", string.Empty);
+            //new QuickMenuHeader(this, LanguageManager.GetUsedLanguage().MiscellaneousCategory);
+            
 			QuickMenuButtonRow quickMenuButtonRow = new QuickMenuButtonRow(this);
 			new QuickMenuSpacers(this);
 			QuickMenuButtonRow quickMenuButtonRow2 = new QuickMenuButtonRow(this);
 			new SettingsMenu(quickMenuButtonRow);
-			new QuickMenuSingleButton(quickMenuButtonRow, LanguageManager.GetUsedLanguage().Discord, delegate
-			{
-				OpenDiscordLink();
-			}, LanguageManager.GetUsedLanguage().DiscordDescription);
+			new QuickMenuSingleButton(quickMenuButtonRow, LanguageManager.GetUsedLanguage().Discord, delegate { OpenDiscordLink(); }, LanguageManager.GetUsedLanguage().DiscordDescription); //discord
 			new QuickMenuSingleButton(quickMenuButtonRow, LanguageManager.GetUsedLanguage().ClearVRAM, delegate
 			{
-				PerformanceProfiler.StartProfiling("ClearVRAM");
-				GeneralUtils.ClearVRAM();
-				PerformanceProfiler.EndProfiling("ClearVRAM");
+				PerformanceProfiler.StartProfiling("ClearVRAM"); GeneralUtils.ClearVRAM(); PerformanceProfiler.EndProfiling("ClearVRAM");
 				string text = LanguageManager.GetUsedLanguage().ClearVRAMClicked.Replace("{TimeToClear}", string.Format("{0:F2}", PerformanceProfiler.GetProfiling("ClearVRAM")));
 				ConsoleUtils.Info("Performance", text, ConsoleColor.Gray, ".ctor", 60);
-				QuickMenuUtils.ShowAlert(text);
-			}, LanguageManager.GetUsedLanguage().ClearVRAMDescription);
+                UserInterface.WriteHudMessage(text);
+            }, LanguageManager.GetUsedLanguage().ClearVRAMDescription);
 			new QuickMenuToggleButton(quickMenuButtonRow, LanguageManager.GetUsedLanguage().HideYourself, GeneralUtils.hideSelf, delegate
 			{
 				GeneralUtils.ChangeHideSelfState(state: true);
@@ -59,17 +58,10 @@ namespace MunchenClient.Menu
 			{
 				GeneralUtils.ChangeHideSelfState(state: false);
 			}, LanguageManager.GetUsedLanguage().HideYourselfDescription);
-			new QuickMenuSingleButton(quickMenuButtonRow2, LanguageManager.GetUsedLanguage().ClearHUDMessages, delegate
-			{
-				UserInterface.ClearNotificationHud();
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().ClearHUDMessagesClicked);
-			}, LanguageManager.GetUsedLanguage().ClearHUDMessagesDescription);
+			//new QuickMenuSingleButton(quickMenuButtonRow2, LanguageManager.GetUsedLanguage().ClearHUDMessages, delegate { UserInterface.ClearNotificationHud(); UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().ClearHUDMessagesClicked); }, LanguageManager.GetUsedLanguage().ClearHUDMessagesDescription);
 			new MediaControlsMenu(quickMenuButtonRow2);
 			new NetworkedEmotesMenu(quickMenuButtonRow2);
-			if (GeneralUtils.HasSpecialBenefits())
-			{
-				new AdminPanelMenu(quickMenuButtonRow2);
-			}
+			//if (GeneralUtils.HasSpecialBenefits()) { new AdminPanelMenu(quickMenuButtonRow2); }
 			new QuickMenuHeader(this, LanguageManager.GetUsedLanguage().FeaturesCategory);
 			QuickMenuButtonRow parent = new QuickMenuButtonRow(this);
 			new QuickMenuSpacers(this);
@@ -81,7 +73,7 @@ namespace MunchenClient.Menu
 			new MicrophoneMenu(parent2);
 			new MovementMenu(parent2);
 			new VideoPlayerMenu(parent2);
-			new PhotonExploitsMenu(parent2);
+			//new PhotonExploitsMenu(parent2);
 		}
 	}
 }

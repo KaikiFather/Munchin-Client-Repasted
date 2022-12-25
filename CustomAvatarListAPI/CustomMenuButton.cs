@@ -22,7 +22,7 @@ namespace CustomAvatarListAPI
 			{
 				if (avatarButton == null)
 				{
-					GameObject gameObject = GameObject.Find("/UserInterface/MenuContent/Screens/Avatar/Favorite Button");
+					GameObject gameObject = GameObject.Find("MenuContent/Screens/Avatar/Favorite Button");  //fixed for Guid change
 					GameObject gameObject2 = UnityEngine.Object.Instantiate(gameObject, gameObject.transform.parent);
 					gameObject2.GetComponent<Button>().onClick.RemoveAllListeners();
 					gameObject2.SetActive(value: false);

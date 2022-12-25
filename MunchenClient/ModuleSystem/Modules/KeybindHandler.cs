@@ -52,20 +52,20 @@ namespace MunchenClient.ModuleSystem.Modules
 				}
 				if (Input.GetMouseButtonDown(2))
 				{
-					CameraFeaturesHandler.ApplyCameraSmoothZoom(incremental: false, 60f);
+					//CameraFeaturesHandler.ApplyCameraSmoothZoom(incremental: false, 60f);
 				}
 				else if (axis != 0f)
 				{
-					CameraFeaturesHandler.ApplyCameraSmoothZoom(incremental: true, axis * 30f);
+					//CameraFeaturesHandler.ApplyCameraSmoothZoom(incremental: true, axis * 30f);
 				}
 			}
 			else if (Input.GetKeyDown(KeyCode.LeftAlt))
 			{
-				CameraFeaturesHandler.ChangeCameraActualZoomState(zoom: true);
+				//CameraFeaturesHandler.ChangeCameraActualZoomState(zoom: true);
 			}
 			else if (Input.GetKeyUp(KeyCode.LeftAlt))
 			{
-				CameraFeaturesHandler.ChangeCameraActualZoomState(zoom: false);
+				//CameraFeaturesHandler.ChangeCameraActualZoomState(zoom: false);
 			}
 		}
 	}

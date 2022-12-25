@@ -5,6 +5,7 @@ using Il2CppSystem.Collections.Generic;
 using MunchenClient.Config;
 using MunchenClient.Core;
 using MunchenClient.Menu.World;
+using MunchenClient.Misc;
 using MunchenClient.ModuleSystem.Modules;
 using MunchenClient.Utils;
 using MunchenClient.Wrappers;
@@ -25,24 +26,27 @@ namespace MunchenClient.Menu
 			QuickMenuButtonRow parentRow = new QuickMenuButtonRow(this);
 			new InstanceHistoryMenu(quickMenuButtonRow);
 			new WorldTweaksMenu(quickMenuButtonRow);
+
 			new QuickMenuSingleButton(quickMenuButtonRow, LanguageManager.GetUsedLanguage().JoinByID, delegate
 			{
-				GeneralWrappers.ShowInputPopup(LanguageManager.GetUsedLanguage().JoinByID, string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, WorldUtils.GoToWorld);
+				//GeneralWrappers.ShowInputPopup(LanguageManager.GetUsedLanguage().JoinByID, string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, WorldUtils.GoToWorld);
+				WorldUtils.GoToWorld(Clipboard.GetText());
+
 			}, LanguageManager.GetUsedLanguage().JoinByIDDescription);
+
 			new QuickMenuSingleButton(quickMenuButtonRow, LanguageManager.GetUsedLanguage().CopyInstanceID, delegate
 			{
 				Clipboard.SetText(WorldUtils.GetCurrentWorld().id + ":" + WorldUtils.GetCurrentInstance().instanceId);
-				QuickMenuUtils.ShowAlert(LanguageManager.GetUsedLanguage().CopyInstanceIDClicked);
+                UserInterface.WriteHudMessage(LanguageManager.GetUsedLanguage().CopyInstanceIDClicked);
 			}, LanguageManager.GetUsedLanguage().CopyInstanceIDDescription);
-			new QuickMenuSingleButton(parentRow, "Download World File", delegate
-			{
-				GeneralUtils.DownloadFileToPath(WorldUtils.GetCurrentWorld().assetUrl, "Worlds", WorldUtils.GetCurrentWorld().name + "-" + WorldUtils.GetCurrentWorld().id, "vrcw", OnWorldDownloadFinished);
-				QuickMenuUtils.ShowAlert("Started downloading world");
-			}, "Downloads the world file onto your disk");
+
+			//new QuickMenuSingleButton(parentRow, "Download World File", delegate { GeneralUtils.DownloadFileToPath(WorldUtils.GetCurrentWorld().assetUrl, "Worlds", WorldUtils.GetCurrentWorld().name + "-" + WorldUtils.GetCurrentWorld().id, "vrcw", OnWorldDownloadFinished); QuickMenuUtils.ShowAlert("Started downloading world"); }, "Downloads the world file onto your disk");
+
 			new QuickMenuSingleButton(parentRow, "Drop Portal", delegate
 			{
 				GeneralWrappers.ShowInputPopup("Drop portal to instance", string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, DropPortalToInstance, null, "Enter instance id...");
 			}, "Drop a portal to a specific instance");
+
 			new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().ItemWallhack, Configuration.GetGeneralConfig().ItemWallhack, delegate
 			{
 				Configuration.GetGeneralConfig().ItemWallhack = true;

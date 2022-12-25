@@ -21,28 +21,28 @@ namespace MunchenClient.Patching.Patches
 
 		protected override string patchName => "DownloaderPatch";
 
-		internal unsafe override void OnInitializeOnStart()
+		internal unsafe override void OnInitializeOnStart() //type 'downloader' missing, this patch probably will not work without it.
 		{
-			InitializeLocalPatchHandler(typeof(DownloaderPatch));
-			MethodInfo method = (from m in typeof(Downloader).GetMethods()
-				where m.Name.StartsWith("Method_Internal_Static_UniTask_1_InterfacePublicAbstractIDisposable") && m.Name.Contains("ApiAvatar")
-				select m).First();
-			IntPtr ptr = *(IntPtr*)(void*)(IntPtr)UnhollowerUtils.GetIl2CppMethodInfoPointerFieldForGeneratedMethod(method).GetValue(null);
-			OnAvatarDownloadStartDelegate onAvatarDownloadStartDelegate = (IntPtr thisPtr, IntPtr apiAvatar, IntPtr downloadContainer, bool unknownBool, IntPtr nativeMethodPointer) => OnAvatarDownloadStartPatch(thisPtr, apiAvatar, downloadContainer, unknownBool, nativeMethodPointer);
-			MainUtils.antiGCList.Add(onAvatarDownloadStartDelegate);
-			MelonUtils.NativeHookAttach((IntPtr)(&ptr), Marshal.GetFunctionPointerForDelegate(onAvatarDownloadStartDelegate));
-			onAvatarDownloadStart = Marshal.GetDelegateForFunctionPointer<OnAvatarDownloadStartDelegate>(ptr);
+			//InitializeLocalPatchHandler(typeof(DownloaderPatch)); 
+			//MethodInfo method = (from m in typeof(downloader).GetMethods() where m.Name.StartsWith("Method_Internal_Static_UniTask_1_InterfacePublicAbstractIDisposable") && m.Name.Contains("ApiAvatar") select m).First();
+			//IntPtr ptr = *(IntPtr*)(void*)(IntPtr)UnhollowerUtils.GetIl2CppMethodInfoPointerFieldForGeneratedMethod(method).GetValue(null);
+			//OnAvatarDownloadStartDelegate onAvatarDownloadStartDelegate = (IntPtr thisPtr, IntPtr apiAvatar, IntPtr downloadContainer, bool unknownBool, IntPtr nativeMethodPointer) => OnAvatarDownloadStartPatch(thisPtr, apiAvatar, downloadContainer, unknownBool, nativeMethodPointer);
+			//MainUtils.antiGCList.Add(onAvatarDownloadStartDelegate);
+			//MelonUtils.NativeHookAttach((IntPtr)(&ptr), Marshal.GetFunctionPointerForDelegate(onAvatarDownloadStartDelegate));
+			//onAvatarDownloadStart = Marshal.GetDelegateForFunctionPointer<OnAvatarDownloadStartDelegate>(ptr);
 		}
 
 		private static IntPtr OnAvatarDownloadStartPatch(IntPtr thisPtr, IntPtr apiAvatar, IntPtr downloadContainer, bool unknownBool, IntPtr nativeMethodPointer)
 		{
 			try
 			{
-				if (ApplicationBotHandler.IsBot())
+				/* Appbots removed
+				if (ApplicationBotHandler.IsBot()) 
 				{
 					return onAvatarDownloadStart(thisPtr, MiscUtils.robotAvatar.Pointer, downloadContainer, unknownBool, nativeMethodPointer);
 				}
-				ApiAvatar apiAvatar2 = ((apiAvatar != IntPtr.Zero) ? new ApiAvatar(apiAvatar) : null);
+				*/
+                ApiAvatar apiAvatar2 = ((apiAvatar != IntPtr.Zero) ? new ApiAvatar(apiAvatar) : null);
 				if (apiAvatar2 == null)
 				{
 					return onAvatarDownloadStart(thisPtr, apiAvatar, downloadContainer, unknownBool, nativeMethodPointer);

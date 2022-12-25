@@ -20,7 +20,7 @@ namespace MunchenClient.Misc
 		{
 			if (!initialized)
 			{
-				GameObject gameObject = GameObject.Find("UserInterface/MenuContent/Screens/UserInfo/User Panel/TrustLevel/TrustText");
+				GameObject gameObject = GameObject.Find("MenuContent/Screens/UserInfo/User Panel/TrustLevel/TrustText");
 				textComponent = gameObject.GetComponent<Text>();
 				initialized = true;
 			}

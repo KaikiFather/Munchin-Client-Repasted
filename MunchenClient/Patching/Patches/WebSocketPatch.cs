@@ -50,11 +50,11 @@ namespace MunchenClient.Patching.Patches
 
 		private unsafe static void OnDataReceivedPatch(System.IntPtr instancePtr, System.IntPtr senderPtr, System.IntPtr argsPtr)
 		{
-			processPipelineDelegate(instancePtr, senderPtr, argsPtr);
-			if (argsPtr == System.IntPtr.Zero)
-			{
-				return;
-			}
+			if (!Core.MunchenClient.MenuExists) { return; } //fixes err on load
+ 			try {processPipelineDelegate(instancePtr, senderPtr, argsPtr);} catch {}
+			if (argsPtr == System.IntPtr.Zero) { return; }
+            if (senderPtr == System.IntPtr.Zero) { return; }
+            if (argsPtr == System.IntPtr.Zero) { return; }
 			string value;
 			try
 			{
@@ -132,14 +132,14 @@ namespace MunchenClient.Patching.Patches
 			case "friend-offline":
 				if (cachedPlayerStates.ContainsKey(vRCWebSocketContent.userId))
 				{
-					string text2 = "<color=purple>" + cachedPlayerStates[vRCWebSocketContent.userId].username + " <color=white>went <color=red>offline";
+					string text2 = "<color=purple>" + cachedPlayerStates[vRCWebSocketContent.userId].username + " <color=white>went <color=red>offline"; //disabled logging while fixing missing name issue persists.
 					if (Configuration.GetModerationsConfig().LogModerationsOffline)
 					{
-						ConsoleUtils.Info(LanguageManager.GetUsedLanguage().ModerationMenuName, text2, System.ConsoleColor.Red, "OnDataReceivedPatch", 252);
+						//ConsoleUtils.Info(LanguageManager.GetUsedLanguage().ModerationMenuName, text2, System.ConsoleColor.Red, "OnDataReceivedPatch", 252);
 					}
 					if (Configuration.GetModerationsConfig().LogModerationsOfflineHUD)
 					{
-						GeneralUtils.InformHudTextThreaded(LanguageManager.GetUsedLanguage().ModerationMenuName, text2);
+						//GeneralUtils.InformHudTextThreaded(LanguageManager.GetUsedLanguage().ModerationMenuName, text2);
 					}
 				}
 				else
@@ -163,15 +163,24 @@ namespace MunchenClient.Patching.Patches
 
 		private static void OnPlayerFetched(ApiContainer container)
 		{
-			ApiModelContainer<APIUser> apiModelContainer = container.Cast<ApiModelContainer<APIUser>>();
-			string text = string.Concat("<color=purple>", new Il2CppSystem.String(((ApiDictContainer)apiModelContainer).ResponseDictionary["displayName"].Pointer), " <color=white>went <color=red>offline");
+			try
+			{
+				ApiModelContainer<APIUser> apiModelContainer = container.Cast<ApiModelContainer<APIUser>>();
+				string text = string.Concat("<color=purple>", new Il2CppSystem.String(((ApiDictContainer)apiModelContainer).ResponseDictionary["displayName"].Pointer), " <color=white>went <color=red>offline");
+				if (text.Length == 0) { MelonLogger.Msg("Null Websocket data discarded"); return; } //added to prevent null data
+				if (text.Length > 20000000) { MelonLogger.Msg("Excessive Websocketdata discarded"); return; } //added to prevent bad data
+			}
+			catch{ MelonLogger.Msg("Bad Websocket data caught"); return; }
+
+			ApiModelContainer<APIUser> apiModelContainerSafe = container.Cast<ApiModelContainer<APIUser>>();
+            string textSafe = string.Concat("<color=purple>", new Il2CppSystem.String(((ApiDictContainer)apiModelContainerSafe).ResponseDictionary["displayName"].Pointer), " <color=white>went <color=red>offline");
 			if (Configuration.GetModerationsConfig().LogModerationsOffline)
 			{
-				ConsoleUtils.Info(LanguageManager.GetUsedLanguage().ModerationMenuName, text, System.ConsoleColor.Red, "OnPlayerFetched", 293);
+				ConsoleUtils.Info(LanguageManager.GetUsedLanguage().ModerationMenuName, textSafe, System.ConsoleColor.Red, "OnPlayerFetched", 293);
 			}
 			if (Configuration.GetModerationsConfig().LogModerationsOfflineHUD)
 			{
-				GeneralUtils.InformHudTextThreaded(LanguageManager.GetUsedLanguage().ModerationMenuName, text);
+				GeneralUtils.InformHudTextThreaded(LanguageManager.GetUsedLanguage().ModerationMenuName, textSafe);
 			}
 		}
 

@@ -44,14 +44,9 @@ namespace MunchenClient.ModuleSystem.Modules
 
 		internal override void OnUpdate()
 		{
-			try
-			{
-				UserInterface.OnUpdate();
-			}
-			catch (Exception e)
-			{
-				ConsoleUtils.Exception("GeneralHandler", "InterfaceUpdate", e, "OnUpdate", 48);
-			}
+			try { UserInterface.OnUpdate(); }
+			catch (Exception e) { ConsoleUtils.Exception("GeneralHandler", "InterfaceUpdate", e, "OnUpdate", 48); }
+
 			if (GeneralUtils.hideSelf)
 			{
 				PlayerInformation localPlayerInformation = PlayerWrappers.GetLocalPlayerInformation();
@@ -61,6 +56,7 @@ namespace MunchenClient.ModuleSystem.Modules
 					currentAvatarId = localPlayerInformation.vrcPlayer.prop_VRCAvatarManager_0.field_Private_ApiAvatar_0.id;
 				}
 			}
+
 			if (GeneralUtils.isConnectedToInstance)
 			{
 				try
@@ -71,9 +67,10 @@ namespace MunchenClient.ModuleSystem.Modules
 					}
 				}
 				catch (Exception e2)
-				{
-					ConsoleUtils.Exception("GeneralHandler", "FlightHandler", e2, "OnUpdate", 74);
-				}
+                {
+                    //ConsoleUtils.Exception("GeneralHandler", "FlightHandler", e2, "OnUpdate", 74);
+                }
+
 				try
 				{
 					GameObject socialMenuModerationButton = GeneralWrappers.GetSocialMenuModerationButton();
@@ -85,18 +82,12 @@ namespace MunchenClient.ModuleSystem.Modules
 						previousModerationButtonState = GeneralWrappers.GetSocialMenuModerationButton().activeInHierarchy;
 					}
 				}
-				catch (Exception e3)
-				{
-					ConsoleUtils.Exception("GeneralHandler", "MenuModerationHandler", e3, "OnUpdate", 96);
-				}
+				catch (Exception e3) { ConsoleUtils.Exception("GeneralHandler", "MenuModerationHandler", e3, "OnUpdate", 96); }
 				try
 				{
 					SerializeFakelagFix();
 				}
-				catch (Exception e4)
-				{
-					ConsoleUtils.Exception("GeneralHandler", "SerializeFakelagFix", e4, "OnUpdate", 105);
-				}
+				catch (Exception e4) { ConsoleUtils.Exception("GeneralHandler", "SerializeFakelagFix", e4, "OnUpdate", 105); }
 			}
 			try
 			{
@@ -112,16 +103,13 @@ namespace MunchenClient.ModuleSystem.Modules
 					}, imageContainer.fallbackImageUrl, imageContainer.isRetry);
 				}
 			}
-			catch (Exception e5)
-			{
-				ConsoleUtils.Exception("GeneralHandler", "ImageDownloaderHandler", e5, "OnUpdate", 127);
-			}
+			catch (Exception e5) { ConsoleUtils.Exception("GeneralHandler", "ImageDownloaderHandler", e5, "OnUpdate", 127); }
 		}
 
 		internal override void OnUIManagerLoaded()
 		{
 			ClassInjector.RegisterTypeInIl2Cpp<MunchenCustomRankFixer>();
-			GameObject gameObject = GameObject.Find("UserInterface/MenuContent/Screens/UserInfo");
+			GameObject gameObject = GameObject.Find("MenuContent/Screens/UserInfo");  //fixed for Guid change
 			gameObject.AddComponent<MunchenCustomRankFixer>();
 		}
 
@@ -171,28 +159,34 @@ namespace MunchenClient.ModuleSystem.Modules
 			WorldUtils.FixAnnoyingIntroInJustBClub(Configuration.GetGeneralConfig().JustBClubIntroFix);
 		}
 
-		internal override void OnRoomJoined()
+		internal override void OnRoomJoined() // this does not work
 		{
 			GeneralUtils.isConnectedToInstance = true;
-			if (!ApplicationBotHandler.IsBot())
+			if (true/*!ApplicationBotHandler.IsBot()*/)
 			{
-				AntiCrashPatch.OnRoomJoined();
-				ServerAPICore.GetInstance().LinkVRChatAccountToAuthKey(APIUser.CurrentUser.id, APIUser.CurrentUser.displayName);
+				//AntiCrashPatch.OnRoomJoined(); disabled until anticrash fixed
+				//ServerAPICore.GetInstance().LinkVRChatAccountToAuthKey(APIUser.CurrentUser.id, APIUser.CurrentUser.displayName);
 			}
 		}
 
-		internal override void OnRoomLeft()
+		internal override void OnRoomLeft() //broken
 		{
-			if (!ApplicationBotHandler.IsBot())
+			if (true/*!ApplicationBotHandler.IsBot()*/)
 			{
-				AntiCrashPatch.OnRoomLeft();
+				//AntiCrashPatch.OnRoomLeft(); //disabled until anticrash patch fixed
+                PlayerUtils.ClearAllClones(); 
+                PlayerUtils.playerCachingList.Clear();
+                PlayerUtils.localPlayerInfo = null; //moved to top because of stack issue
+                GeneralUtils.notificationTracker.Clear();
+                pickupRenderersToHighlight.Clear();
+                GeneralUtils.isConnectedToInstance = false;
 				if (GeneralUtils.localAvatarClone)
 				{
 					GeneralUtils.localAvatarClone = false;
 					PlayerMenu.localAvatarCloneButton.SetToggleState(state: false);
 					UnityEngine.Object.DestroyImmediate(PlayerMenu.localAvatarClone);
 				}
-				GeneralUtils.ToggleFlight(state: false);
+                GeneralUtils.ToggleFlight(state: false);
 				MovementMenu.flightButton.SetToggleState(state: false);
 				if (GeneralUtils.capsuleHider)
 				{
@@ -200,27 +194,24 @@ namespace MunchenClient.ModuleSystem.Modules
 					PlayerUtils.ChangeCapsuleState(state: false);
 					FunMenu.capsuleHiderButton.SetToggleState(state: false);
 				}
-				PhotonExploitsMenu.earrapeExploitButton.SetToggleState(state: false);
-				PhotonExploitsMenu.StopEarrapeExploit();
-				PortableMirror.RemoveAllMirrors();
-				PortableMirrorMenu.portableMirrorButton.SetToggleState(state: false);
+				try
+				{
+                    PortableMirror.RemoveAllMirrors();
+                    PhotonExploitsMenu.earrapeExploitButton.SetToggleState(state: false);
+					PhotonExploitsMenu.StopEarrapeExploit();
+				} catch { }
+                PortableMirrorMenu.portableMirrorButton.SetToggleState(state: false);
 				GeneralUtils.portableMirror = false;
 				PlayerHandler.ResetPlayerESPStates();
-				if (GeneralUtils.hideSelf)
+                if (GeneralUtils.hideSelf)
 				{
 					GeneralWrappers.GetAvatarPreviewBase().SetActive(value: true);
 					PlayerWrappers.GetCurrentPlayer().prop_VRCAvatarManager_0.gameObject.SetActive(value: true);
 					AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0.gameObject.SetActive(value: true);
 					GeneralUtils.hideSelf = false;
-				}
+                }
 			}
-			PlayerUtils.ClearAllClones();
-			PlayerUtils.playerCachingList.Clear();
-			PlayerUtils.localPlayerInfo = null;
-			GeneralUtils.notificationTracker.Clear();
-			pickupRenderersToHighlight.Clear();
-			GeneralUtils.isConnectedToInstance = false;
-		}
+        }
 
 		internal override void OnRoomMasterChanged(PlayerInformation newMaster)
 		{
@@ -230,11 +221,8 @@ namespace MunchenClient.ModuleSystem.Modules
 		private void HandleFlight()
 		{
 			PlayerInformation localPlayerInformation = PlayerWrappers.GetLocalPlayerInformation();
-			if (localPlayerInformation == null)
-			{
-				return;
-			}
-			float num = (Input.GetKey(KeyCode.LeftShift) ? (Configuration.GetGeneralConfig().FlightSpeed * 2f) : ((!Input.GetKey(KeyCode.LeftControl)) ? Configuration.GetGeneralConfig().FlightSpeed : (Configuration.GetGeneralConfig().FlightSpeed / 2f)));
+			if (localPlayerInformation == null) { MelonLogger.Msg("Local player not found or null"); return; }
+            float num = (Input.GetKey(KeyCode.LeftShift) ? (Configuration.GetGeneralConfig().FlightSpeed * 2f) : ((!Input.GetKey(KeyCode.LeftControl)) ? Configuration.GetGeneralConfig().FlightSpeed : (Configuration.GetGeneralConfig().FlightSpeed / 2f)));
 			if (GeneralWrappers.IsInVR())
 			{
 				if (Input.GetAxis("Vertical") != 0f)
@@ -257,23 +245,23 @@ namespace MunchenClient.ModuleSystem.Modules
 			}
 			if (Input.GetKey(KeyCode.S))
 			{
-				localPlayerInformation.vrcPlayer.transform.position -= GeneralWrappers.GetPlayerCamera().transform.forward * num * Time.deltaTime;
+                localPlayerInformation.vrcPlayer.transform.position -= GeneralWrappers.GetPlayerCamera().transform.forward * num * Time.deltaTime;
 			}
 			if (Input.GetKey(KeyCode.A))
 			{
-				localPlayerInformation.vrcPlayer.transform.position -= localPlayerInformation.vrcPlayer.transform.right * num * Time.deltaTime;
+                localPlayerInformation.vrcPlayer.transform.position -= localPlayerInformation.vrcPlayer.transform.right * num * Time.deltaTime;
 			}
 			if (Input.GetKey(KeyCode.D))
 			{
-				localPlayerInformation.vrcPlayer.transform.position += localPlayerInformation.vrcPlayer.transform.right * num * Time.deltaTime;
+                localPlayerInformation.vrcPlayer.transform.position += localPlayerInformation.vrcPlayer.transform.right * num * Time.deltaTime;
 			}
 			if (Input.GetKey(KeyCode.Q))
 			{
-				localPlayerInformation.vrcPlayer.transform.position -= localPlayerInformation.vrcPlayer.transform.up * num * Time.deltaTime;
+                localPlayerInformation.vrcPlayer.transform.position -= localPlayerInformation.vrcPlayer.transform.up * num * Time.deltaTime;
 			}
 			if (Input.GetKey(KeyCode.E))
 			{
-				localPlayerInformation.vrcPlayer.transform.position += localPlayerInformation.vrcPlayer.transform.up * num * Time.deltaTime;
+                localPlayerInformation.vrcPlayer.transform.position += localPlayerInformation.vrcPlayer.transform.up * num * Time.deltaTime;
 			}
 		}
 

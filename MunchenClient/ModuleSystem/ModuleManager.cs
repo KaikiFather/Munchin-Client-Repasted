@@ -19,44 +19,36 @@ namespace MunchenClient.ModuleSystem
 		{
 			try
 			{
-				modules.Add(new ApplicationBotHandler());
-				if (Configuration.GetAntiCrashConfig().AntiAssetBundleCrash && GeneralUtils.HasSpecialBenefits())
-				{
-					modules.Add(new AntiAssetBundleCrashHandler());
-				}
-				modules.Add(new GeneralHandler());
-				modules.Add(new AntiInstanceLockHandler());
-				if (!ApplicationBotHandler.IsBot())
+				//modules.Add(new ApplicationBotHandler()); //appbots removed
+				//modules.Add(new AntiAssetBundleCrashHandler()); //loads acab, untested
+				modules.Add(new GeneralHandler()); //broken on room left
+				//modules.Add(new AntiInstanceLockHandler()); //broken
+
+				if (true/*appbots removed !ApplicationBotHandler.IsBot()*/)
 				{
 					modules.Add(new PlayerEventsHandler());
 					modules.Add(new PlayerHandler());
-					modules.Add(new PlayerTargetHandler());
-					modules.Add(new KeybindHandler());
-					modules.Add(new FlashlightHandler());
-					modules.Add(new ProtectionsHandler());
-					modules.Add(new GlobalDynamicBonesHandler());
-					modules.Add(new GlobalAvatarDatabaseHandler());
-					modules.Add(new MenuColorHandler());
-					modules.Add(new AntiShaderCrashHandler());
+					//modules.Add(new PlayerTargetHandler()); //broken on room left
+					modules.Add(new KeybindHandler()); //broken on update
+					//modules.Add(new FlashlightHandler()); //causes so many errors lmfao
+					modules.Add(new ProtectionsHandler()); 
+					//modules.Add(new GlobalDynamicBonesHandler()); //depreciated, OSC update
+					//modules.Add(new GlobalAvatarDatabaseHandler()); //depreciated, big menu update
+					//modules.Add(new MenuColorHandler()); //depreciated, big menu update
+					//modules.Add(new AntiShaderCrashHandler()); //antishadercrashmodule.dll can probably not load because of eac
 					modules.Add(new AntiPortalHandler());
-					modules.Add(new CameraFeaturesHandler());
-					modules.Add(new AvatarFavoritesHandler());
+					modules.Add(new CameraFeaturesHandler()); //broken (changecameraactualzoomstate)
+					//modules.Add(new AvatarFavoritesHandler()); //depreciated big menu update
 					modules.Add(new InstanceHistoryHandler());
-					modules.Add(new AvatarHistoryHandler());
+					//modules.Add(new AvatarHistoryHandler()); 
 					modules.Add(new ModerationHandler());
-					modules.Add(new MimicHandler());
-				}
-				if (GeneralUtils.IsBetaClient())
-				{
-					modules.Add(new LovenseHandler());
+					//modules.Add(new MimicHandler()); //depreciated, useless
+                    //modules.Add(new LovenseHandler()); //depreciated, gross
 				}
 			}
-			catch (System.Exception e)
-			{
-				ConsoleUtils.Exception("ModuleManager", "ConstructModules", e, "ConstructModules", 62);
-			}
+			catch (System.Exception e) { ConsoleUtils.Exception("ModuleManager", "ConstructModules", e, "ConstructModules", 62); }
 		}
-
+		#region boilerplate
 		internal static void InitializeModules()
 		{
 			for (int i = 0; i < modules.Count; i++)
@@ -173,7 +165,7 @@ namespace MunchenClient.ModuleSystem
 				}
 				catch (System.Exception e)
 				{
-					ConsoleUtils.Exception("ModuleManager", "OnUpdate (Module Name: " + modules[i].GetModuleName() + ")", e, "OnUpdate", 184);
+					//ConsoleUtils.Exception("ModuleManager", "OnUpdate (Module Name: " + modules[i].GetModuleName() + ")", e, "OnUpdate", 184); //stacks really hard while waiting for menu so i disable for now
 				}
 			}
 		}
@@ -253,7 +245,7 @@ namespace MunchenClient.ModuleSystem
 			}
 		}
 
-		internal static void OnRoomLeft()
+		internal static void OnRoomLeft() //broken broken broken
 		{
 			for (int i = 0; i < modules.Count; i++)
 			{
@@ -263,7 +255,7 @@ namespace MunchenClient.ModuleSystem
 				}
 				catch (System.Exception e)
 				{
-					ConsoleUtils.Exception("ModuleManager", "OnRoomLeft (Module Name: " + modules[i].GetModuleName() + ")", e, "OnRoomLeft", 276);
+					//ConsoleUtils.Exception("ModuleManager", "OnRoomLeft (Module Name: " + modules[i].GetModuleName() + ")", e, "OnRoomLeft", 276);
 				}
 			}
 		}
@@ -402,5 +394,6 @@ namespace MunchenClient.ModuleSystem
 			}
 			return result;
 		}
+		#endregion
 	}
 }

@@ -22,7 +22,8 @@ namespace UnchainedButtonAPI
 		internal QuickMenuButtonRow(string parentMenu)
 		{
 			buttonParentName = parentMenu;
-			InitializeButtonRow(QuickMenuUtils.GetQuickMenu().transform.Find(parentMenu + "/ScrollRect/Viewport/VerticalLayoutGroup"));
+			//InitializeButtonRow(QuickMenuUtils.GetQuickMenu().transform.Find(parentMenu + "/ScrollRect/Viewport/VerticalLayoutGroup"));
+			InitializeButtonRow(GameObject.Find(parentMenu + "/ScrollRect/Viewport/VerticalLayoutGroup").transform);
 		}
 
 		private void InitializeButtonRow(Transform parent)

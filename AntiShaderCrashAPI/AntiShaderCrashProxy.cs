@@ -30,6 +30,7 @@ namespace AntiShaderCrashAPI
 
 		internal static void Init(IntPtr modulePointer)
 		{
+			return; //disabled until dll loading is solved
 			setFilterStateDelegate = Marshal.GetDelegateForFunctionPointer<SetFilterStateDelegate>(UnmanagedUtils.GetProcAddress(modulePointer, "SetFilteringState"));
 			setTesselationDelegate = Marshal.GetDelegateForFunctionPointer<SetTesselationDelegate>(UnmanagedUtils.GetProcAddress(modulePointer, "SetMaxTesselationPower"));
 			setLoopsDelegate = Marshal.GetDelegateForFunctionPointer<SetLoopsDelegate>(UnmanagedUtils.GetProcAddress(modulePointer, "SetLoopLimit"));

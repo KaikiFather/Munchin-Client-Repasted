@@ -13,7 +13,7 @@ namespace MunchenClient.Patching.Patches
 		internal override void OnInitializeOnStart()
 		{
 			InitializeLocalPatchHandler(typeof(VRCPlayerPatch));
-			if (!ApplicationBotHandler.IsBot())
+			if (true/*!ApplicationBotHandler.IsBot()*/)
 			{
 				PatchMethod(typeof(VRCPlayer).GetMethod("Method_Public_Static_String_APIUser_0"), GetLocalPatch("GetFriendlyDetailedNameForSocialRankPatch"), null);
 				//PatchMethod(typeof(VRCPlayer).GetMethod("Method_Public_Static_String_APIUser_1"), GetLocalPatch("GetFriendlyDetailedNameForSocialRankPatch"), null);

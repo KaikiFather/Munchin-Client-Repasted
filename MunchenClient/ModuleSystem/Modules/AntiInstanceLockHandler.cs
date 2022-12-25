@@ -12,7 +12,8 @@ namespace MunchenClient.ModuleSystem.Modules
 
 		internal override void OnLevelWasLoaded(int levelIndex)
 		{
-			if (levelIndex == -1 && Configuration.GetGeneralConfig().AntiInstanceLock)
+			return; //instance lock broken, return added to skip
+            if (levelIndex == -1 && Configuration.GetGeneralConfig().AntiInstanceLock)
 			{
 				MelonCoroutines.Start(UnlockInstance());
 			}
@@ -24,7 +25,7 @@ namespace MunchenClient.ModuleSystem.Modules
 			{
 				yield return new WaitForEndOfFrame();
 			}
-			VRC_EventLog.field_Internal_Static_VRC_EventLog_0.field_Internal_EventReplicator_0.field_Private_Boolean_0 = true;
+			//VRC_EventLog.field_Internal_Static_VRC_EventLog_0.field_Internal_EventReplicator_0.field_Private_Boolean_0 = true; // field_Internal_EventReplicator_0 is missing from eventlog, cannot find without investigation
 		}
 	}
 }

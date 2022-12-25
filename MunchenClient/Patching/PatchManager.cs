@@ -161,36 +161,33 @@ namespace MunchenClient.Patching
 		{
 			patches.Add(new UnityEnginePatch());
 			patches.Add(new SteamworksPatch());
-			patches.Add(new PhotonPatch());
+			//patches.Add(new PhotonPatch()); //broken and detected
 			patches.Add(new NetworkManagerPatch());
-			patches.Add(new DownloaderPatch());
-			patches.Add(new EventHandlerPatch());
-			patches.Add(new VRCNetworkingClientPatch());
-			patches.Add(new VRCPlayerPatch());
-			if (!ApplicationBotHandler.IsBot())
+			//patches.Add(new DownloaderPatch()); //broken
+			//patches.Add(new EventHandlerPatch()); 
+			//patches.Add(new VRCNetworkingClientPatch()); //Broken
+			patches.Add(new VRCPlayerPatch()); //fine
+			if (true/*!ApplicationBotHandler.IsBot()*/)
 			{
-				patches.Add(new WebSocketPatch());
-				patches.Add(new AntiCrashPatch());
-				patches.Add(new AvatarPerformancePatch());
-				patches.Add(new VRCAvatarManagerPatch());
-				patches.Add(new ImageDownloaderPatch());
-				patches.Add(new VideoPlayerPatch());
-				patches.Add(new FinalIKPatch());
-				patches.Add(new NotificationPatch());
-				patches.Add(new AssetManagementPatch());
-				patches.Add(new ActionMenuPatch());
-				patches.Add(new QuickMenuPatch());
-				patches.Add(new UdonPatch());
-				patches.Add(new PortalsPatch());
-				patches.Add(new VRCUIManagerPatch());
-				if (!CompatibilityLayer.IsRunningOculus())
-				{
-					patches.Add(new VRCTrackingSteamPatch());
-				}
+				patches.Add(new WebSocketPatch()); //fine
+				//patches.Add(new AntiCrashPatch()); //many broken components 
+                patches.Add(new AvatarPerformancePatch()); //fine
+				patches.Add(new VRCAvatarManagerPatch()); //fine
+				patches.Add(new ImageDownloaderPatch()); //fine
+				patches.Add(new VideoPlayerPatch()); //fine
+				patches.Add(new FinalIKPatch()); //fine
+				patches.Add(new NotificationPatch()); //fine
+				patches.Add(new AssetManagementPatch()); //fine
+				patches.Add(new ActionMenuPatch()); //fine
+				patches.Add(new QuickMenuPatch()); //fine
+				patches.Add(new UdonPatch()); //fine
+				//patches.Add(new PortalsPatch()); //broken
+				patches.Add(new VRCUIManagerPatch()); //fine
+				if (!CompatibilityLayer.IsRunningOculus()) { patches.Add(new VRCTrackingSteamPatch()); }
 			}
 			else
 			{
-				patches.Add(new BatchModePatch());
+				patches.Add(new BatchModePatch()); //bot related patching, todo remove
 				patches.Add(new CursorPatch());
 			}
 		}

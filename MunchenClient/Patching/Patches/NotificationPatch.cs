@@ -66,7 +66,7 @@ namespace MunchenClient.Patching.Patches
 				return;
 			}
 			PlayerInformation localPlayerInformation = PlayerWrappers.GetLocalPlayerInformation();
-			if ((localPlayerInformation != null && localPlayerInformation.isLocalPlayer && localPlayerInformation.apiUser.statusValue == APIUser.UserStatus.DoNotDisturb) || GeneralUtils.IsStreamerModeEnabled())
+			if ((localPlayerInformation != null && localPlayerInformation.isLocalPlayer && localPlayerInformation.apiUser.statusValue == APIUser.UserStatus.DoNotDisturb) /*|| GeneralUtils.IsStreamerModeEnabled()*/)
 			{
 				return;
 			}

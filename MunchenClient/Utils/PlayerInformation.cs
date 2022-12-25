@@ -81,7 +81,7 @@ namespace MunchenClient.Utils
 
 		internal short GetPing()
 		{
-			return vrcPlayer.prop_PlayerNet_0.prop_Int16_1;
+			return vrcPlayer.prop_PlayerNet_0.prop_Int16_0;
 		}
 
 		internal int GetFPS()

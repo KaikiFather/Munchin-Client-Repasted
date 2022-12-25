@@ -113,14 +113,6 @@ namespace MunchenClient.Menu.Protections
 					GeneralUtils.InformHudText("AntiPortal", $"Deleted {num} portals", logToConsole: true);
 				}
 			}
-			else if (num == 1)
-			{
-				QuickMenuUtils.ShowAlert($"Deleted {num} portal");
-			}
-			else
-			{
-				QuickMenuUtils.ShowAlert($"Deleted {num} portals");
-			}
-		}
+        }
 	}
 }

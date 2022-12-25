@@ -33,7 +33,7 @@ namespace MunchenClient.Utils
 
 		private const string clientName = "Munchen Client";
 
-		private const string clientDevelopers = "Killer_bigpoint";
+		private const string clientDevelopers = "Swordsith, Kanna, Killer_bigpoint";
 
 		private const string clientVersion = "2.2.4";
 
@@ -114,7 +114,7 @@ namespace MunchenClient.Utils
 
 		internal static string GetClientDevelopers()
 		{
-			return "Killer_bigpoint";
+			return "Swordsith, Kanna, & Killer_bigpoint";
 		}
 
 		internal static string GetClientName()
@@ -126,9 +126,9 @@ namespace MunchenClient.Utils
 		{
 			if (IsBetaClient())
 			{
-				return "v2.2.4 Beta";
+				return "v1.0.0 Beta";
 			}
-			return "v2.2.4 Stable";
+			return "v1.0.0 Stable";
 		}
 
 		internal static bool CheckNotification(string playerName, string notification)
@@ -289,7 +289,8 @@ namespace MunchenClient.Utils
 		{
 			try
 			{
-				UserInterface.AddNotificationToHud(text);
+				UserInterface.WriteHudMessage(text);
+				//UserInterface.AddNotificationToHud(text); //old
 			}
 			catch (System.Exception e)
 			{
@@ -355,7 +356,8 @@ namespace MunchenClient.Utils
 
 		internal static void ClearVRAM()
 		{
-			AssetBundleDownloadManager assetBundleDownloadManager = AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0;
+			
+			//AssetBundleDownloadManager assetBundleDownloadManager = AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0;
 			System.Collections.Generic.List<string> list = new System.Collections.Generic.List<string>();
 			PlayerManager playerManager = PlayerManager.prop_PlayerManager_0;
 			Player[] P = playerManager.field_Private_List_1_Player_0.ToArray();
@@ -366,27 +368,27 @@ namespace MunchenClient.Utils
 					list.Add(P[i].prop_ApiAvatar_0.assetUrl);
 				}
 			}
-			System.Collections.Generic.Dictionary<string, AssetBundleDownload> dictionary = new System.Collections.Generic.Dictionary<string, AssetBundleDownload>();
-			Il2CppSystem.Collections.Generic.Dictionary<string, AssetBundleDownload>.KeyCollection.Enumerator enumerator = assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0.Keys.GetEnumerator();
-			while (enumerator.MoveNext())
-			{
-				string current = enumerator.Current;
-				dictionary.Add(current, assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0[current]);
-			}
-			foreach (string key in dictionary.Keys)
-			{
-				AssetBundleDownload assetBundleDownload = assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0[key];
-				if (!assetBundleDownload.field_Private_String_0.Contains("wrld_") && !list.Contains(key))
-				{
-					if (assetBundleDownload.prop_GameObject_0 != null)
-					{
-						UnityEngine.Object.DestroyImmediate(assetBundleDownload.prop_GameObject_0, allowDestroyingAssets: true);
-					}
-					assetBundleDownload.field_Private_AssetBundle_0?.Unload(unloadAllLoadedObjects: true);
-					assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0.Remove(key);
-				}
-			}
-			dictionary.Clear();
+			//System.Collections.Generic.Dictionary<string, AssetBundleDownload> dictionary = new System.Collections.Generic.Dictionary<string, AssetBundleDownload>(); //AssetBundleDownload missing from map
+			//Il2CppSystem.Collections.Generic.Dictionary<string, AssetBundleDownload>.KeyCollection.Enumerator enumerator = assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0.Keys.GetEnumerator(); //field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
+			//while (enumerator.MoveNext())
+			//{
+			//	string current = enumerator.Current;
+			//	dictionary.Add(current, assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0[current]); // field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
+			//}
+			//foreach (string key in dictionary.Keys)
+			//{
+			//	AssetBundleDownload assetBundleDownload = assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0[key]; // field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
+			//	if (!assetBundleDownload.field_Private_String_0.Contains("wrld_") && !list.Contains(key))
+			//	{
+			//		if (assetBundleDownload.prop_GameObject_0 != null)
+			//		{
+			//			UnityEngine.Object.DestroyImmediate(assetBundleDownload.prop_GameObject_0, allowDestroyingAssets: true);
+			//		}
+			//		assetBundleDownload.field_Private_AssetBundle_0?.Unload(unloadAllLoadedObjects: true);
+			//		assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0.Remove(key); // field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
+			//	}
+			//}
+			//dictionary.Clear();
 			list.Clear();
 			Resources.UnloadUnusedAssets();
 			Il2CppSystem.GC.Collect(0, Il2CppSystem.GCCollectionMode.Forced, blocking: true, compacting: true);
@@ -394,6 +396,7 @@ namespace MunchenClient.Utils
 			System.GC.Collect(0, System.GCCollectionMode.Forced, blocking: true, compacting: true);
 			System.GC.Collect(1, System.GCCollectionMode.Forced, blocking: true, compacting: true);
 			System.GC.WaitForPendingFinalizers();
+			
 		}
 
 		internal static int GetRefreshRate()
@@ -418,12 +421,12 @@ namespace MunchenClient.Utils
 			}
 			return screenRefreshRate;
 		}
-
+		/*  Method_Public_Static_Boolean_InputSetting_0 is missing
 		internal static bool IsStreamerModeEnabled()
 		{
 			return VRCInputManager.Method_Public_Static_Boolean_InputSetting_0(VRCInputManager.InputSetting.StreamerModeEnabled);
 		}
-
+		*/
 		internal static void ChangeHideSelfState(bool state)
 		{
 			hideSelf = state;
@@ -503,6 +506,9 @@ namespace MunchenClient.Utils
 
 		internal static void RemoveAvatarFromCache(string avatarId)
 		{
+            MelonLogger.Msg("RemoveAvatarFromCache is not fixed, Assetbundlemanager needs to be remapped");
+
+			/*
 			AssetBundleDownloadManager assetBundleDownloadManager = AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0;
 			for (int i = 0; i < assetBundleDownloadManager.field_Private_Queue_1_AssetBundleDownload_0.Count; i++)
 			{
@@ -534,6 +540,7 @@ namespace MunchenClient.Utils
 			System.GC.Collect(0, System.GCCollectionMode.Forced, blocking: true, compacting: true);
 			System.GC.Collect(1, System.GCCollectionMode.Forced, blocking: true, compacting: true);
 			System.GC.WaitForPendingFinalizers();
+			*/
 		}
 
 		internal static async void DownloadFileToPath(string url, string category, string name, string fileType, System.Action<bool> onFinished = null)

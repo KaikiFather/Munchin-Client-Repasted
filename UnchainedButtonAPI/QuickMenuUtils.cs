@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Il2CppSystem.Collections.Generic;
 using MunchenClient.Patching;
+using MunchenClient.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.UI.Elements;
@@ -13,6 +15,7 @@ namespace UnchainedButtonAPI
 	internal class QuickMenuUtils
 	{
 		internal delegate void ShowLinkAlertAction(string link);
+		internal delegate void ShowLinkAlertAction2(string link, bool one, bool two);
 
 		internal delegate void ShowAlertAction(string text);
 
@@ -84,6 +87,11 @@ namespace UnchainedButtonAPI
 
 		internal static ShowAlertAction showAlertAction;
 
+		internal static void OpenDickcord()
+        {
+			Process.Start("https://discord.gg/ascakTYJD3");
+		}
+
 		internal static ShowLinkAlertAction ShowLinkAlert
 		{
 			get
@@ -92,13 +100,16 @@ namespace UnchainedButtonAPI
 				{
 					return showLinkAlertAction;
 				}
-				MethodInfo method = (from mb in typeof(UIMenu).GetMethods()
-					where mb.Name.StartsWith("Method_Public_Virtual_Final_New_Void_String_") && PatchManager.CheckMethod(mb, "Open Web Browser")
-					select mb).First();
+				MethodInfo method = 
+
+					(from mb in typeof(UIMenu).GetMethods()
+					where mb.Name.StartsWith("Method_Public_Virtual_Final_New_Void_String_") && PatchManager.CheckMethod(mb, "Open Web Browser") select mb).First();
+					//where mb.Name.StartsWith("Method_Public_Virtual_Final_New_Void_String_Boolean_Boolean_0") && PatchManager.CheckMethod(mb, "Open Web Browser") select mb).First();
+
 				showLinkAlertAction = (ShowLinkAlertAction)Delegate.CreateDelegate(typeof(ShowLinkAlertAction), GetQuickMenu(), method);
 				return showLinkAlertAction;
 			}
-		}
+		} //probably broken
 
 		internal static ShowAlertAction ShowAlert
 		{
@@ -110,18 +121,18 @@ namespace UnchainedButtonAPI
 				}
 				MethodInfo method = (from mb in typeof(UIMenu).GetMethods()
 					where mb.Name.StartsWith("Method_Public_Virtual_Final_New_Void_String_") && PatchManager.CheckNonGlobalMethod(mb, "Method_Public_Void_String_", 27)
+					//where mb.Name.StartsWith("Method_Public_Virtual_Final_New_Void_String_Boolean_Boolean_0") && PatchManager.CheckNonGlobalMethod(mb, "Method_Public_Void_String_", 27)
 					select mb).First();
 				showAlertAction = (ShowAlertAction)Delegate.CreateDelegate(typeof(ShowAlertAction), GetQuickMenu(), method);
 				return showAlertAction;
 			}
-		}
+		} //probably broken
 
-		internal static void InitializeButtonAPI(string clientName, Sprite iconOn, Sprite iconOff)
+		internal static void InitializeButtonAPI(string clientName, Sprite iconOn, Sprite iconOff) //called from main function
 		{
-			quickMenuIdentifier = clientName;
-			toggleIconOn = iconOn;
-			toggleIconOff = iconOff;
-			QuickMenuPatches.InitializeButtonPatches(clientName);
+			quickMenuIdentifier = clientName; //sets button api client name, (menu_{clientname}etc
+			toggleIconOn = iconOn; toggleIconOff = iconOff;
+			QuickMenuPatches.InitializeButtonPatches(clientName); //calls to button patches
 		}
 
 		internal static string GetQuickMenuIdentifier()
@@ -145,7 +156,7 @@ namespace UnchainedButtonAPI
 			return toggleIconOff;
 		}
 
-		internal static void RegisterQuickMenuItem(QuickMenuButtonBase item)
+		internal static void RegisterQuickMenuItem(QuickMenuButtonBase item) //only called by the qmbuttonbase, which any button that uses this base, will call to this
 		{
 			quickMenuItems.Add(item);
 		}
@@ -163,19 +174,33 @@ namespace UnchainedButtonAPI
 		{
 			return QuickMenuTemplates.GetModalTemplate().transform.GetSiblingIndex();
 		}
+		public static VRC.UI.Elements.QuickMenu QMInstance {get; set;}
+		public static MenuStateController menuStateController { get; set; }
+
 
 		internal static VRC.UI.Elements.QuickMenu GetQuickMenu()
 		{
-			if (quickMenuCached == null)
+            if (quickMenuCached == null)
 			{
-				VRC.UI.Elements.QuickMenu[] array = Resources.FindObjectsOfTypeAll<VRC.UI.Elements.QuickMenu>();
-				if (array.Length != 0)
+                VRC.UI.Elements.QuickMenu[] array = Resources.FindObjectsOfTypeAll<VRC.UI.Elements.QuickMenu>();
+                if (array.Length != 0)
 				{
-					quickMenuCached = array[0];
+                    quickMenuCached = array[0];
 				}
 			}
 			return quickMenuCached;
 		}
+
+        public static MenuStateController MenuStateControllerInstance
+        {
+            get
+            {
+                if (menuStateController == null)
+                    menuStateController = QMInstance.GetComponent<MenuStateController>();
+                return menuStateController;
+            }
+        }
+
 
 		internal static UIPage GetMenuUIPage(QuickMenus menu)
 		{
@@ -273,39 +298,41 @@ namespace UnchainedButtonAPI
 
 		internal static void OpenMenu(string menuName, bool clearStackPage = false)
 		{
+			MenuStateController Controller = GetQuickMenu().prop_MenuStateController_0;
+
 			string text = menuName;
 			if (text == "QuickMenuSelectedUserLocal")
 			{
 				text = "QuickMenuHere";
 			}
-			for (int i = 0; i < GetQuickMenu().prop_MenuStateController_0.field_Public_ArrayOf_UIPage_0.Count; i++)
+			for (int i = 0; i < Controller.field_Public_ArrayOf_UIPage_0.Count; i++)
 			{
-				if (!(GetQuickMenu().prop_MenuStateController_0.field_Public_ArrayOf_UIPage_0[i] == null) && GetQuickMenu().prop_MenuStateController_0.field_Public_ArrayOf_UIPage_0[i].field_Public_String_0 == text)
+				if (!(Controller.field_Public_ArrayOf_UIPage_0[i] == null) && Controller.field_Public_ArrayOf_UIPage_0[i].field_Public_String_0 == text)
 				{
-					GetQuickMenu().prop_MenuStateController_0.ShowTabContent(i, clearStackPage);
+                    Controller.ShowTabContent(i, clearStackPage);
 					break;
 				}
 			}
 		}
-
-		internal static void AddMenuToController(QuickMenuNestedMenu nestedMenu)
+		/// <summary>method <c>AddMenuToController()</c> Afaik this adds 'pages' for each individual menu that the client needs, including nest pages for buttons</summary>
+		internal static void AddMenuToController(QuickMenuNestedMenu nestedMenu) //called from OnMenuInitialized with null
 		{
-			if (!QuickMenuPatches.HasMenuChangesBeenInitialized())
+			if (!QuickMenuPatches.HasMenuChangesBeenInitialized()) //checks if menu patches initialized, no way this can run afaik as the patch doesnt run the function that runs this if it fails
 			{
-				quickMenuQueuedChangesUIPage.Add(nestedMenu);
+				quickMenuQueuedChangesUIPage.Add(nestedMenu); 
 				return;
 			}
-			System.Collections.Generic.List<UIPage> list = GetQuickMenu().prop_MenuStateController_0.field_Public_ArrayOf_UIPage_0.ToList();
+			System.Collections.Generic.List<UIPage> list = GetQuickMenu().prop_MenuStateController_0.field_Public_ArrayOf_UIPage_0.ToList(); //makes list of UI pages
 			foreach (QuickMenuNestedMenu item in quickMenuQueuedChangesUIPage)
 			{
-				list.Add(item.uiPage);
+				list.Add(item.uiPage); //adds item to ui page foreach queued changes
 			}
-			if (nestedMenu != null)
+			if (nestedMenu != null) //does not run for OnMenuInitialized, only runs for QuickMenuNestedMenu()
 			{
-				list.Add(nestedMenu.uiPage);
+				list.Add(nestedMenu.uiPage); //adds nestedmenu to the uipage list
 			}
-			quickMenuQueuedChangesUIPage.Clear();
-			GetQuickMenu().prop_MenuStateController_0.field_Public_ArrayOf_UIPage_0 = list.ToArray();
+			quickMenuQueuedChangesUIPage.Clear(); //clears all queued changes to the uipage list
+			GetQuickMenu().prop_MenuStateController_0.field_Public_ArrayOf_UIPage_0 = list.ToArray(); //reassigns the modified list to the menu pages
 		}
 
 		internal static void RemoveMenuFromController(QuickMenuNestedMenu nestedMenu)
@@ -331,17 +358,17 @@ namespace UnchainedButtonAPI
 			{
 				if (quickMenuItem is QuickMenuNestedMenu quickMenuNestedMenu && quickMenuNestedMenu.uiPage == page)
 				{
-					quickMenuNestedMenu.OnMenuUnshown();
+					quickMenuNestedMenu.OnMenuUnshown(); //also does nothing
 				}
 			}
 		}
 
-		internal static void OnMenuInitialized()
+		internal static void OnMenuInitialized() //runs from menu patches
 		{
-			AddMenuToController(null);
-			foreach (QuickMenuButtonBase quickMenuItem in quickMenuItems)
+			AddMenuToController(null); //applies all the queued qm changes
+			foreach (QuickMenuButtonBase quickMenuItem in quickMenuItems) 
 			{
-				quickMenuItem.OnQuickMenuInitialized();
+				quickMenuItem.OnQuickMenuInitialized(); //does nothing afaik
 			}
 		}
 

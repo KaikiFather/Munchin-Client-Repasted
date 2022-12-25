@@ -1,8 +1,11 @@
+using System;
+using MunchenClient.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.UI.Core.Styles;
 using VRC.UI.Elements.Controls;
 using VRC.UI.Elements.Tooltips;
+using Object = UnityEngine.Object;
 
 namespace UnchainedButtonAPI
 {
@@ -10,34 +13,35 @@ namespace UnchainedButtonAPI
 	{
 		private MenuTab menuTab;
 
-		internal QuickMenuPageButton(QuickMenuNestedMenu menu, string text, string tooltip, Sprite icon)
+		internal QuickMenuPageButton(QuickMenuNestedMenu menu, string text, string tooltip, Sprite icon) //called by main menu cs to create client tab
 		{
-			InitializePageButton(QuickMenuUtils.GetQuickMenu().transform.Find("Container/Window/Page_Buttons_QM/HorizontalLayoutGroup"), menu.GetMenuName(), text, tooltip, icon);
-			SetAction(delegate
-			{
-				menu.ShowMenu();
-			});
+			Transform HLG = GameObject.Find("Canvas_QuickMenu(Clone)/CanvasGroup/Container/Window/Page_Buttons_QM/HorizontalLayoutGroup").transform;
+			//InitializePageButton(QuickMenuUtils.GetQuickMenu().transform.Find("Container/Window/Page_Buttons_QM/HorizontalLayoutGroup"), menu.GetMenuName(), text, tooltip, icon);
+            InitializePageButton(HLG, menu.GetMenuName(), text, tooltip, icon);
+
+            SetAction(delegate { menu.ShowMenu(); });
 		}
 
 		internal QuickMenuPageButton(string menuName, string text, string tooltip, Sprite icon)
 		{
-			InitializePageButton(QuickMenuUtils.GetQuickMenu().transform.Find("Container/Window/Page_Buttons_QM/HorizontalLayoutGroup"), "QuickMenu" + menuName, text, tooltip, icon);
+			//InitializePageButton(QuickMenuUtils.GetQuickMenu().transform.Find("Container/Window/Page_Buttons_QM/HorizontalLayoutGroup"), "QuickMenu" + menuName, text, tooltip, icon);
+			InitializePageButton(GameObject.Find("Container/Window/Page_Buttons_QM/HorizontalLayoutGroup").transform, "QuickMenu" + menuName, text, tooltip, icon);
 		}
 
 		private void InitializePageButton(Transform parent, string menuName, string text, string tooltip, Sprite icon)
 		{
-			buttonObject = Object.Instantiate(QuickMenuTemplates.GetPageButtonTemplate(), parent);
-			buttonObject.name = $"Page_{QuickMenuUtils.GetQuickMenuIdentifier()}{text}{QuickMenuUtils.GetQuickMenuUniqueIdentifier()}";
-			buttonHandler = buttonObject.GetComponent<Button>();
+            buttonObject = Object.Instantiate(QuickMenuTemplates.GetPageButtonTemplate(), parent);
+            buttonObject.name = $"Page_{QuickMenuUtils.GetQuickMenuIdentifier()}{text}{QuickMenuUtils.GetQuickMenuUniqueIdentifier()}";
+            buttonHandler = buttonObject.GetComponent<Button>();
 			buttonTooltip = buttonObject.GetComponent<VRC.UI.Elements.Tooltips.UiTooltip>();
-			menuTab = buttonObject.GetComponent<MenuTab>();
+            menuTab = buttonObject.GetComponent<MenuTab>();
 			menuTab.field_Public_String_0 = menuName;
-			GameObject gameObject = buttonObject.transform.Find("Icon").gameObject;
+            GameObject gameObject = buttonObject.transform.Find("Icon").gameObject;
 			Object.Destroy(gameObject.GetComponent<StyleElement>());
 			buttonBackground = gameObject.GetComponent<Image>();
-			buttonBackground.color = Color.white;
+            buttonBackground.color = Color.white;
 			buttonObject.transform.Find("Badge").gameObject.SetActive(value: false);
-			SetToolTip(tooltip);
+            SetToolTip(tooltip);
 			SetPageIcon(icon);
 			SetActive(active: true);
 		}

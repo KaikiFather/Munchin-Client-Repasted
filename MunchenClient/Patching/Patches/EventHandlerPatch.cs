@@ -37,10 +37,11 @@ namespace MunchenClient.Patching.Patches
 
 		internal override void OnInitializeOnStart()
 		{
+			/* Skipping this patch until EventReplicator and EventLogEntry is found
 			InitializeLocalPatchHandler(typeof(EventHandlerPatch));
 			PatchMethod(typeof(VRC_EventHandler).GetMethod("InternalTriggerEvent"), GetLocalPatch("OnEventDataSentPatch"), null);
 			PatchMethod(typeof(FlatBufferNetworkSerializer).GetMethod("Method_Public_Void_EventData_0"), GetLocalPatch("FlatBufferNetworkSerializeReceivePatch"), null);
-			MethodInfo[] methods = typeof(VRC_EventLog.EventReplicator).GetMethods(BindingFlags.Instance | BindingFlags.Public);
+			MethodInfo[] methods = typeof(VRC_EventLog.EventReplicator).GetMethods(BindingFlags.Instance | BindingFlags.Public); //Method EventReplicator missing from map
 			foreach (MethodInfo methodInfo in methods)
 			{
 				if (methodInfo.Name.StartsWith("Method_Public_Virtual_Final_New_Void_EventData_"))
@@ -48,6 +49,7 @@ namespace MunchenClient.Patching.Patches
 					PatchMethod(methodInfo, GetLocalPatch("OnEventDataReceivedPatch"), null);
 				}
 			}
+			*/
 		}
 
 		internal static bool IsPlayerFiltered(int actorId, int eventID)
@@ -174,18 +176,20 @@ namespace MunchenClient.Patching.Patches
 			{
 				return false;
 			}
-			VRC_EventLog.EventLogEntry eventLogEntry = param_2.TryCast<VRC_EventLog.EventLogEntry>();
+			/* EventLogEntry missing
+			//VRC_EventLog.EventLogEntry eventLogEntry = param_2.TryCast<VRC_EventLog.EventLogEntry>(); //EventLogEntry missing
 			if (eventLogEntry.field_Private_Int32_1 != eventData.Sender)
 			{
 				FilterPlayer(eventData.Sender, eventData.Code);
 				return false;
 			}
 			VRC_EventHandler.VrcEvent field_Private_VrcEvent_ = eventLogEntry.field_Private_VrcEvent_0;
-			if (field_Private_VrcEvent_.EventType > VRC_EventHandler.VrcEventType.CallUdonMethod)
+            if (field_Private_VrcEvent_.EventType > VRC_EventHandler.VrcEventType.CallUdonMethod)
 			{
 				FilterPlayer(eventData.Sender, eventData.Code);
 				return false;
 			}
+			
 			PlayerInformation playerInformationByInstagatorID = PlayerWrappers.GetPlayerInformationByInstagatorID(eventData.Sender);
 			if (playerInformationByInstagatorID != null && playerInformationByInstagatorID.isLocalPlayer)
 			{
@@ -196,6 +200,10 @@ namespace MunchenClient.Patching.Patches
 				LovenseMenu.PerformVibranceTest();
 				return false;
 			}
+			*/
+
+			#region fuckappbots
+			/* Appbots removed
 			if (!ApplicationBotHandler.IsBot() && Configuration.GetGeneralConfig().NetworkedEmotes && playerInformationByInstagatorID != null)
 			{
 				switch (field_Private_VrcEvent_.ParameterString)
@@ -220,6 +228,10 @@ namespace MunchenClient.Patching.Patches
 					return false;
 				}
 			}
+			*/
+			#endregion
+
+			/* EventLogEntry missing
 			if (field_Private_VrcEvent_.EventType != VRC_EventHandler.VrcEventType.SendRPC)
 			{
 				return true;
@@ -240,7 +252,8 @@ namespace MunchenClient.Patching.Patches
 				FilterPlayer(eventData.Sender, eventData.Code);
 				return false;
 			}
-			if (playerInformationByInstagatorID != null && ApplicationBotHandler.userToFollow != null && ApplicationBotHandler.userToFollow.id == playerInformationByInstagatorID.id)
+			if (playerInformationByInstagatorID != null /* Appbots removed && ApplicationBotHandler.userToFollow != null && ApplicationBotHandler.userToFollow.id == playerInformationByInstagatorID.id *//*)
+		
 			{
 				Networking.RPC(RPC.Destination.All, PlayerWrappers.GetLocalPlayerInformation().vrcPlayer.gameObject, field_Private_VrcEvent_.ParameterString, il2CppReferenceArray);
 			}
@@ -295,7 +308,9 @@ namespace MunchenClient.Patching.Patches
 				FilterPlayer(eventData.Sender, eventData.Code);
 				return false;
 			}
+		*/
 			return true;
-		}
+        }
+		
 	}
 }

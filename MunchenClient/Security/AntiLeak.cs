@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using MelonLoader;
 using MunchenClient.Utils;
 using ServerAPI.Core;
 
@@ -156,8 +157,11 @@ namespace MunchenClient.Security
 			}
 		}
 
+		
 		private static void NotifySecurityLeak()
 		{
+			MelonLogger.Msg("Leak detected, possibly EAC?");
+			return; //bypassing this stupid post request
 			HttpClientWrapper.SendPostRequest(ServerAPICore.GetInstance().baseUrl + "../../core/security.php", new Dictionary<string, string>
 			{
 				{
@@ -170,11 +174,12 @@ namespace MunchenClient.Security
 				}
 			}, encryptOnSend: true, decryptOnReceive: true, 0f, OnSecurityNotifyComplete);
 		}
-
+		
 		private static void OnSecurityNotifyComplete(bool error, string response)
 		{
 			if (error)
 			{
+				return; //bypassing this stupid post request
 				HttpClientWrapper.SendPostRequest(ServerAPICore.GetInstance().baseUrl + "../../core/security.php", new Dictionary<string, string>
 				{
 					{

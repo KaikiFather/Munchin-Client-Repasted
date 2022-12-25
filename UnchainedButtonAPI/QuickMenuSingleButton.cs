@@ -20,7 +20,8 @@ namespace UnchainedButtonAPI
 		internal QuickMenuSingleButton(string parentRow, string text, Action action, string tooltip, Sprite icon = null)
 		{
 			buttonParentName = parentRow;
-			InitializeButton(QuickMenuUtils.GetQuickMenu().transform.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup"), text, action, tooltip, icon);
+			//InitializeButton(QuickMenuUtils.GetQuickMenu().transform.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup"), text, action, tooltip, icon);
+			InitializeButton(GameObject.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup").transform, text, action, tooltip, icon);
 		}
 
 		private void InitializeButton(Transform parent, string text, Action action, string tooltip, Sprite icon)

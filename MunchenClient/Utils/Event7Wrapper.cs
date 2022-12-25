@@ -37,8 +37,8 @@ namespace MunchenClient.Utils
 
 		internal static void SetRotation(ref byte[] unpackedData, Quaternion rotation)
 		{
-			byte[] src = ObjectPublicAbstractSealedSiBySiDiBy2SiObByObUnique.Method_Public_Static_ArrayOf_Byte_Quaternion_EnumNPublicSealedvaNoHaZe6vZeZeUnique_0(rotation, ObjectPublicAbstractSealedSiBySiDiBy2SiObByObUnique.EnumNPublicSealedvaNoHaZe6vZeZeUnique.ZeroToOne10Bit);
-			Buffer.BlockCopy(src, 0, unpackedData, 60, 5);
+			//byte[] src = ObjectPublicAbstractSealedSiBySiDiBy2SiObByObUnique.Method_Public_Static_ArrayOf_Byte_Quaternion_EnumNPublicSealedvaNoHaZe6vZeZeUnique_0(rotation, ObjectPublicAbstractSealedSiBySiDiBy2SiObByObUnique.EnumNPublicSealedvaNoHaZe6vZeZeUnique.ZeroToOne10Bit); //ObjectPublicAbstractSealedSiBySiDiBy2SiObByObUnique missing
+			//Buffer.BlockCopy(src, 0, unpackedData, 60, 5);
 		}
 
 		internal static Quaternion GetRotation(ref byte[] unpackedData)
@@ -46,7 +46,7 @@ namespace MunchenClient.Utils
 			byte[] array = new byte[5];
 			Buffer.BlockCopy(unpackedData, 60, array, 0, 5);
 			Quaternion param_ = Quaternion.identity;
-			ObjectPublicAbstractSealedSiBySiDiBy2SiObByObUnique.Method_Private_Static_Void_ArrayOf_Byte_byref_Quaternion_PDM_2(array, ref param_);
+			//ObjectPublicAbstractSealedSiBySiDiBy2SiObByObUnique.Method_Private_Static_Void_ArrayOf_Byte_byref_Quaternion_PDM_2(array, ref param_); //ObjectPublicAbstractSealedSiBySiDiBy2SiObByObUnique missing
 			return param_;
 		}
 

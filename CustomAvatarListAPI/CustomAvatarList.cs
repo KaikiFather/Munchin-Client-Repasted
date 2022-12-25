@@ -1,5 +1,6 @@
 using System;
 using Il2CppSystem.Collections.Generic;
+using MelonLoader;
 using UnityEngine;
 using UnityEngine.UI;
 using VRC.Core;
@@ -22,7 +23,7 @@ namespace CustomAvatarListAPI
 			{
 				if (templateAvatarList == null)
 				{
-					Transform transform = GameObject.Find("/UserInterface/MenuContent/Screens/Avatar/Vertical Scroll View/Viewport").transform;
+					Transform transform = GameObject.Find("MenuContent/Screens/Avatar/Vertical Scroll View/Viewport").transform; //fixed for Guid change
 					GameObject gameObject = transform.Find("FavoriteListTemplate").gameObject;
 					GameObject gameObject2 = UnityEngine.Object.Instantiate(gameObject, transform.Find("Content"));
 					gameObject2.name = "MunchenFavoritesTemplate";
@@ -30,7 +31,7 @@ namespace CustomAvatarListAPI
 					Transform transform2 = gameObject2.transform.Find("Button");
 					transform2.GetComponentInChildren<Text>().text = "New List";
 					UiAvatarList component = gameObject2.GetComponent<UiAvatarList>();
-					component.field_Public_Category_0 = UiAvatarList.Category.SpecificList;
+					//component.field_Public_Category_0 = UiAvatarList.Category.SpecificList; //field_Public_Category_0 and 'Category' missing, likely due to big menu update
 					component.StopAllCoroutines();
 					gameObject2.SetActive(value: false);
 					templateAvatarList = component;
@@ -60,10 +61,13 @@ namespace CustomAvatarListAPI
 
 		internal static CustomAvatarList Create(string listName, int index, Action onButtonClick = null)
 		{
+			MelonLogger.Msg("Due to big menu update, Avatar lists and search are being skipped");
+			
 			CustomAvatarList customAvatarList = new CustomAvatarList
 			{
 				avatarListGameObj = UnityEngine.Object.Instantiate(AvatarListTemplate.gameObject, AvatarListTemplate.transform.parent)
 			};
+            return customAvatarList; //added to skip avatar lists, this might be fucky todo fully skip this in the future
 			customAvatarList.avatarListGameObj.gameObject.name = listName;
 			customAvatarList.avatarListGameObj.transform.SetSiblingIndex(index);
 			customAvatarList.avatarList = customAvatarList.avatarListGameObj.GetComponent<UiAvatarList>();

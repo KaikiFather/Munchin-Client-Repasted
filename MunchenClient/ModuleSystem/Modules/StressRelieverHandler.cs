@@ -20,7 +20,7 @@ namespace MunchenClient.ModuleSystem.Modules
 			rainAudioObject.name = "Munchen Rain";
 			rainAudioObject.layer = 19;
 			rainAudioObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-			rainAudioObject.transform.parent = GameObject.Find("UserInterface").transform;
+			rainAudioObject.transform.parent = GameObject.Find("MenuContent").transform; //adjusted for guid change
 			rainAudioSource = rainAudioObject.AddComponent<AudioSource>();
 			rainAudioSource.loop = true;
 			rainAudioSource.volume = 0.3f;

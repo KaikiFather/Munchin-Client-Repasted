@@ -111,7 +111,7 @@ namespace MunchenClient.ModuleSystem.Modules
 			if (isBot)
 			{
 				DisableAudioSystems();
-				goButton = GameObject.Find("UserInterface/MenuContent/Popups/LoadingPopup/ProgressPanel/Parent_Loading_Progress/GoButton");
+				goButton = GameObject.Find("MenuContent/Popups/LoadingPopup/ProgressPanel/Parent_Loading_Progress/GoButton");  //fixed for Guid change
 				MelonCoroutines.Start(CheckForVRChatLogin(10f));
 				GameObject gameObject = GameObject.Find("_Application");
 				gameObject.GetComponent<Screenshot>().enabled = false;
@@ -208,7 +208,7 @@ namespace MunchenClient.ModuleSystem.Modules
 		private static IEnumerator CheckForCaptcha()
 		{
 			yield return new WaitForSeconds(2f);
-			GameObject captcha = GameObject.Find("UserInterface/MenuContent/Popups/InputCaptchaPopup");
+			GameObject captcha = GameObject.Find("MenuContent/Popups/InputCaptchaPopup");  //fixed for Guid change
 			if (captcha.active)
 			{
 				ConsoleUtils.Info("Bot Client", "Input captcha required! Manual input required", System.ConsoleColor.Gray, "CheckForCaptcha", 242);
@@ -218,7 +218,7 @@ namespace MunchenClient.ModuleSystem.Modules
 		private static IEnumerator CheckForVRChatLogin(float waitTime)
 		{
 			yield return new WaitForSeconds(waitTime);
-			GameObject loginPrompt = GameObject.Find("UserInterface/MenuContent/Screens/Authentication/StoreLoginPrompt");
+			GameObject loginPrompt = GameObject.Find("MenuContent/Screens/Authentication/StoreLoginPrompt"); //adjusted for guid change
 			if (loginPrompt.activeInHierarchy)
 			{
 				ConsoleUtils.Info("Bot Client", "Login required! Starting bot will take longer than usual", System.ConsoleColor.Gray, "CheckForVRChatLogin", 256);

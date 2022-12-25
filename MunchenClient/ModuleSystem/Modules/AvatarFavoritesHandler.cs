@@ -57,7 +57,7 @@ namespace MunchenClient.ModuleSystem.Modules
 			}
 			MainClientMenu.userProfileAvatarsSaved.SetButtonText(favoriteAvatars.Count.ToString());
 			MainClientMenu.userProfileAvatarsSaved.SetToolTip($"You currently got {favoriteAvatars.Count} avatars saved");
-			avatarPage = GameObject.Find("UserInterface/MenuContent/Screens/Avatar");
+			avatarPage = GameObject.Find("MenuContent/Screens/Avatar");  //fixed for Guid change
 			avatarFavoriteStateButton = CustomMenuButton.Create(LanguageManager.GetUsedLanguage().FavoriteAvatar, 820f, 9.59f, OnAvatarStateFavorited);
 			favoriteAvatarList.GetAvatarList().field_Public_SimpleAvatarPedestal_0.field_Internal_Action_4_String_GameObject_AvatarPerformanceStats_ObjectPublicBoBoBoBoBoBoBoBoBoBoUnique_0 = (Il2CppSystem.Action<string, GameObject, AvatarPerformanceStats, ObjectPublicBoBoBoBoBoBoBoBoBoBoUnique>)(System.Action<string, GameObject, AvatarPerformanceStats, ObjectPublicBoBoBoBoBoBoBoBoBoBoUnique>)OnAvatarInMenuClicked;
 			CustomMenuButton.Create(LanguageManager.GetUsedLanguage().AddAvatarByID, 1160f, 9.59f, delegate

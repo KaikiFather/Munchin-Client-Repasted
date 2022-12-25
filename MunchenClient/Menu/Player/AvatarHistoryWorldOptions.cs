@@ -14,7 +14,7 @@ namespace MunchenClient.Menu.Player
 		{
 			PlayerUtils.ChangePlayerAvatar(Configuration.GetAvatarHistoryConfig().AvatarHistory[avatarIndex].ID, logErrorOnHud: true);
 		}
-
+		/*
 		internal void UseOnBots()
 		{
 			if (ApplicationBotHandler.IsBotsFullyConnected())
@@ -22,7 +22,7 @@ namespace MunchenClient.Menu.Player
 				ApplicationBotHandler.SendCommandToBots("ChangeAvatar:" + Configuration.GetAvatarHistoryConfig().AvatarHistory[avatarIndex].ID);
 			}
 		}
-
+		*/
 		internal void RemoveInstanceFromList()
 		{
 			Configuration.GetAvatarHistoryConfig().AvatarHistory.RemoveAt(avatarIndex);
@@ -38,10 +38,12 @@ namespace MunchenClient.Menu.Player
 			{
 				SwitchToAvatar();
 			}, LanguageManager.GetUsedLanguage().AvatarHistoryOptionsSwitchDescription);
+			/* bots removed
 			new QuickMenuSingleButton(parentRow, LanguageManager.GetUsedLanguage().AvatarHistoryOptionsBots, delegate
 			{
 				UseOnBots();
 			}, LanguageManager.GetUsedLanguage().AvatarHistoryOptionsBotsDescription);
+			*/
 			new QuickMenuSingleButton(parentRow, LanguageManager.GetUsedLanguage().AvatarHistoryOptionsRemove, delegate
 			{
 				RemoveInstanceFromList();

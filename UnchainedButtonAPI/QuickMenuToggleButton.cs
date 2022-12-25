@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using MunchenClient.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,9 +9,10 @@ using VRC.UI.Elements.Tooltips;
 
 namespace UnchainedButtonAPI
 {
+	//todo Find new tooltip in map
 	internal class QuickMenuToggleButton : QuickMenuButtonBase
 	{
-		private UiToggleTooltip toggleTooltip;
+		private UIToggleTooltip toggleTooltip; //Map missing UiToggleTooltip, probably due to Menu Update.
 
 		private Toggle toggleHandler;
 
@@ -31,17 +34,18 @@ namespace UnchainedButtonAPI
 			InitializeButton(parentRow.GetGameObject().transform, text, state, actionOn, tooltipOn, actionOff, tooltipOff);
 		}
 
-		internal QuickMenuToggleButton(string parentRow, string text, bool state, Action actionOn, string tooltipOn, Action actionOff, string tooltipOff)
+		internal QuickMenuToggleButton(string parentRow, string text, bool state, Action actionOn, string tooltipOn, Action actionOff, string tooltipOff) //zero refs
 		{
 			buttonParentName = parentRow;
-			InitializeButton(QuickMenuUtils.GetQuickMenu().transform.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup"), text, state, actionOn, tooltipOn, actionOff, tooltipOff);
+			//InitializeButton(QuickMenuUtils.GetQuickMenu().transform.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup"), text, state, actionOn, tooltipOn, actionOff, tooltipOff);
+			InitializeButton(GameObject.Find(parentRow + "/ScrollRect/Viewport/VerticalLayoutGroup").transform, text, state, actionOn, tooltipOn, actionOff, tooltipOff);
 		}
 
 		private void InitializeButton(Transform parent, string text, bool state, Action actionOn, string tooltipOn, Action actionOff, string tooltipOff)
 		{
-			buttonObject = UnityEngine.Object.Instantiate(QuickMenuTemplates.GetToggleButtonTemplate(), parent);
+			buttonObject = UnityEngine.Object.Instantiate(QuickMenuTemplates.GetToggleButtonTemplate(), parent); //ERROR
 			buttonObject.name = $"Button_Toggle{QuickMenuUtils.GetQuickMenuIdentifier()}{text}{QuickMenuUtils.GetQuickMenuUniqueIdentifier()}";
-			toggleTooltip = buttonObject.GetComponent<UiToggleTooltip>();
+			toggleTooltip = buttonObject.GetComponent<UIToggleTooltip>(); //Map missing UiToggleTooltip, probably due to Menu Update.//Map missing UiToggleTooltip, probably due to Menu Update.
 			toggleHandler = buttonObject.GetComponent<Toggle>();
 			toggleText = text;
 			buttonText = buttonObject.transform.Find("Text_H4").GetComponentInChildren<TextMeshProUGUI>();
@@ -65,7 +69,10 @@ namespace UnchainedButtonAPI
 
 		internal void SetToggleToolTip(string tooltipOn, string tooltipOff)
 		{
-			toggleTooltip.field_Public_String_0 = tooltipOff;
+            //buttonObject.GetComponents<UIToggleTooltip>().ToList().ForEach(x => x.field_Public_String_0 = tooltipOn);
+            //buttonObject.GetComponents<UIToggleTooltip>().ToList().ForEach(x => x.field_Public_String_1 = tooltipOff);
+
+			toggleTooltip.field_Public_String_0 = tooltipOff; //Map missing UiToggleTooltip, probably due to Menu Update.
 			toggleTooltip.field_Public_String_1 = tooltipOn;
 		}
 
@@ -77,11 +84,11 @@ namespace UnchainedButtonAPI
 
 		internal void SetToggleState(bool state)
 		{
-			if (state != toggleHandler.isOn)
+            if (state != toggleHandler.isOn)
 			{
 				toggleTempDisableActions = true;
 				toggleHandler.Set(state);
-				toggleTooltip.field_Private_Boolean_1 = !state;
+				toggleTooltip.field_Private_Boolean_1 = !state; //Map missing UiToggleTooltip, probably due to Menu Update
 				toggleTempDisableActions = false;
 			}
 			UpdateToggleVisuals();

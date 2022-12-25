@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace MunchenClient.Core
 {
-	internal class AssetLoader
+    
+	internal static class AssetLoader
 	{
 		private static readonly Dictionary<string, object> assetCache = new Dictionary<string, object>();
 
@@ -16,6 +17,18 @@ namespace MunchenClient.Core
 			cachedAssetBundle = AssetBundle.LoadFromMemory_Internal(File.ReadAllBytes(filePath), 0u);
 			cachedAssetBundle.hideFlags |= HideFlags.DontUnloadUnusedAsset;
 		}
+
+        internal static Sprite LoadSpriteFromDisk(this string path)
+        {
+            if (string.IsNullOrEmpty(path)) { return null; }
+            byte[] data = File.ReadAllBytes(path);
+            if (data == null || data.Length <= 0) { return null; }
+            Texture2D tex = new Texture2D(512, 512);
+            if (!Il2CppImageConversionManager.LoadImage(tex, data)) { return null; } //this doesnt exist in this project somehow??
+            Sprite sprite = Sprite.CreateSprite(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 0, 0, new Vector4(), false);
+            sprite.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+            return sprite;
+        }
 
 		internal static Texture2D LoadTexture(string textureName)
 		{
