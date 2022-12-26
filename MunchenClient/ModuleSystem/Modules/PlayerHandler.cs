@@ -42,7 +42,7 @@ namespace MunchenClient.ModuleSystem.Modules
 
 		private bool didMidJump = false;
 
-		private VRCInput jumpInput = null;
+		private VRCInput jumpInput;
 
 		private bool didJump = false;
 
@@ -171,13 +171,13 @@ namespace MunchenClient.ModuleSystem.Modules
 				}
 				if (!GeneralUtils.flight)
 				{
-					if (Configuration.GetGeneralConfig().Jetpack && jumpInput.prop_Boolean_1)
+					if (Configuration.GetGeneralConfig().Jetpack && VRCInputManager.Method_Public_Static_VRCInput_String_0("Jump").prop_Single_2 == 1f)
 					{
-						Vector3 velocity = localPlayerInformation.playerApi.GetVelocity();
-						velocity.y = localPlayerInformation.input.field_Public_Single_3;
-						localPlayerInformation.playerApi.SetVelocity(velocity);
-					}
-					if (Configuration.GetGeneralConfig().AutoBhop && localPlayerInformation.IsGrounded() && jumpInput.prop_Boolean_1)
+                        var velocity = Networking.LocalPlayer.GetVelocity();
+                        velocity.y = Networking.LocalPlayer.GetJumpImpulse();
+                        Networking.LocalPlayer.SetVelocity(velocity);
+                    }
+					if (Configuration.GetGeneralConfig().AutoBhop && localPlayerInformation.IsGrounded() && VRCInputManager.Method_Public_Static_VRCInput_String_0("Jump").prop_Single_2 == 1f)
 					{
 						Vector3 velocity2 = localPlayerInformation.playerApi.GetVelocity();
 						velocity2.y = localPlayerInformation.input.field_Public_Single_3;
