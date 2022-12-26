@@ -2,6 +2,9 @@ using System.Linq;
 using System.Reflection;
 using ActionMenuAPI;
 using UnhollowerRuntimeLib.XrefScans;
+using HarmonyLib;
+using static MunchenClient.Core.MunchenClientLocal;
+using MunchenClient.Core;
 
 namespace MunchenClient.Patching.Patches
 {
@@ -11,13 +14,13 @@ namespace MunchenClient.Patching.Patches
 
 		internal override void OnInitializeOnStart()
 		{
-			InitializeLocalPatchHandler(typeof(ActionMenuPatch));
-			PatchMethod(typeof(ActionMenu).GetMethods().FirstOrDefault((MethodInfo it) => XrefScanner.XrefScan(it).Any((XrefInstance jt) => jt.Type == XrefType.Global && jt.ReadAsObject()?.ToString() == "Emojis")), null, GetLocalPatch("OpenMainPage"));
-		}
+            _Harmony.Patch(typeof(PedalOption).GetMethod(nameof(PedalOption.Start)),
+                postfix: new HarmonyMethod(typeof(ActionMenuPatch), nameof(ActionMenuPatch.OpenMainPage)));
+        }
 
-		private static void OpenMainPage(ActionMenu __instance)
+		private static void OpenMainPage(PedalOption __instance)
 		{
-			CustomActionMenu.OpenMainPage(__instance);
+			CustomActionMenu.OpenMainPage(__instance.field_Public_ActionMenu_0);
 		}
 	}
 }

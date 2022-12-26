@@ -6,9 +6,12 @@ namespace MunchenClient.Core
 {
 	public class MunchenClientLocal : MelonMod
 	{
-		public override void OnApplicationStart()
+		public static HarmonyLib.Harmony _Harmony;
+
+        public override void OnApplicationStart()
 		{
-			HttpClient httpClient = new HttpClient();
+            _Harmony = HarmonyInstance;
+            HttpClient httpClient = new HttpClient();
 			httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36");
 			httpClient.DefaultRequestHeaders.Add("Client-Agent", "MunchenClient/1.0 (VRChatMansionGang)");
 			MunchenClient.OnApplicationStart(httpClient, new List<string> { "beta", "specialBenefits" }, "DEBUGMODE", debugMode: true);

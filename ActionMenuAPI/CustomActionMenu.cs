@@ -48,8 +48,7 @@ namespace ActionMenuAPI
 				{
 					foreach (ActionMenuButton button in buttons)
 					{
-						/* Commented until Method_Private_PedalOption_0 replacement is found
-						PedalOption pedalOption = GetActionMenuOpener().field_Public_ActionMenu_0.Method_Private_PedalOption_0(); //Method_Private_PedalOption_0 does not exist, possible fix Method_Private_Void_PedalOption_0 requires parameter
+					   PedalOption pedalOption = GetActionMenuOpener().field_Public_ActionMenu_0.Method_Public_PedalOption_0();
 						pedalOption.prop_String_0 = button.buttonText;
 						pedalOption.field_Public_Func_1_Boolean_0 = DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(button.buttonAction);
 						if (button.buttonIcon != null)
@@ -57,7 +56,7 @@ namespace ActionMenuAPI
 							pedalOption.Method_Public_Virtual_Final_New_Void_Texture2D_0(button.buttonIcon);
 						}
 						button.currentPedalOption = pedalOption;
-						*/
+
 					}
 				});
 			}
@@ -141,26 +140,44 @@ namespace ActionMenuAPI
 			return null;
 		}
 
-		internal static void OpenMainPage(ActionMenu menu)
-		{
-			activeActionMenu = menu;
-			if (Configuration.GetGeneralConfig().DisableActionMenuIntegration)
-			{
-				return;
-			}
-			foreach (ActionMenuButton mainMenuButton in mainMenuButtons)
-			{
-				/* Commented until Method_Private_PedalOption_0 replacement is found
-				PedalOption pedalOption = activeActionMenu.Method_Private_PedalOption_0(); //Method_Private_PedalOption_0 does not exist, possible fix Method_Private_Void_PedalOption_0 requires parameter
-				pedalOption.prop_String_0 = mainMenuButton.buttonText;
-				pedalOption.field_Public_Func_1_Boolean_0 = DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(mainMenuButton.buttonAction);
-				if (mainMenuButton.buttonIcon != null)
-				{
-					pedalOption.Method_Public_Virtual_Final_New_Void_Texture2D_0(mainMenuButton.buttonIcon);
-				}
-				mainMenuButton.currentPedalOption = pedalOption;
-				*/
-			}
-		}
-	}
+        internal static void OpenMainPage(ActionMenu menu)
+        {
+            activeActionMenu = menu;
+            if (Configuration.GetGeneralConfig().DisableActionMenuIntegration)
+            {
+                return;
+            }
+            foreach (ActionMenuButton mainMenuButton in mainMenuButtons)
+            {
+                bool isMain = false; //isMain is used to determine if the Action Menu is the main menu or not.
+                bool isGay = false; //True if the pedal is already in the menu.
+                foreach (var pedal in activeActionMenu.field_Private_List_1_PedalOption_0)
+                {
+                    if (pedal.prop_String_0 == mainMenuButton.buttonText)
+                    {
+                        mainMenuButton.currentPedalOption = pedal;
+                        isGay = true;
+                    }
+                    if (pedal.prop_String_0 == "Emojis")
+                    {
+                        isMain = true;
+                    }
+                }
+                if (!isMain)
+                    return;
+
+                if (!isGay)
+                {
+                    PedalOption pedalOption = GetActionMenuOpener().field_Public_ActionMenu_0.Method_Public_PedalOption_0();
+                    pedalOption.prop_String_0 = mainMenuButton.buttonText;
+                    pedalOption.field_Public_Func_1_Boolean_0 = DelegateSupport.ConvertDelegate<Il2CppSystem.Func<bool>>(mainMenuButton.buttonAction);
+                    if (mainMenuButton.buttonIcon != null)
+                    {
+                        pedalOption.Method_Public_Virtual_Final_New_Void_Texture2D_0(mainMenuButton.buttonIcon);
+                    }
+                    mainMenuButton.currentPedalOption = pedalOption;
+                }
+            }
+        }
+    }
 }
