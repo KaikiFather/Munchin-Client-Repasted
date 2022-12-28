@@ -170,43 +170,51 @@ namespace MunchenClient.Patching.Patches
 
 		internal static bool IsUdonOkayToRun(GameObject udonObject, Player sender)
 		{
-			if (!Configuration.GetGeneralConfig().AntiWorldTriggers)
-			{
-				return true;
-			}
-			string key = WorldUtils.GetCurrentWorld()?.id;
-			if (worldFilters.ContainsKey(key))
-			{
-				switch (worldFilters[key].worldType)
-				{
-				case WorldTriggerType.NotNetworked:
-					return false;
-				case WorldTriggerType.MasterOnlyNetworked:
-					if (!sender.prop_VRCPlayerApi_0.isMaster)
-					{
-						return false;
-					}
-					break;
-				case WorldTriggerType.PartiallyNetworked:
-					if (!worldFilters[key].objectType.ContainsKey(udonObject.name))
-					{
-						break;
-					}
-					switch (worldFilters[key].objectType[udonObject.name])
-					{
-					case ObjectTriggerType.LocalOnly:
-						return false;
-					case ObjectTriggerType.MasterOnly:
-						if (!sender.prop_VRCPlayerApi_0.isMaster)
-						{
-							return false;
-						}
-						break;
-					}
-					return false;
-				}
-			}
-			return true;
+            try {
+                if (!Configuration.GetGeneralConfig().AntiWorldTriggers)
+                {
+                    return true;
+                }
+
+                string key = WorldUtils.GetCurrentWorld()?.id;
+                if (worldFilters.ContainsKey(key))
+                {
+                    switch (worldFilters[key].worldType)
+                    {
+                        case WorldTriggerType.NotNetworked:
+                            return false;
+                        case WorldTriggerType.MasterOnlyNetworked:
+                            if (!sender.prop_VRCPlayerApi_0.isMaster)
+                            {
+                                return false;
+                            }
+
+                            break;
+                        case WorldTriggerType.PartiallyNetworked:
+                            if (!worldFilters[key].objectType.ContainsKey(udonObject.name))
+                            {
+                                break;
+                            }
+
+                            switch (worldFilters[key].objectType[udonObject.name])
+                            {
+                                case ObjectTriggerType.LocalOnly:
+                                    return false;
+                                case ObjectTriggerType.MasterOnly:
+                                    if (!sender.prop_VRCPlayerApi_0.isMaster)
+                                    {
+                                        return false;
+                                    }
+
+                                    break;
+                            }
+
+                            return false;
+                    }
+                }
+
+                return true;
+            } catch { MelonLogger.Msg("Udon Check triggered exception, report world to swordsith to investigate");return false; }
 		}
 	}
 }
