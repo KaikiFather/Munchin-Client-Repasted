@@ -26,5 +26,5 @@ Anybody else who’s contributed to Münchin
 (Directly or indirectly)
 This source would not exist without the I’m sure many people who have contributed to this mega melon mod, And I’m sorry I cannot list you all here, if you can find me on discord dm me (with proof) and I will add you here.
 
-#### NotZetrex 
+#### -name removed at user request- 
 Contributed fixes for the ActionMenuAPI thank you loads dude.
