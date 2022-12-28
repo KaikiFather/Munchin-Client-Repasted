@@ -87,8 +87,8 @@ namespace MunchenClient.Patching.Patches
 			TextMeshProUGUI textMeshProUGUI = null;
 			try //total hours wasted debugging this code: 6
 			{
-                MonoBehaviourPublic95VoUnique[] PlateManager = UnityEngine.Object.FindObjectsOfType<MonoBehaviourPublic95VoUnique>();
-				foreach (MonoBehaviourPublic95VoUnique NameplateContainer in PlateManager)
+                NameplateManager[] PlateManager = UnityEngine.Object.FindObjectsOfType<NameplateManager>();
+				foreach (NameplateManager NameplateContainer in PlateManager)
                 {
                     found = false;
 					for (int i = 0; i < PlateManager.Length; i++)
