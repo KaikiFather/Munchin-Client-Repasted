@@ -214,7 +214,7 @@ namespace MunchenClient.Patching.Patches
                 }
 
                 return true;
-            } catch { MelonLogger.Msg("Udon Check triggered exception, report world to swordsith to investigate");return false; }
+            } catch { MelonLogger.Msg("Udon Check triggered exception, report world to swordsith to investigate"); return false; }
 		}
 	}
 }

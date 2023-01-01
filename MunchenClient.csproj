@@ -418,7 +418,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "E:\SteamLibrary\steamapps\common\VRChat\Mods\MünchenClient.dll"</PostBuildEvent>
   </PropertyGroup>
 </Project>

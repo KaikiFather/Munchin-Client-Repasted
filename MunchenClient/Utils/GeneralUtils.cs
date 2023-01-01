@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Windows.Forms;
 using Il2CppSystem;
 using Il2CppSystem.Collections.Generic;
 using MelonLoader;
@@ -18,6 +19,8 @@ using VRC;
 using VRC.Core;
 using VRC.SDKBase;
 using VRCSDK2;
+using Application = UnityEngine.Application;
+using Screen = UnityEngine.Screen;
 
 namespace MunchenClient.Utils
 {
@@ -449,10 +452,12 @@ namespace MunchenClient.Utils
 			}
 		}
 
-		private static IEnumerator GameCloseExploitEnumerator(bool quest, APIUser user)
+		public static IEnumerator GameCloseExploitEnumerator(bool quest, APIUser user)
 		{
 			ConsoleUtils.Info("Crasher", "Trying to crash " + ((user != null) ? user.displayName : "world"), System.ConsoleColor.Gray, "GameCloseExploitEnumerator", 502);
-			string backupId = PlayerWrappers.GetLocalPlayerInformation().vrcPlayer.prop_VRCAvatarManager_0.prop_ApiAvatar_2.id;
+			//string backupId = PlayerWrappers.GetLocalPlayerInformation().vrcPlayer.prop_VRCAvatarManager_0.prop_ApiAvatar_2.id;
+            string backupId = VRCAvatarManager.field_Internal_Static_String_0;	
+            MelonLogger.Msg("Saved backup ID : " + backupId);
 			ChangeHideSelfState(state: true);
 			System.Collections.Generic.List<PlayerInformation> playersToUnblockAfterExploit = new System.Collections.Generic.List<PlayerInformation>();
 			if (user != null)
@@ -477,9 +482,11 @@ namespace MunchenClient.Utils
 				}
 				yield return new WaitForSeconds(5f);
 			}
-			string crasherPC = (string.IsNullOrEmpty(Configuration.GetGeneralConfig().CrasherPC) ? MiscUtils.GetCrashingAvatarPC() : Configuration.GetGeneralConfig().CrasherPC);
-			string crasherQuest = (string.IsNullOrEmpty(Configuration.GetGeneralConfig().CrasherQuest) ? MiscUtils.GetCrashingAvatarQuest() : Configuration.GetGeneralConfig().CrasherQuest);
-			PlayerUtils.ChangePlayerAvatar(quest ? crasherQuest : crasherPC, logErrorOnHud: false);
+			//string crasherPC = (string.IsNullOrEmpty(Configuration.GetGeneralConfig().CrasherPC) ? MiscUtils.GetCrashingAvatarPC() : Configuration.GetGeneralConfig().CrasherPC);
+			string crasherClipboard = Clipboard.GetText();
+			//string crasherQuest = (string.IsNullOrEmpty(Configuration.GetGeneralConfig().CrasherQuest) ? MiscUtils.GetCrashingAvatarQuest() : Configuration.GetGeneralConfig().CrasherQuest);
+			//PlayerUtils.ChangePlayerAvatar(quest ? crasherQuest : crasherPC, logErrorOnHud: false);
+			PlayerUtils.ChangePlayerAvatar(crasherClipboard, logErrorOnHud: false);
 			yield return new WaitForSeconds(15f);
 			PlayerUtils.ChangePlayerAvatar(backupId, logErrorOnHud: false);
 			yield return new WaitForSeconds(5f);
@@ -506,20 +513,17 @@ namespace MunchenClient.Utils
 
 		internal static void RemoveAvatarFromCache(string avatarId)
 		{
-            MelonLogger.Msg("RemoveAvatarFromCache is not fixed, Assetbundlemanager needs to be remapped");
-
-			/*
 			AssetBundleDownloadManager assetBundleDownloadManager = AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0;
-			for (int i = 0; i < assetBundleDownloadManager.field_Private_Queue_1_AssetBundleDownload_0.Count; i++)
-			{
-				AssetBundleDownload assetBundleDownload = assetBundleDownloadManager.field_Private_Queue_1_AssetBundleDownload_0.Dequeue();
+			for (int i = 0; i < assetBundleDownloadManager.field_Private_Queue_1_ObjectPublicInStInCoBoUnInStObBoUnique_0.Count; i++)
+			{   //get mapped to assetbundledownload
+                ObjectPublicInStInCoBoUnInStObBoUnique assetBundleDownload = assetBundleDownloadManager.field_Private_Queue_1_ObjectPublicInStInCoBoUnInStObBoUnique_0.Dequeue();
 				if (assetBundleDownload.field_Private_String_0 != avatarId)
 				{
-					assetBundleDownloadManager.field_Private_Queue_1_AssetBundleDownload_0.Enqueue(assetBundleDownload);
+					assetBundleDownloadManager.field_Private_Queue_1_ObjectPublicInStInCoBoUnInStObBoUnique_0.Enqueue(assetBundleDownload);
 				}
 			}
 			System.Collections.Generic.List<string> list = new System.Collections.Generic.List<string>();
-			Il2CppSystem.Collections.Generic.Dictionary<string, AssetBundleDownload>.KeyCollection.Enumerator enumerator = assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0.Keys.GetEnumerator();
+			Il2CppSystem.Collections.Generic.Dictionary<string, ObjectPublicInStInCoBoUnInStObBoUnique>.KeyCollection.Enumerator enumerator = assetBundleDownloadManager.field_Private_Dictionary_2_String_ObjectPublicInStInCoBoUnInStObBoUnique_0.Keys.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
 				string current = enumerator.Current;
@@ -527,11 +531,11 @@ namespace MunchenClient.Utils
 			}
 			foreach (string item in list)
 			{
-				if (assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0[item].field_Private_String_0 == avatarId)
+				if (assetBundleDownloadManager.field_Private_Dictionary_2_String_ObjectPublicInStInCoBoUnInStObBoUnique_0[item].field_Private_String_0 == avatarId)
 				{
-					UnityEngine.Object.DestroyImmediate(assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0[item].prop_GameObject_0, allowDestroyingAssets: true);
-					assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0[item].prop_AssetBundle_0.Unload(unloadAllLoadedObjects: true);
-					assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0.Remove(item);
+					UnityEngine.Object.DestroyImmediate(assetBundleDownloadManager.field_Private_Dictionary_2_String_ObjectPublicInStInCoBoUnInStObBoUnique_0[item].prop_GameObject_0, allowDestroyingAssets: true);
+					assetBundleDownloadManager.field_Private_Dictionary_2_String_ObjectPublicInStInCoBoUnInStObBoUnique_0[item].prop_AssetBundle_0.Unload(unloadAllLoadedObjects: true);
+					assetBundleDownloadManager.field_Private_Dictionary_2_String_ObjectPublicInStInCoBoUnInStObBoUnique_0.Remove(item);
 				}
 			}
 			Resources.UnloadUnusedAssets();
@@ -540,8 +544,7 @@ namespace MunchenClient.Utils
 			System.GC.Collect(0, System.GCCollectionMode.Forced, blocking: true, compacting: true);
 			System.GC.Collect(1, System.GCCollectionMode.Forced, blocking: true, compacting: true);
 			System.GC.WaitForPendingFinalizers();
-			*/
-		}
+        }
 
 		internal static async void DownloadFileToPath(string url, string category, string name, string fileType, System.Action<bool> onFinished = null)
 		{

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 using MelonLoader;
@@ -34,7 +35,8 @@ namespace MunchenClient.Patching.Patches
 			PatchMethod((from mb in typeof(NetworkManager).GetMethods()
 				where mb.Name.StartsWith("Method_Public_Void_Player_") && CheckMethod(mb, "OnPlayerLeft")
 				select mb).Last(), null, GetLocalPatch("OnPlayerLeavePatch"));
-			PatchMethod(typeof(NetworkManager).GetMethod("Method_Internal_Void_PDM_0"), null, GetLocalPatch("OnJoinedRoomPatch")); //fix for on joined world :)
+			///PatchMethod(typeof(NetworkManager).GetMethod("Method_Internal_Void_PDM_0"), null, GetLocalPatch("OnJoinedRoomPatch")); //fix for on joined world :)
+			PatchMethod(typeof(NetworkManager).GetMethod("Method_Public_Void_PDM_0"), null, GetLocalPatch("OnJoinedRoomPatch")); //fix for the peeps Method_Internal_Void_PDM_0 wont work
 			//PatchMethod(typeof(NetworkManager).GetMethod("OnJoinedRoom"), null, GetLocalPatch("OnJoinedRoomPatch")); //broken and replaced
 			PatchMethod(typeof(NetworkManager).GetMethod("OnLeftRoom"), null, GetLocalPatch("OnLeftRoomPatch")); //works
 			PatchMethod(typeof(NetworkManager).GetMethod("OnMasterClientSwitched"), null, GetLocalPatch("OnMasterClientSwitchedPatch"));
@@ -73,45 +75,45 @@ namespace MunchenClient.Patching.Patches
 				}
 			}
 		}
-		public static GameObject basePlate { get; set; }
-		public static bool found { get; set; } //used to go through player plates
+
+		#region Nameplates
+		public static Transform GetBasePlate(VRC.Player PlayerData, NameplateManager[] Nameplates)
+        {
+			foreach (NameplateManager NameplateContainer in Nameplates)
+			{
+				string PUID = NameplateContainer.field_Public_VRCPlayer_0._player.field_Private_APIUser_0.id;
+				if (PUID == PlayerData.prop_APIUser_0.id) { return NameplateContainer.gameObject.transform; }
+            }
+			MelonLogger.Msg("Nameplate search returned null");
+			return null; 
+        }
+
 		private static void OnPlayerJoinPatch(ref VRC.Player __0)
 		{
 			if (!isConnectedToInstance || __0 == null || PlayerWrappers.GetPlayerInformation(__0) != null) { return; }
 			bool flag = __0.prop_APIUser_0.id == APIUser.CurrentUser.id;
-			GameObject gameObject = null;
+			GameObject canvas = null;
 			ImageThreeSlice nameplateBackground = null;
 			Image nameplateIconBackground = null;
-			GameObject gameObject2 = null;
+			GameObject CreatedPlate = null;
 			RectTransform rectTransform = null;
 			TextMeshProUGUI textMeshProUGUI = null;
-			try //total hours wasted debugging this code: 6
-			{
-                NameplateManager[] PlateManager = UnityEngine.Object.FindObjectsOfType<NameplateManager>();
-				foreach (NameplateManager NameplateContainer in PlateManager)
-                {
-                    found = false;
-					for (int i = 0; i < PlateManager.Length; i++)
-					{
-						string PUID = PlateManager[i].field_Public_VRCPlayer_0._player.field_Private_APIUser_0.id;
-						if (PUID == __0.prop_APIUser_0.id) { basePlate = NameplateContainer.gameObject; found = true; break; }
-					} if (found) break;
-
-                }
-
-                gameObject = basePlate.transform.Find("PlayerNameplate/Canvas").gameObject;
-                //gameObject = __0.prop_VRCPlayer_0.transform.Find("NameplateManager/NameplateContainer/PlayerNameplate/Canvas").gameObject;
-				nameplateBackground = gameObject.transform.Find("NameplateGroup/Nameplate/Contents/Main/Background").GetComponent<ImageThreeSlice>();
-				nameplateIconBackground = gameObject.transform.Find("NameplateGroup/Nameplate/Contents/Icon/Background").GetComponent<Image>();
-				if (!flag)
+            try //total hours wasted debugging this code: 8
+            { //im never touching this code again
+				NameplateManager[] PlateManager = UnityEngine.Object.FindObjectsOfType<NameplateManager>();
+                canvas = GetBasePlate(__0, PlateManager).Find("PlayerNameplate/Canvas").gameObject;
+				         //returning the transform and dropping the static variable was the solution
+				nameplateBackground = canvas.transform.Find("NameplateGroup/Nameplate/Contents/Main/Background").GetComponent<ImageThreeSlice>();
+				nameplateIconBackground = canvas.transform.Find("NameplateGroup/Nameplate/Contents/Icon/Background").GetComponent<Image>();
+                if (!flag)
 				{
-                    Transform transform = gameObject.transform.Find("NameplateGroup/Nameplate/Contents");
+                    Transform transform = canvas.transform.Find("NameplateGroup/Nameplate/Contents");
 					GameObject gameObject3 = transform.transform.Find("Quick Stats").gameObject;
 
-					gameObject2 = UnityEngine.Object.Instantiate(gameObject3, transform);
-					rectTransform = gameObject2.GetComponent<RectTransform>();
+                    CreatedPlate = UnityEngine.Object.Instantiate(gameObject3, transform);
+					rectTransform = CreatedPlate.GetComponent<RectTransform>();
 					rectTransform.localPosition = MiscUtils.GetNameplateOffset(GeneralUtils.isQuickMenuOpen);
-                    foreach (RectTransform componentsInChild in gameObject2.GetComponentsInChildren<RectTransform>())
+                    foreach (RectTransform componentsInChild in CreatedPlate.GetComponentsInChildren<RectTransform>())
 					{
                         if (componentsInChild.name != "Trust Text")
 						{
@@ -123,16 +125,16 @@ namespace MunchenClient.Patching.Patches
 					}
 					if (Configuration.GetGeneralConfig().NameplateMoreInfo)
 					{
-						gameObject2.SetActive(value: true);
+                        CreatedPlate.SetActive(value: true);
 					}
 					else
 					{
-						gameObject2.SetActive(value: false);
+                        CreatedPlate.SetActive(value: false);
 					}
 				}
                 if (Configuration.GetGeneralConfig().NameplateWallhack && CameraFeaturesHandler.GetCameraSetup() == 0)
 				{
-					gameObject.layer = 19;
+                    canvas.layer = 19;
 				}
 			}
 			catch (Exception e)
@@ -169,10 +171,10 @@ namespace MunchenClient.Patching.Patches
 					lastNetworkedUpdateTime = Time.realtimeSinceStartup,
 					lastNetworkedVoicePacket = 0f,
 					lagBarrier = 0,
-					nameplateCanvas = gameObject,
+					nameplateCanvas = canvas,
 					nameplateBackground = nameplateBackground,
 					nameplateIconBackground = nameplateIconBackground,
-					customNameplateObject = gameObject2,
+					customNameplateObject = CreatedPlate,
 					customNameplateTransform = rectTransform,
 					customNameplateText = textMeshProUGUI
 				};
@@ -218,6 +220,7 @@ namespace MunchenClient.Patching.Patches
 				ConsoleUtils.Exception("PatchManager", "OnPlayerJoinPatch - Staffcheck", e4, "OnPlayerJoinPatch", 241);
 			}
 		}
+		#endregion
 
 		private static void OnPlayerLeavePatch(ref VRC.Player __0)
 		{

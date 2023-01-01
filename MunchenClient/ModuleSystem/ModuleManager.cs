@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using Il2CppSystem;
+using MelonLoader;
 using MunchenClient.Config;
 using MunchenClient.ModuleSystem.Modules;
 using MunchenClient.ModuleSystem.Modules.AntiAssetBundleCrasher;

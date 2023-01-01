@@ -26,8 +26,9 @@ namespace MunchenClient.Menu
 		private readonly QuickMenuToggleButton fbtSavingButton;
 
 		internal static QuickMenuToggleButton wallhackButton;
+		internal static QuickMenuToggleButton nameplatewallhackButton;
 
-		internal static QuickMenuToggleButton attachToPlayerButton;
+        internal static QuickMenuToggleButton attachToPlayerButton;
 
 		internal static QuickMenuToggleButton localAvatarCloneButton;
 
@@ -72,17 +73,18 @@ namespace MunchenClient.Menu
 				Configuration.GetAvatarCalibrationsConfig().SaveCalibrations = false;
 				Configuration.SaveAvatarCalibrationsConfig();
 			}, LanguageManager.GetUsedLanguage().FBTCalibrationSavingDescription);
+
 			wallhackButton = new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().PlayerWallhack, Configuration.GetGeneralConfig().PlayerWallhack, delegate
 			{
 				Configuration.GetGeneralConfig().PlayerWallhack = true;
 				Configuration.SaveGeneralConfig();
-				ActionWheelMenu.wallhackButton.SetButtonText("Wallhack: <color=green>On");
+				ActionWheelMenu.PlayerwallhackButton.SetButtonText("Player Wallhack: <color=green>On");
 				GeneralWrappers.ApplyAllPlayerWallhack(state: true);
 			}, LanguageManager.GetUsedLanguage().PlayerWallhackDescription, delegate
 			{
 				Configuration.GetGeneralConfig().PlayerWallhack = false;
 				Configuration.SaveGeneralConfig();
-				ActionWheelMenu.wallhackButton.SetButtonText("Wallhack: <color=red>Off");
+				ActionWheelMenu.PlayerwallhackButton.SetButtonText("Player Wallhack: <color=red>Off");
 				GeneralWrappers.ApplyAllPlayerWallhack(state: false);
 			}, LanguageManager.GetUsedLanguage().PlayerWallhackDescription);
 			attachToPlayerButton = new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().AttachToPlayer, PlayerTargetHandler.attachToPlayer, delegate

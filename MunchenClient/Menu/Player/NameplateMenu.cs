@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using MunchenClient.Config;
 using MunchenClient.Core;
+using MunchenClient.Menu.Others;
 using MunchenClient.Utils;
 using UnchainedButtonAPI;
 
@@ -8,6 +9,7 @@ namespace MunchenClient.Menu.Player
 {
 	internal class NameplateMenu : QuickMenuNestedMenu
 	{
+		internal static QuickMenuToggleButton nameplatewallhackButton;
 		internal NameplateMenu(QuickMenuButtonRow parent)
 			: base(parent, LanguageManager.GetUsedLanguage().NameplateMenuName, LanguageManager.GetUsedLanguage().NameplateMenuDescription)
 		{
@@ -27,17 +29,21 @@ namespace MunchenClient.Menu.Player
 				Configuration.GetGeneralConfig().RanksCustomRanks = false;
 				Configuration.SaveGeneralConfig();
 			}, LanguageManager.GetUsedLanguage().CustomRanksDescription);
-			new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().NameplateWallhack, Configuration.GetGeneralConfig().NameplateWallhack, delegate
+
+            nameplatewallhackButton = new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().NameplateWallhack, Configuration.GetGeneralConfig().NameplateWallhack, delegate
 			{
 				Configuration.GetGeneralConfig().NameplateWallhack = true;
-				Configuration.SaveGeneralConfig();
+                ActionWheelMenu.PlayerNameplateESP.SetButtonText("Nameplate ESP: <color=green>On");
+                Configuration.SaveGeneralConfig();
 				GeneralUtils.SetNameplateWallhack(state: true);
 			}, LanguageManager.GetUsedLanguage().NameplateWallhackDescription, delegate
 			{
 				Configuration.GetGeneralConfig().NameplateWallhack = false;
-				Configuration.SaveGeneralConfig();
+                ActionWheelMenu.PlayerNameplateESP.SetButtonText("Nameplate ESP: <color=red>Off");
+                Configuration.SaveGeneralConfig();
 				GeneralUtils.SetNameplateWallhack(state: false);
 			}, LanguageManager.GetUsedLanguage().NameplateWallhackDescription);
+			
 			new QuickMenuToggleButton(parentRow2, LanguageManager.GetUsedLanguage().NameplateMoreInfo, Configuration.GetGeneralConfig().NameplateMoreInfo, delegate
 			{
 				Configuration.GetGeneralConfig().NameplateMoreInfo = true;
