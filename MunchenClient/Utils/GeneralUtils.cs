@@ -451,14 +451,19 @@ namespace MunchenClient.Utils
 				GeneralWrappers.ClosePopup();
 			}
 		}
-
+        public static void ClearAssets()
+        {
+            AssetBundleDownloadManager.field_Private_Static_AssetBundleDownloadManager_0.field_Private_Cache_0.ClearCache();
+            AssetBundleDownloadManager.field_Private_Static_AssetBundleDownloadManager_0.field_Private_Queue_1_ObjectPublicInStInCoBoUnInStObBoUnique_0.Clear();//field_Private_Queue_1_AssetBundleDownload_0
+			AssetBundleDownloadManager.field_Private_Static_AssetBundleDownloadManager_0.field_Private_Queue_1_ObjectPublicInStInCoBoUnInStObBoUnique_1.Clear();
+        }
 		public static IEnumerator GameCloseExploitEnumerator(bool quest, APIUser user)
 		{
 			ConsoleUtils.Info("Crasher", "Trying to crash " + ((user != null) ? user.displayName : "world"), System.ConsoleColor.Gray, "GameCloseExploitEnumerator", 502);
 			//string backupId = PlayerWrappers.GetLocalPlayerInformation().vrcPlayer.prop_VRCAvatarManager_0.prop_ApiAvatar_2.id;
             string backupId = VRCAvatarManager.field_Internal_Static_String_0;	
             MelonLogger.Msg("Saved backup ID : " + backupId);
-			ChangeHideSelfState(state: true);
+            ChangeHideSelfState(state: true);
 			System.Collections.Generic.List<PlayerInformation> playersToUnblockAfterExploit = new System.Collections.Generic.List<PlayerInformation>();
 			if (user != null)
 			{
@@ -506,6 +511,7 @@ namespace MunchenClient.Utils
 				}
 				yield return new WaitForSeconds(0.1f);
 			}
+            ClearAssets();
 			ChangeHideSelfState(state: false);
 			gameCloserExploitRunning = false;
 			ConsoleUtils.Info("Crasher", "Done crashing " + ((user != null) ? user.displayName : "world"), System.ConsoleColor.Gray, "GameCloseExploitEnumerator", 573);
