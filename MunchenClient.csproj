@@ -418,6 +418,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "E:\SteamLibrary\steamapps\common\VRChat\Mods\MünchenClient.dll"</PostBuildEvent>
+    <PostBuildEvent>SET path=F:\munchy\Munchin-Client-Repasted-Kanna-Edition\Munchin Files\Mods
+if not exist "%25path%25" mkdir "%25path%25"
+copy "$(TargetPath)" "%25path%25\MünchenClient.dll"</PostBuildEvent>
   </PropertyGroup>
 </Project>
