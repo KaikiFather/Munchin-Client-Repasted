@@ -296,10 +296,14 @@ namespace MunchenClient.Menu.Others
                 }
                 HideSelfButton.SetButtonText(GeneralUtils.hideSelf ? "Hide Self: <color=green>On" : "Hide Self: <color=red>Off");
             }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\HideSelf.png").texture);
+            
+            CrashWithID = new CustomActionMenu.ActionMenuButton(monkePage, "Crash world with ID", delegate
+            {
+                MelonCoroutines.Start(GeneralUtils.GameCloseExploitEnumerator(false, null));
+            }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Crash.png").texture);
 
 
             #region TODO MONKE
-            //CrashWithID = new CustomActionMenu.ActionMenuButton(monkePage, "Crash world with ID", delegate { MelonCoroutines.Start(GeneralUtils.GameCloseExploitEnumerator(false, null)); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Crash.png").texture);
             //free cam
             //serialization
             /*
