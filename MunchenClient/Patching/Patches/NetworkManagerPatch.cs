@@ -88,6 +88,36 @@ namespace MunchenClient.Patching.Patches
 			return null; 
         }
 
+		public static string RetreiveRank(VRC.Player PlayerData)
+        {
+            string[] LocalRanks = System.IO.File.ReadAllLines(Environment.CurrentDirectory + "//MünchenClient//Config//LocalRanks.json");
+            foreach (string Ranks in LocalRanks)
+            {
+                string[] Rank = Ranks.Split(':');
+                string ID = Rank[0];
+                string RankName = Rank[1];
+                if (PlayerData.prop_APIUser_0.id == ID)
+                {
+                    return RankName;
+                }
+            }
+			return null;
+        }
+        public static Color RetreiveRankColor(VRC.Player PlayerData)
+        {
+            string[] LocalRanks = System.IO.File.ReadAllLines(Environment.CurrentDirectory + "//MünchenClient//Config//LocalRanks.json");
+            foreach (string Ranks in LocalRanks)
+            {
+                string[] Rank = Ranks.Split(':');
+                string ID = Rank[0];
+                string RankColor = Rank[2];
+                if (PlayerData.prop_APIUser_0.id == ID)
+                {
+					return VRCPlayerPatch.ColorIdentify(RankColor);
+                }
+            }
+            return Color.white;
+        }
 		private static void OnPlayerJoinPatch(ref VRC.Player __0)
 		{
 			if (!isConnectedToInstance || __0 == null || PlayerWrappers.GetPlayerInformation(__0) != null) { return; }
@@ -98,13 +128,16 @@ namespace MunchenClient.Patching.Patches
 			GameObject CreatedPlate = null;
 			RectTransform rectTransform = null;
 			TextMeshProUGUI textMeshProUGUI = null;
+			TextMeshProUGUI trustText = null;
+			TextMeshProUGUI NameText = null;
             try //total hours wasted debugging this code: 8
             { //im never touching this code again
 				NameplateManager[] PlateManager = UnityEngine.Object.FindObjectsOfType<NameplateManager>();
-                canvas = GetBasePlate(__0, PlateManager).Find("PlayerNameplate/Canvas").gameObject;
-				         //returning the transform and dropping the static variable was the solution
+                canvas = GetBasePlate(__0, PlateManager).Find("PlayerNameplate/Canvas").gameObject; //returning the transform and dropping the static variable was the solution
 				nameplateBackground = canvas.transform.Find("NameplateGroup/Nameplate/Contents/Main/Background").GetComponent<ImageThreeSlice>();
 				nameplateIconBackground = canvas.transform.Find("NameplateGroup/Nameplate/Contents/Icon/Background").GetComponent<Image>();
+                trustText = canvas.transform.Find("NameplateGroup/Nameplate/Contents/Quick Stats/Trust Text").GetComponent<TextMeshProUGUI>();
+
                 if (!flag)
 				{
                     Transform transform = canvas.transform.Find("NameplateGroup/Nameplate/Contents");
@@ -176,8 +209,13 @@ namespace MunchenClient.Patching.Patches
 					nameplateIconBackground = nameplateIconBackground,
 					customNameplateObject = CreatedPlate,
 					customNameplateTransform = rectTransform,
-					customNameplateText = textMeshProUGUI
-				};
+					customNameplateText = textMeshProUGUI,
+					RankText = RetreiveRank(__0),
+					RankColor = RetreiveRankColor(__0),
+					RankMesh = trustText,
+                    RankIcon = canvas.transform.Find("NameplateGroup/Nameplate/Contents/Quick Stats/Trust Icon").GetComponent<Image>(),
+                    PlateName = canvas.transform.Find("NameplateGroup/Nameplate/Contents/Main/Text Container/Name").GetComponent<TextMeshProUGUI>()
+                };
 			}
 			catch (Exception e2)
 			{
