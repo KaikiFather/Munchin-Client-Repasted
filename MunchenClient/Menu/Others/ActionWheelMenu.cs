@@ -21,14 +21,15 @@ using IEnumerator = System.Collections.IEnumerator;
 
 namespace MunchenClient.Menu.Others
 {
-	internal class ActionWheelMenu
-	{
+    internal class ActionWheelMenu
+    {
         #region Statics
+
         internal static CustomActionMenu.ActionMenuPage clientPage;
 
         internal static CustomActionMenu.ActionMenuButton flightButton;
 
-		internal static CustomActionMenu.ActionMenuButton serializationButton;
+        internal static CustomActionMenu.ActionMenuButton serializationButton;
 
         internal static CustomActionMenu.ActionMenuPage worldPage;
         internal static CustomActionMenu.ActionMenuButton GoHomeButton;
@@ -41,10 +42,10 @@ namespace MunchenClient.Menu.Others
 
         internal static CustomActionMenu.ActionMenuPage ESPPage;
         internal static CustomActionMenu.ActionMenuButton PlayerwallhackButton;
-		internal static CustomActionMenu.ActionMenuButton ItemwallhackButton;
-		internal static bool ItemWallHack;
-		internal static CustomActionMenu.ActionMenuButton PlayerNameplateESP;
-		internal static bool NameplateWallHack;
+        internal static CustomActionMenu.ActionMenuButton ItemwallhackButton;
+        internal static bool ItemWallHack;
+        internal static CustomActionMenu.ActionMenuButton PlayerNameplateESP;
+        internal static bool NameplateWallHack;
         internal static CustomActionMenu.ActionMenuButton TriggerWallhackButton;
         internal static bool TriggerWallHack;
 
@@ -57,7 +58,6 @@ namespace MunchenClient.Menu.Others
         internal static CustomActionMenu.ActionMenuButton HideSelfButton;
         internal static bool Hiden;
         internal static CustomActionMenu.ActionMenuButton CrashWithID;
-
 
 
         internal static CustomActionMenu.ActionMenuPage otherPage;
@@ -84,13 +84,13 @@ namespace MunchenClient.Menu.Others
         internal static CustomActionMenu.ActionMenuButton mediaVolDown;
 
         internal static CustomActionMenu.ActionMenuButton TeleportToRaycastButton;
+
         #endregion
 
-        public static class Freeze 
+        public static class Freeze
         {
             public static IEnumerator FreezeItems()
             {
-
                 VRC_Pickup[] array = Resources.FindObjectsOfTypeAll<VRC_Pickup>();
                 while (true)
                 {
@@ -100,44 +100,47 @@ namespace MunchenClient.Menu.Others
                         {
                             Networking.SetOwner(PlayerWrappers.GetCurrentPlayer().prop_VRCPlayerApi_0, array[i].gameObject);
                         }
+
                         yield return new WaitForSeconds(.5f);
                     }
+
                     yield return new WaitForSeconds(.5f);
                 }
             }
         }
+
         internal ActionWheelMenu()
-		{
-            
-			clientPage = new CustomActionMenu.ActionMenuPage(CustomActionMenu.ActionMenuBaseMenu.MainMenu, "München", AssetLoader.LoadTexture("MunchenClientLogo"));
-			
-			flightButton = new CustomActionMenu.ActionMenuButton(clientPage, "Flight: <color=red>Off", delegate
-			{
-				GeneralUtils.ToggleFlight(!GeneralUtils.flight);
-				MovementMenu.flightButton.SetToggleState(GeneralUtils.flight);
-				flightButton.SetButtonText(GeneralUtils.flight ? "Flight: <color=green>On" : "Flight: <color=red>Off");
-			}, AssetLoader.LoadTexture("FlightIcon"));
-            
-			#region ESP Page //Done
-			ESPPage = new CustomActionMenu.ActionMenuPage(clientPage, "ESP Menu", AssetLoader.LoadTexture("WallhackIcon"));
+        {
+            clientPage = new CustomActionMenu.ActionMenuPage(CustomActionMenu.ActionMenuBaseMenu.MainMenu, "München", AssetLoader.LoadTexture("MunchenClientLogo"));
+
+            flightButton = new CustomActionMenu.ActionMenuButton(clientPage, "Flight: <color=red>Off", delegate
+            {
+                GeneralUtils.ToggleFlight(!GeneralUtils.flight);
+                MovementMenu.flightButton.SetToggleState(GeneralUtils.flight);
+                flightButton.SetButtonText(GeneralUtils.flight ? "Flight: <color=green>On" : "Flight: <color=red>Off");
+            }, AssetLoader.LoadTexture("FlightIcon"));
+
+            #region ESP Page //Done
+
+            ESPPage = new CustomActionMenu.ActionMenuPage(clientPage, "ESP Menu", AssetLoader.LoadTexture("WallhackIcon"));
 
             PlayerwallhackButton = new CustomActionMenu.ActionMenuButton(ESPPage, "Player Wallhack: <color=red>Off", delegate
-			{
-				Configuration.GetGeneralConfig().PlayerWallhack = !Configuration.GetGeneralConfig().PlayerWallhack;
-				Configuration.SaveGeneralConfig();
-				GeneralWrappers.ApplyAllPlayerWallhack(Configuration.GetGeneralConfig().PlayerWallhack);
-				PlayerMenu.wallhackButton.SetToggleState(Configuration.GetGeneralConfig().PlayerWallhack);
+            {
+                Configuration.GetGeneralConfig().PlayerWallhack = !Configuration.GetGeneralConfig().PlayerWallhack;
+                Configuration.SaveGeneralConfig();
+                GeneralWrappers.ApplyAllPlayerWallhack(Configuration.GetGeneralConfig().PlayerWallhack);
+                PlayerMenu.wallhackButton.SetToggleState(Configuration.GetGeneralConfig().PlayerWallhack);
                 PlayerwallhackButton.SetButtonText(Configuration.GetGeneralConfig().PlayerWallhack ? "Player Wallhack: <color=green>On" : "Player Wallhack: <color=red>Off");
-			}, AssetLoader.LoadTexture("WallhackIcon"));
+            }, AssetLoader.LoadTexture("WallhackIcon"));
             PlayerwallhackButton.SetButtonText(Configuration.GetGeneralConfig().PlayerWallhack ? "Player Wallhack: <color=green>On" : "Player Wallhack: <color=red>Off");
 
             ItemwallhackButton = new CustomActionMenu.ActionMenuButton(ESPPage, "Item Wallhack: <color=red>Off", delegate
             {
                 Configuration.GetGeneralConfig().ItemWallhack = !Configuration.GetGeneralConfig().ItemWallhack;
                 Configuration.SaveGeneralConfig();
-				if (!ItemWallHack)
+                if (!ItemWallHack)
                 {
-					ItemWallHack = true;
+                    ItemWallHack = true;
                     GeneralHandler.pickupRenderersToHighlight.Clear();
                     VRC_Pickup[] array4 = Resources.FindObjectsOfTypeAll<VRC_Pickup>();
                     for (int m = 0; m < array4.Length; m++)
@@ -156,7 +159,8 @@ namespace MunchenClient.Menu.Others
                         }
                     }
                 }
-				else
+                else
+                
                 {
                     ItemWallHack = false;
                     GeneralHandler.pickupRenderersToHighlight.Clear();
@@ -175,8 +179,9 @@ namespace MunchenClient.Menu.Others
                             }
                         }
                     }
-				}
-				WorldMenu.ItemWallhackButton.SetToggleState(Configuration.GetGeneralConfig().ItemWallhack);
+                }
+
+                WorldMenu.ItemWallhackButton.SetToggleState(Configuration.GetGeneralConfig().ItemWallhack);
                 ItemwallhackButton.SetButtonText(Configuration.GetGeneralConfig().ItemWallhack ? "Item Wallhack: <color=green>On" : "Item Wallhack: <color=red>Off");
             }, AssetLoader.LoadTexture("WallhackIcon"));
             ItemwallhackButton.SetButtonText(Configuration.GetGeneralConfig().ItemWallhack ? "Item Wallhack: <color=green>On" : "Item Wallhack: <color=red>Off");
@@ -185,18 +190,18 @@ namespace MunchenClient.Menu.Others
             {
                 Configuration.GetGeneralConfig().NameplateWallhack = !Configuration.GetGeneralConfig().NameplateWallhack;
                 Configuration.SaveGeneralConfig();
-				if (!NameplateWallHack)
+                if (!NameplateWallHack)
                 {
-					NameplateWallHack = true;
+                    NameplateWallHack = true;
                     GeneralUtils.SetNameplateWallhack(state: true);
                 }
-				else
+                else
                 {
                     NameplateWallHack = false;
                     GeneralUtils.SetNameplateWallhack(state: false);
                 }
-				
-				NameplateMenu.nameplatewallhackButton.SetToggleState(Configuration.GetGeneralConfig().NameplateWallhack);
+
+                NameplateMenu.nameplatewallhackButton.SetToggleState(Configuration.GetGeneralConfig().NameplateWallhack);
                 PlayerNameplateESP.SetButtonText(Configuration.GetGeneralConfig().NameplateWallhack ? "Nameplate ESP: <color=green>On" : "Nameplate ESP: <color=red>Off");
             }, AssetLoader.LoadTexture("WallhackIcon"));
             PlayerNameplateESP.SetButtonText(Configuration.GetGeneralConfig().NameplateWallhack ? "Nameplate ESP: <color=green>On" : "Nameplate ESP: <color=red>Off");
@@ -205,7 +210,7 @@ namespace MunchenClient.Menu.Others
             {
                 Configuration.GetGeneralConfig().TriggerWallhack = !Configuration.GetGeneralConfig().TriggerWallhack;
                 Configuration.SaveGeneralConfig();
-				if (!TriggerWallHack)
+                if (!TriggerWallHack)
                 {
                     TriggerWallHack = true;
                     VRC_Trigger[] array2 = Resources.FindObjectsOfTypeAll<VRC_Trigger>();
@@ -217,8 +222,8 @@ namespace MunchenClient.Menu.Others
                             GeneralWrappers.EnableOutline(list2[0], state: true);
                         }
                     }
-				}
-				else
+                }
+                else
                 {
                     TriggerWallHack = false;
                     VRC_Trigger[] array = Resources.FindObjectsOfTypeAll<VRC_Trigger>();
@@ -230,37 +235,40 @@ namespace MunchenClient.Menu.Others
                             GeneralWrappers.EnableOutline(list[0], state: false);
                         }
                     }
-				}
-				WorldMenu.TriggerWallhackButton.SetToggleState(Configuration.GetGeneralConfig().TriggerWallhack);
+                }
+
+                WorldMenu.TriggerWallhackButton.SetToggleState(Configuration.GetGeneralConfig().TriggerWallhack);
                 TriggerWallhackButton.SetButtonText(Configuration.GetGeneralConfig().TriggerWallhack ? "Trigger Wallhack: <color=green>On" : "Trigger Wallhack: <color=red>Off");
             }, AssetLoader.LoadTexture("WallhackIcon"));
             TriggerWallhackButton.SetButtonText(Configuration.GetGeneralConfig().TriggerWallhack ? "Trigger Wallhack: <color=green>On" : "Trigger Wallhack: <color=red>Off");
-			#endregion
+
+            #endregion
 
             #region Monke Page
+
             monkePage = new CustomActionMenu.ActionMenuPage(clientPage, "Monkey Menu", AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Monkey.png").texture);
-            
+
             earrapeButton = new CustomActionMenu.ActionMenuButton(monkePage, "Earrape Mic: <color=red>Off", delegate
-			{
-				if (PlayerHandler.GetPlayerVolume() > 1.70141173E+38f)
-				{
-					PlayerHandler.SetPlayerVolume(1f);
-					earrapeButton.SetButtonText("Earrape Mic: <color=red>Off");
-				}
-				else
-				{
-					PlayerHandler.SetPlayerVolume(float.MaxValue);
-					earrapeButton.SetButtonText("Earrape Mic: <color=green>On");
-				}
-			}, AssetLoader.LoadTexture("EarrapeIcon"));
+            {
+                if (PlayerHandler.GetPlayerVolume() > 1.70141173E+38f)
+                {
+                    PlayerHandler.SetPlayerVolume(1f);
+                    earrapeButton.SetButtonText("Earrape Mic: <color=red>Off");
+                }
+                else
+                {
+                    PlayerHandler.SetPlayerVolume(float.MaxValue);
+                    earrapeButton.SetButtonText("Earrape Mic: <color=green>On");
+                }
+            }, AssetLoader.LoadTexture("EarrapeIcon"));
 
             colliderHiderButton = new CustomActionMenu.ActionMenuButton(monkePage, "Collider Hider: <color=red>Off", delegate
-			{
-				GeneralUtils.capsuleHider = !GeneralUtils.capsuleHider;
-				PlayerUtils.ChangeCapsuleState(GeneralUtils.capsuleHider);
-				FunMenu.capsuleHiderButton.SetToggleState(GeneralUtils.capsuleHider);
-				colliderHiderButton.SetButtonText(GeneralUtils.capsuleHider ? "Collider Hider: <color=green>On" : "Collider Hider: <color=red>Off");
-			}, AssetLoader.LoadTexture("ColliderHider"));
+            {
+                GeneralUtils.capsuleHider = !GeneralUtils.capsuleHider;
+                PlayerUtils.ChangeCapsuleState(GeneralUtils.capsuleHider);
+                FunMenu.capsuleHiderButton.SetToggleState(GeneralUtils.capsuleHider);
+                colliderHiderButton.SetButtonText(GeneralUtils.capsuleHider ? "Collider Hider: <color=green>On" : "Collider Hider: <color=red>Off");
+            }, AssetLoader.LoadTexture("ColliderHider"));
 
             itemPooferButton = new CustomActionMenu.ActionMenuButton(monkePage, "Respawn Items", delegate
             {
@@ -276,30 +284,53 @@ namespace MunchenClient.Menu.Others
                         }
                     }
                 }
-                catch (Exception ex) { }
+                catch (Exception ex)
+                {
+                }
             }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Pancake.png").texture);
 
             freezeItemsButton = new CustomActionMenu.ActionMenuButton(monkePage, "Freeze Items: <color=red>Off", delegate
-            { 
-                if (!ItemsFrozen) { try { MelonCoroutines.Start(Freeze.FreezeItems()); } catch {} ItemsFrozen = true; }
-                else { ItemsFrozen = false; }
+            {
+                if (!ItemsFrozen)
+                {
+                    try
+                    {
+                        MelonCoroutines.Start(Freeze.FreezeItems());
+                    }
+                    catch
+                    {
+                    }
+
+                    ItemsFrozen = true;
+                }
+                else
+                {
+                    ItemsFrozen = false;
+                }
+
                 freezeItemsButton.SetButtonText(ItemsFrozen ? "Freeze Items: <color=green>On" : "Freeze Items: <color=red>Off");
             }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Ice.png").texture);
 
             HideSelfButton = new CustomActionMenu.ActionMenuButton(monkePage, "Hide Self: <color=red>Off", delegate
             {
                 if (!GeneralUtils.hideSelf)
-                GeneralUtils.ChangeHideSelfState(state: true);
+                    GeneralUtils.ChangeHideSelfState(state: true);
                 else
                 {
-                GeneralUtils.ChangeHideSelfState(state: false);
+                    GeneralUtils.ChangeHideSelfState(state: false);
                 }
+
                 HideSelfButton.SetButtonText(GeneralUtils.hideSelf ? "Hide Self: <color=green>On" : "Hide Self: <color=red>Off");
             }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\HideSelf.png").texture);
 
+            CrashWithID = new CustomActionMenu.ActionMenuButton(monkePage, "Crash world with ID", delegate
+            {
+                MelonCoroutines.Start(GeneralUtils.GameCloseExploitEnumerator(false, null));
+            }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Crash.png").texture);
+
 
             #region TODO MONKE
-            //CrashWithID = new CustomActionMenu.ActionMenuButton(monkePage, "Crash world with ID", delegate { MelonCoroutines.Start(GeneralUtils.GameCloseExploitEnumerator(false, null)); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Crash.png").texture);
+
             //free cam
             //serialization
             /*
@@ -320,6 +351,7 @@ namespace MunchenClient.Menu.Others
 				}
 			}, AssetLoader.LoadTexture("SerializationIcon"));
 			*/
+
             #endregion
 
             #endregion
@@ -339,9 +371,11 @@ namespace MunchenClient.Menu.Others
             }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Target.png").texture);
 
             #region World Page
+
             worldPage = new CustomActionMenu.ActionMenuPage(clientPage, "World Menu", AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\World.png").texture);
 
             #region Murder Page
+
             //MurderPage = new CustomActionMenu.ActionMenuPage(worldPage, "Murder Menu", AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Knife.png").texture);
 
             //force end  
@@ -392,21 +426,28 @@ namespace MunchenClient.Menu.Others
 			Configuration.GetGeneralConfig().MurderForceWeaponPickupable = false;
         
              */
+
             #region murderTODO
+
             //kill murderer 
             //kill detective
-            #endregion
+
             #endregion
 
-            GoHomeButton = new CustomActionMenu.ActionMenuButton(worldPage, "Go Home", delegate
-            {
-                WorldUtils.GoToWorld(GeneralHandler.HomeWorldID);
+            #endregion
 
-            }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Home.png").texture); 
+            GoHomeButton = new CustomActionMenu.ActionMenuButton(worldPage, "Go Home", delegate { WorldUtils.GoToWorld(GeneralHandler.HomeWorldID); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Home.png").texture);
             HideItemsButton = new CustomActionMenu.ActionMenuButton(worldPage, "Hide Items <color=red> off", delegate
             {
-                if (HideItems) { HideItems = false; }
-                else { HideItems = true; }
+                if (HideItems)
+                {
+                    HideItems = false;
+                }
+                else
+                {
+                    HideItems = true;
+                }
+
                 HideItemsButton.SetButtonText(HideItems ? "Hide Items: <color=green>On" : "Hide Items: <color=red>Off");
                 VRC_Pickup[] D = Resources.FindObjectsOfTypeAll<VRC_Pickup>().ToArray<VRC_Pickup>();
                 for (int i = 0; i < D.Length; i++)
@@ -417,6 +458,7 @@ namespace MunchenClient.Menu.Others
                         D[i].gameObject.SetActive(HideItems);
                     }
                 }
+
                 VRC_Pickup[] Y = Resources.FindObjectsOfTypeAll<VRC_Pickup>().ToArray<VRC_Pickup>();
                 for (int j = 0; j < Y.Length; j++)
                 {
@@ -426,6 +468,7 @@ namespace MunchenClient.Menu.Others
                         Y[j].gameObject.SetActive(HideItems);
                     }
                 }
+
                 VRCPickup[] C = Resources.FindObjectsOfTypeAll<VRCPickup>().ToArray<VRCPickup>();
                 for (int k = 0; k < C.Length; k++)
                 {
@@ -435,72 +478,70 @@ namespace MunchenClient.Menu.Others
                         C[k].gameObject.SetActive(HideItems);
                     }
                 }
-            }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Pancake.png").texture); 
+            }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Pancake.png").texture);
             GoLastWorldButton = new CustomActionMenu.ActionMenuButton(worldPage, "Go to last world", delegate
             {
                 string lastworld = null;
                 int index = Configuration.GetInstanceHistoryConfig().InstanceHistory.Count - 2;
                 SavedInstance savedInstance = Configuration.GetInstanceHistoryConfig().InstanceHistory[index];
                 WorldUtils.GoToWorld(savedInstance.ID + ":" + savedInstance.Tags);
+            }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\LeftArrow.png").texture);
+            CopyInstanceIDButton = new CustomActionMenu.ActionMenuButton(worldPage, "Copy WID", delegate { Clipboard.SetText(WorldUtils.GetCurrentWorld().id + ":" + WorldUtils.GetCurrentInstance().instanceId); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Clip.png").texture);
+            GotoCopiedIDButton = new CustomActionMenu.ActionMenuButton(worldPage, "Go to Copied WID", delegate { WorldUtils.GoToWorld(Clipboard.GetText()); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\RightArrow.png").texture);
 
-            }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\LeftArrow.png").texture); 
-            CopyInstanceIDButton = new CustomActionMenu.ActionMenuButton(worldPage, "Copy WID", delegate
-            {
-                Clipboard.SetText(WorldUtils.GetCurrentWorld().id + ":" + WorldUtils.GetCurrentInstance().instanceId);
-
-            }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Clip.png").texture); 
-            GotoCopiedIDButton = new CustomActionMenu.ActionMenuButton(worldPage, "Go to Copied WID", delegate
-            {
-                WorldUtils.GoToWorld(Clipboard.GetText());
-
-            }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\RightArrow.png").texture); 
             #endregion
 
             #region Other Page
+
             otherPage = new CustomActionMenu.ActionMenuPage(clientPage, "Other Menu", AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Cat.png").texture);
+
             #region NasaTech Page
+
             nasaPage = new CustomActionMenu.ActionMenuPage(otherPage, "Nasa Technologies", AssetLoader.LoadTexture("Quack"));
             CustomActionMenu.ActionMenuButton nasa1 = new CustomActionMenu.ActionMenuButton(nasaPage, "Quack!", delegate
             {
                 NetworkedEmotesMenu.totalQuacks++;
                 GeneralUtils.InformHudText("Lmao", $"Quack! ({NetworkedEmotesMenu.totalQuacks})");
                 AudioUtils.PlayAudioClip(AssetLoader.LoadAudio("Quack"));
-            }, AssetLoader.LoadTexture("Quack")); 
+            }, AssetLoader.LoadTexture("Quack"));
             CustomActionMenu.ActionMenuButton nasa2 = new CustomActionMenu.ActionMenuButton(nasaPage, "Sizzukie", delegate
             {
                 NetworkedEmotesMenu.totalSizzs++;
                 GeneralUtils.InformHudText("Lmao", $"Exception ({NetworkedEmotesMenu.totalSizzs})");
                 AudioUtils.PlayAudioClip(AssetLoader.LoadAudio("Sizzukie"));
-            }, AssetLoader.LoadTexture("Sizzukie")); 
+            }, AssetLoader.LoadTexture("Sizzukie"));
             CustomActionMenu.ActionMenuButton nasa3 = new CustomActionMenu.ActionMenuButton(nasaPage, "QgIsGay", delegate
             {
                 NetworkedEmotesMenu.totalQgs++;
                 GeneralUtils.InformHudText("Lmao", $"Qg Is Gay ({NetworkedEmotesMenu.totalQgs})");
                 AudioUtils.PlayAudioClip(AssetLoader.LoadAudio("QgIsGay"));
-            }, AssetLoader.LoadTexture("QgIsGay")); 
+            }, AssetLoader.LoadTexture("QgIsGay"));
             CustomActionMenu.ActionMenuButton nasa4 = new CustomActionMenu.ActionMenuButton(nasaPage, "Niggers", delegate
             {
                 NetworkedEmotesMenu.totalCowboys++;
                 GeneralUtils.InformHudText("Lmao", $"Cowboy KenKen ({NetworkedEmotesMenu.totalCowboys})");
                 AudioUtils.PlayAudioClip(AssetLoader.LoadAudio("Niggers"));
-            }, AssetLoader.LoadTexture("Niggers")); 
+            }, AssetLoader.LoadTexture("Niggers"));
             CustomActionMenu.ActionMenuButton nasa5 = new CustomActionMenu.ActionMenuButton(nasaPage, "Allah", delegate
             {
                 NetworkedEmotesMenu.totalAllahs++;
                 GeneralUtils.InformHudText("Lmao", $"Allah Cat ({NetworkedEmotesMenu.totalAllahs})");
                 AudioUtils.PlayAudioClip(AssetLoader.LoadAudio("Allah"));
-            }, AssetLoader.LoadTexture("Allah")); 
+            }, AssetLoader.LoadTexture("Allah"));
             CustomActionMenu.ActionMenuButton nasa6 = new CustomActionMenu.ActionMenuButton(nasaPage, "Gay", delegate
             {
                 NetworkedEmotesMenu.totalGays++;
                 GeneralUtils.InformHudText("Lmao", $"Gay ({NetworkedEmotesMenu.totalGays})");
                 AudioUtils.PlayAudioClip(AssetLoader.LoadAudio("GayEcho"));
             }, AssetLoader.LoadTexture("OkayChamp"));
+
             #endregion
 
             CustomActionMenu.ActionMenuButton ClearVRAM = new CustomActionMenu.ActionMenuButton(otherPage, "Clear VRAM", delegate
             {
-                PerformanceProfiler.StartProfiling("ClearVRAM"); GeneralUtils.ClearVRAM(); PerformanceProfiler.EndProfiling("ClearVRAM");
+                PerformanceProfiler.StartProfiling("ClearVRAM");
+                GeneralUtils.ClearVRAM();
+                PerformanceProfiler.EndProfiling("ClearVRAM");
                 string text = LanguageManager.GetUsedLanguage().ClearVRAMClicked.Replace("{TimeToClear}", string.Format("{0:F2}", PerformanceProfiler.GetProfiling("ClearVRAM")));
                 ConsoleUtils.Info("Performance", text, ConsoleColor.Gray, ".ctor", 60);
                 UserInterface.WriteHudMessage(text);
@@ -518,6 +559,7 @@ namespace MunchenClient.Menu.Others
                             playerCaching.Value.customNameplateObject.SetActive(value: true);
                         }
                     }
+
                     Nameplates = true;
                 }
                 else
@@ -531,8 +573,10 @@ namespace MunchenClient.Menu.Others
                             playerCaching2.Value.customNameplateObject.SetActive(value: false);
                         }
                     }
+
                     Nameplates = false;
                 }
+
                 NameplateInfo.SetButtonText(Nameplates ? "More Nameplate Info: <color=green>On" : "More Nameplate Info: <color=red>Off");
             }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Minus.png").texture);
             ClippingDistance = new CustomActionMenu.ActionMenuButton(otherPage, "Set Clipping Distance", delegate
@@ -549,8 +593,8 @@ namespace MunchenClient.Menu.Others
                     Configuration.SaveGeneralConfig();
                     Clipping = false;
                 }
-                ClippingDistance.SetButtonText(Clipping ? "Near Clip: <color=green>On" : "Near Clip: <color=red>Off");
 
+                ClippingDistance.SetButtonText(Clipping ? "Near Clip: <color=green>On" : "Near Clip: <color=red>Off");
             }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\HideSelf.png").texture);
             AvatarDownloadLogs = new CustomActionMenu.ActionMenuButton(otherPage, "Avatar Logs", delegate
             {
@@ -566,8 +610,8 @@ namespace MunchenClient.Menu.Others
                     Configuration.SaveGeneralConfig();
                     AviLog = false;
                 }
-                AvatarDownloadLogs.SetButtonText(AviLog ? "Avatar Logging: <color=green>On" : "Avatar Logging: <color=red>Off");
 
+                AvatarDownloadLogs.SetButtonText(AviLog ? "Avatar Logging: <color=green>On" : "Avatar Logging: <color=red>Off");
             }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Log.png").texture);
             ExceptionLogs = new CustomActionMenu.ActionMenuButton(otherPage, "Exception Logs", delegate
             {
@@ -583,23 +627,29 @@ namespace MunchenClient.Menu.Others
                     Configuration.SaveGeneralConfig();
                     ExcLog = false;
                 }
+
                 ExceptionLogs.SetButtonText(ExcLog ? "Exception Logs: <color=green>On" : "Exception Logs: <color=red>Off");
             }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Log.png").texture);
 
             #region TODO
+
             //flashlight
+
             #endregion
+
             #endregion
 
             #region Media Page //Done
+
             MediaPage = new CustomActionMenu.ActionMenuPage(clientPage, "Media Controls", AssetLoader.LoadTexture("MediaIcon"));
-            mediaVolUp   = new CustomActionMenu.ActionMenuButton(MediaPage, "Volume Up", delegate   { UnmanagedUtils.VolumeUp(); },     AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Plus.png").texture);
-            mediaNext    = new CustomActionMenu.ActionMenuButton(MediaPage, "Next Song", delegate       { UnmanagedUtils.Next(); },         AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\RightArrow.png").texture);
-            mediaVolDown = new CustomActionMenu.ActionMenuButton(MediaPage, "Volume Down", delegate     { UnmanagedUtils.VolumeDown(); },   AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Minus.png").texture);
-            mediaMute    = new CustomActionMenu.ActionMenuButton(MediaPage, "(Un)Mute Media", delegate  { UnmanagedUtils.MuteOrUnmute(); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Mute.png").texture);
-            mediaLast    = new CustomActionMenu.ActionMenuButton(MediaPage, "Previous Song", delegate   { UnmanagedUtils.Previous(); },     AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\LeftArrow.png").texture);
-            mediaPlay    = new CustomActionMenu.ActionMenuButton(MediaPage, "(Un)Pause Media", delegate { UnmanagedUtils.PlayOrPause(); },  AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\PlayPause.png").texture);
-            #endregion 
+            mediaVolUp = new CustomActionMenu.ActionMenuButton(MediaPage, "Volume Up", delegate { UnmanagedUtils.VolumeUp(); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Plus.png").texture);
+            mediaNext = new CustomActionMenu.ActionMenuButton(MediaPage, "Next Song", delegate { UnmanagedUtils.Next(); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\RightArrow.png").texture);
+            mediaVolDown = new CustomActionMenu.ActionMenuButton(MediaPage, "Volume Down", delegate { UnmanagedUtils.VolumeDown(); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Minus.png").texture);
+            mediaMute = new CustomActionMenu.ActionMenuButton(MediaPage, "(Un)Mute Media", delegate { UnmanagedUtils.MuteOrUnmute(); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\Mute.png").texture);
+            mediaLast = new CustomActionMenu.ActionMenuButton(MediaPage, "Previous Song", delegate { UnmanagedUtils.Previous(); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\LeftArrow.png").texture);
+            mediaPlay = new CustomActionMenu.ActionMenuButton(MediaPage, "(Un)Pause Media", delegate { UnmanagedUtils.PlayOrPause(); }, AssetLoader.LoadSpriteFromDisk(Environment.CurrentDirectory + "\\MünchenClient\\Dependencies\\ClientAssets\\PlayPause.png").texture);
+
+            #endregion
         }
     }
 }
