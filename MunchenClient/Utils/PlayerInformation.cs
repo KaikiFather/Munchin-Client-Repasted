@@ -20,7 +20,16 @@ namespace MunchenClient.Utils
 
 		internal string displayName;
 
-		internal bool isLocalPlayer;
+		internal string RankText;
+
+		internal Color  RankColor;
+
+		internal Image  RankIcon;
+
+        internal TextMeshProUGUI  RankMesh;
+        internal TextMeshProUGUI  PlateName;
+
+        internal bool isLocalPlayer;
 
 		internal bool isInstanceMaster;
 
