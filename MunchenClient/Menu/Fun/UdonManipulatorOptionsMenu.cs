@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using Il2CppSystem;
 using Il2CppSystem.Collections.Generic;
+using MunchenClient.Wrappers;
 using UnchainedButtonAPI;
+using UnityEngine;
 using VRC.SDKBase;
+using Object = Il2CppSystem.Object;
 
 namespace MunchenClient.Menu.Fun
 {
@@ -34,6 +37,10 @@ namespace MunchenClient.Menu.Fun
 			int num = 0;
 			QuickMenuButtonRow quickMenuButtonRow = new QuickMenuButtonRow(this);
 			buttonRows.Add(quickMenuButtonRow);
+			
+			QuickMenuSingleButton TeleportButton = new QuickMenuSingleButton(quickMenuButtonRow, "Teleport to behavior", null, "Attempts to teleport you to this rpc gameobject");
+            TeleportButton.SetAction(delegate { PlayerWrappers.GetCurrentPlayer().transform.position = UdonManipulatorMenu.udonBehaviours[udonBehaviourIndex].gameObject.transform.position; });
+			
 			Il2CppSystem.Collections.Generic.Dictionary<string, Il2CppSystem.Collections.Generic.List<uint>>.Enumerator enumerator = UdonManipulatorMenu.udonBehaviours[udonBehaviourIndex]._eventTable.GetEnumerator();
 			while (enumerator.MoveNext())
 			{

@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Il2CppSystem.Collections.Generic;
 using MunchenClient.Config;
 using MunchenClient.Core;
+using MunchenClient.Menu.Others;
 using MunchenClient.Menu.World;
 using MunchenClient.Misc;
 using MunchenClient.ModuleSystem.Modules;
@@ -18,7 +19,9 @@ namespace MunchenClient.Menu
 {
 	internal class WorldMenu : QuickMenuNestedMenu
 	{
-		internal WorldMenu(QuickMenuButtonRow parent)
+		internal static QuickMenuToggleButton ItemWallhackButton;
+		internal static QuickMenuToggleButton TriggerWallhackButton;
+        internal WorldMenu(QuickMenuButtonRow parent)
 			: base(parent, LanguageManager.GetUsedLanguage().WorldMenuName, LanguageManager.GetUsedLanguage().WorldMenuDescription)
 		{
 			QuickMenuButtonRow quickMenuButtonRow = new QuickMenuButtonRow(this);
@@ -47,10 +50,11 @@ namespace MunchenClient.Menu
 				GeneralWrappers.ShowInputPopup("Drop portal to instance", string.Empty, InputField.InputType.Standard, isNumeric: false, LanguageManager.GetUsedLanguage().ConfirmText, DropPortalToInstance, null, "Enter instance id...");
 			}, "Drop a portal to a specific instance");
 
-			new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().ItemWallhack, Configuration.GetGeneralConfig().ItemWallhack, delegate
+            ItemWallhackButton = new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().ItemWallhack, Configuration.GetGeneralConfig().ItemWallhack, delegate
 			{
 				Configuration.GetGeneralConfig().ItemWallhack = true;
 				Configuration.SaveGeneralConfig();
+                ActionWheelMenu.ItemwallhackButton.SetButtonText("Item Wallhack: <color=green>On");
 				GeneralHandler.pickupRenderersToHighlight.Clear();
 				VRC_Pickup[] array4 = Resources.FindObjectsOfTypeAll<VRC_Pickup>();
 				for (int m = 0; m < array4.Length; m++)
@@ -72,7 +76,8 @@ namespace MunchenClient.Menu
 			{
 				Configuration.GetGeneralConfig().ItemWallhack = false;
 				Configuration.SaveGeneralConfig();
-				GeneralHandler.pickupRenderersToHighlight.Clear();
+                ActionWheelMenu.ItemwallhackButton.SetButtonText("Item Wallhack: <color=red>Off");
+                GeneralHandler.pickupRenderersToHighlight.Clear();
 				VRC_Pickup[] array3 = Resources.FindObjectsOfTypeAll<VRC_Pickup>();
 				for (int k = 0; k < array3.Length; k++)
 				{
@@ -89,11 +94,12 @@ namespace MunchenClient.Menu
 					}
 				}
 			}, LanguageManager.GetUsedLanguage().ItemWallhackDescription);
-			new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().TriggerWallhack, Configuration.GetGeneralConfig().TriggerWallhack, delegate
+            TriggerWallhackButton = new QuickMenuToggleButton(parentRow, LanguageManager.GetUsedLanguage().TriggerWallhack, Configuration.GetGeneralConfig().TriggerWallhack, delegate
 			{
 				Configuration.GetGeneralConfig().TriggerWallhack = true;
 				Configuration.SaveGeneralConfig();
-				VRC_Trigger[] array2 = Resources.FindObjectsOfTypeAll<VRC_Trigger>();
+                ActionWheelMenu.TriggerWallhackButton.SetButtonText("Trigger Wallhack: <color=green>On");
+                VRC_Trigger[] array2 = Resources.FindObjectsOfTypeAll<VRC_Trigger>();
 				for (int j = 0; j < array2.Length; j++)
 				{
 					System.Collections.Generic.List<Renderer> list2 = MiscUtils.FindAllComponentsInGameObject<Renderer>(array2[j].gameObject, includeInactive: false, searchParent: false);
@@ -106,7 +112,8 @@ namespace MunchenClient.Menu
 			{
 				Configuration.GetGeneralConfig().TriggerWallhack = false;
 				Configuration.SaveGeneralConfig();
-				VRC_Trigger[] array = Resources.FindObjectsOfTypeAll<VRC_Trigger>();
+                ActionWheelMenu.TriggerWallhackButton.SetButtonText("Trigger Wallhack: <color=red>Off");
+                VRC_Trigger[] array = Resources.FindObjectsOfTypeAll<VRC_Trigger>();
 				for (int i = 0; i < array.Length; i++)
 				{
 					System.Collections.Generic.List<Renderer> list = MiscUtils.FindAllComponentsInGameObject<Renderer>(array[i].gameObject, includeInactive: false, searchParent: false);

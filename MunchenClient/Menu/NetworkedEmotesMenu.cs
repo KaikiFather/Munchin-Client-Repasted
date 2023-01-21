@@ -9,17 +9,17 @@ namespace MunchenClient.Menu
 {
 	internal class NetworkedEmotesMenu : QuickMenuNestedMenu
 	{
-		private ulong totalQuacks = 0uL;
+		public static ulong totalQuacks = 0uL;
 
-		private ulong totalSizzs = 0uL;
+        public static ulong totalSizzs = 0uL;
 
-		private ulong totalQgs = 0uL;
+        public static ulong totalQgs = 0uL;
 
-		private ulong totalCowboys = 0uL;
+        public static ulong totalCowboys = 0uL;
 
-		private ulong totalAllahs = 0uL;
+        public static ulong totalAllahs = 0uL;
 
-		private ulong totalGays = 0uL;
+        public static ulong totalGays = 0uL;
 
 		internal NetworkedEmotesMenu(QuickMenuButtonRow parent)
 			: base(parent, "NASA Technology", "TOP SECRET SHIT IN HERE (GONE WRONG) (GONE WILD) (IS HE GONNA SURVIVE)")
