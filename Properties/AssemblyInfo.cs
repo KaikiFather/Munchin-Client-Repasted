@@ -9,7 +9,7 @@ using MelonLoader;
 using MunchenClient.Core;
 
 [assembly: MelonGame("VRChat", "VRChat")]
-[assembly: MelonInfo(typeof(MunchenClientLocal), "MunchenClient: Repasted", "1.0.5", "Swordsith & Kanna")]
+[assembly: MelonInfo(typeof(MunchenClientLocal), "MunchenClient: Repasted", "1.0.8", "Swordsith & Kanna")]
 [assembly: AssemblyTitle("MunchenClient: Repasted")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
