@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MelonLoader;
 using MunchenClient.Utils;
 using VRC;
 using VRC.Core;
@@ -175,14 +176,17 @@ namespace MunchenClient.Wrappers
 
 		internal static PlayerInformation GetLocalPlayerInformation()
 		{
-			if (PlayerUtils.localPlayerInfo == null)
-			{
-				if (APIUser.CurrentUser != null && PlayerUtils.playerCachingList.ContainsKey(APIUser.CurrentUser.displayName))
-				{
-					PlayerUtils.localPlayerInfo = PlayerUtils.playerCachingList[APIUser.CurrentUser.displayName];
-					return PlayerUtils.playerCachingList[APIUser.CurrentUser.displayName];
-				}
-				return null;
+            if (PlayerUtils.localPlayerInfo == null)
+			{												//player caching rarely broken? 1-2 people have this issue and cant find their player data
+				//if (APIUser.CurrentUser != null && PlayerUtils.playerCachingList.ContainsKey(APIUser.CurrentUser.displayName))
+				//{
+                try {
+                    PlayerUtils.localPlayerInfo = PlayerUtils.playerCachingList[APIUser.CurrentUser.displayName];
+                    return PlayerUtils.playerCachingList[APIUser.CurrentUser.displayName];
+                } catch{ }
+				
+                //}
+                return null;
 			}
 			return PlayerUtils.localPlayerInfo;
 		}
