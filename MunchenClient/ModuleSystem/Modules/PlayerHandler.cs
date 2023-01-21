@@ -15,6 +15,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using VRC.SDKBase;
+using Environment = System.Environment;
 
 namespace MunchenClient.ModuleSystem.Modules
 {
@@ -423,7 +424,8 @@ namespace MunchenClient.ModuleSystem.Modules
 			return false;
 		}
 
-		private static void UpdatePlayerNameplate(PlayerInformation playerInfo, bool isOffscreen) //broken
+
+        private static void UpdatePlayerNameplate(PlayerInformation playerInfo, bool isOffscreen) //broken
 		{
             if (Configuration.GetGeneralConfig().SerializationDetection && PlayerEventsHandler.IsModerationEventsEnabled())
 			{
@@ -436,15 +438,30 @@ namespace MunchenClient.ModuleSystem.Modules
 					GeneralUtils.InformHudText(LanguageManager.GetUsedLanguage().ProtectionsMenuName, text);
 				}
 			}
-			if (Configuration.GetGeneralConfig().NameplateRankColor)
+			if (playerInfo.RankText != null)
 			{
-				Color color = PlayerUtils.playerColorCache[playerInfo.displayName];
-				Color color2 = new Color(color.r, color.g, color.b, 0.5f);
-				playerInfo.vrcPlayer.field_Public_PlayerNameplate_0.field_Public_TextMeshProUGUI_0.color = color;
-				playerInfo.vrcPlayer.field_Public_PlayerNameplate_0.field_Public_TextMeshProUGUI_2.color = color;
-				playerInfo.nameplateBackground.color = color2;
-				playerInfo.nameplateIconBackground.color = color2;
+				playerInfo.RankMesh.text = playerInfo.RankText;
+				playerInfo.RankMesh.color = playerInfo.RankColor;
+				playerInfo.RankIcon.color = playerInfo.RankColor;
 			}
+
+            if (Configuration.GetGeneralConfig().NameplateRankColor)
+			{
+				if (playerInfo.RankText == null)
+                {
+                    Color color = PlayerUtils.playerColorCache[playerInfo.displayName];
+                    Color color2 = new Color(color.r, color.g, color.b, 0.5f);
+                    playerInfo.vrcPlayer.field_Public_PlayerNameplate_0.field_Public_TextMeshProUGUI_0.color = color;
+                    playerInfo.vrcPlayer.field_Public_PlayerNameplate_0.field_Public_TextMeshProUGUI_2.color = color;
+                    playerInfo.nameplateBackground.color = color2;
+                    playerInfo.nameplateIconBackground.color = color2;
+                }
+				else
+				{ //custom background rank coloring
+                    playerInfo.PlateName.color = playerInfo.RankColor;
+                    playerInfo.nameplateBackground.color = playerInfo.RankColor;
+                }
+            }
 			if (playerInfo.isLocalPlayer)
 			{
 				return;
@@ -559,7 +576,7 @@ namespace MunchenClient.ModuleSystem.Modules
 				stringBuilder.Append($"FPS: <color=green>{fPS}<color=white>");
 			}
 			playerInfo.customNameplateText.text = stringBuilder.ToString();
-		}
+        }
 
 		internal static void IncrementPlayerVolume(float volume)
 		{

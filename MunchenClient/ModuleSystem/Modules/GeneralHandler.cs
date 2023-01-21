@@ -33,6 +33,8 @@ namespace MunchenClient.ModuleSystem.Modules
 		private string currentAvatarId = string.Empty;
 
 		protected override string moduleName => "General Handler";
+		
+		internal static string HomeWorldID { get; set; }
 
 		internal override void OnLateUpdate()
 		{
@@ -158,10 +160,12 @@ namespace MunchenClient.ModuleSystem.Modules
 			WorldUtils.FixUnnecessaryDoorsInTheGreatPug(Configuration.GetGeneralConfig().TheGreatPugRemoveUnnecessaryDoors);
 			WorldUtils.FixAnnoyingIntroInJustBClub(Configuration.GetGeneralConfig().JustBClubIntroFix);
 		}
-
+		public static bool Home { get; set; }
 		internal override void OnRoomJoined() // this does not work
 		{
 			GeneralUtils.isConnectedToInstance = true;
+
+			if (!Home) { Home = true; HomeWorldID = WorldUtils.GetCurrentWorld().id + ":" + WorldUtils.GetCurrentInstance().instanceId;} //stores world id for radial button
 			if (true/*!ApplicationBotHandler.IsBot()*/)
 			{
 				//AntiCrashPatch.OnRoomJoined(); disabled until anticrash fixed
@@ -221,7 +225,7 @@ namespace MunchenClient.ModuleSystem.Modules
 		private void HandleFlight()
 		{
 			PlayerInformation localPlayerInformation = PlayerWrappers.GetLocalPlayerInformation();
-			if (localPlayerInformation == null) { MelonLogger.Msg("Local player not found or null"); return; }
+			if (localPlayerInformation == null) { return; }
             float num = (Input.GetKey(KeyCode.LeftShift) ? (Configuration.GetGeneralConfig().FlightSpeed * 2f) : ((!Input.GetKey(KeyCode.LeftControl)) ? Configuration.GetGeneralConfig().FlightSpeed : (Configuration.GetGeneralConfig().FlightSpeed / 2f)));
 			if (GeneralWrappers.IsInVR())
 			{
